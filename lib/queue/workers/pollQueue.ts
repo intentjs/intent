@@ -51,17 +51,17 @@ export class PollQueueWorker extends BaseQueueWorker {
     this.logInfo('Poll Queue Worker Initialised');
     this.logInfo('Listening for messages...');
 
-    const connection = QueueService.getConnectionClient<PollQueueDriver>(
+    const { client } = QueueService.makeDriver<PollQueueDriver>(
       this.options.connection,
     );
 
     // perform scheduled task of the driver
-    if (connection.scheduledTask) this.performScheduledTask(connection);
+    if (client.scheduledTask) this.performScheduledTask(client);
 
-    const runner = new JobRunner(this.options, connection);
+    const runner = new JobRunner(this.options, client);
     // eslint-disable-next-line no-constant-condition
     while (1) {
-      const jobs = await this.poll(connection);
+      const jobs = await this.poll(client);
       if (!jobs.length) {
         await new Promise(resolve => setTimeout(resolve, this.options.sleep));
         continue;
@@ -131,17 +131,17 @@ export class PollQueueWorker extends BaseQueueWorker {
   }
 
   async purge(): Promise<void> {
-    const connection = QueueService.getConnectionClient<PollQueueDriver>(
+    const { client } = QueueService.makeDriver<PollQueueDriver>(
       this.options.connection,
     );
-    await connection.purge({ queue: this.options.queue });
+    await client.purge({ queue: this.options.queue });
   }
 
   async count(): Promise<number> {
-    const connection = QueueService.getConnectionClient<PollQueueDriver>(
+    const { client } = QueueService.makeDriver<PollQueueDriver>(
       this.options.connection,
     );
-    return await connection.count({ queue: this.options.queue });
+    return await client.count({ queue: this.options.queue });
   }
 
   /**
@@ -176,10 +176,10 @@ export class PollQueueWorker extends BaseQueueWorker {
    * @param job
    */
   async removeJobFromQueue(job: DriverJob): Promise<void> {
-    const connection = QueueService.getConnectionClient<PollQueueDriver>(
+    const { client } = QueueService.makeDriver<PollQueueDriver>(
       this.options.connection,
     );
-    await connection.remove(job, this.options);
+    await client.remove(job, this.options);
   }
 
   /**

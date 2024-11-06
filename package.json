@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/core",
-  "version": "0.1.35",
+  "version": "0.1.35-opti1",
   "description": "Core module for Intent",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",

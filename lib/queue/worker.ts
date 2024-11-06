@@ -23,7 +23,7 @@ export class QueueWorker {
       ...args,
     };
 
-    const { config } = QueueService.getConnection(this.options.connection);
+    const { config } = QueueService.makeDriver(this.options.connection);
     this.options.listenerType = config.listenerType;
 
     if (!this.options.queue) {

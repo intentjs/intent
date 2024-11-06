@@ -1,5 +1,5 @@
 import { Package } from '../../utils';
-import { ErrorSendingMail } from '../exceptions/errorSendingMail';
+import { ErrorSendingMail } from '../exceptions/error-sending-mail';
 import { ResendOptions } from '../interfaces';
 import { BaseProvider, BaseProviderSendOptions } from '../interfaces/provider';
 

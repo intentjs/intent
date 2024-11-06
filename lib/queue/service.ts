@@ -1,17 +1,22 @@
 import { Injectable, Type } from '@nestjs/common';
-import { ConfigService } from '../config/service';
-import { logTime } from '../utils/helpers';
-import { InternalLogger } from '../utils/logger';
-import { Str } from '../utils/string';
+import {
+  DbQueueDriverOptions,
+  QueueDriverOptions,
+  QueueOptions,
+  RedisQueueDriverOptions,
+  SqsQueueDriverOptions,
+  SyncQueueDriverOptions,
+} from './interfaces';
 import {
   DatabaseQueueDriver,
+  RedisQueueDriver,
   SqsQueueDriver,
   SyncQueueDriver,
 } from './drivers';
-import { RedisQueueDriver } from './drivers/redis';
-import { QueueDriverOptions, QueueOptions } from './interfaces';
-import { QueueMetadata } from './metadata';
 import { QueueDrivers } from './strategy';
+import { ConfigService } from '../config';
+import { isEmpty } from 'lodash';
+import { Str } from '../utils/string';
 
 @Injectable()
 export class QueueService {
@@ -22,53 +27,55 @@ export class QueueService {
     db: DatabaseQueueDriver,
   };
 
-  private static connections: Record<string, any> = {};
+  private static drivers: Map<
+    string,
+    { config: Record<string, any>; client: QueueDrivers }
+  >;
 
   constructor(private config: ConfigService) {
-    const options = this.config.get('queue') as QueueOptions;
-    if (!options) return;
-    for (const connName in options.connections) {
-      const time = Date.now();
-      const connection = options.connections[connName];
-      const driverName: string | Type<QueueDrivers> = connection.driver;
-      const driver: Type<QueueDrivers> = Str.isString(driverName)
-        ? QueueService.queueDriverMap[driverName as unknown as string]
-        : driverName;
+    QueueService.drivers = new Map<
+      string,
+      { config: Record<string, any>; client: QueueDrivers }
+    >();
+  }
 
-      if (!driver) {
-        InternalLogger.error(
-          'QueueService',
-          `We couldn't find any driver associated with the "${driverName}".`,
-        );
-        continue;
-      }
-
-      QueueService.connections[connName] = {
-        config: connection,
-        client: new driver(connection),
+  static makeDriver<T = QueueDrivers>(
+    connection: string,
+    options?:
+      | SyncQueueDriverOptions
+      | SqsQueueDriverOptions
+      | RedisQueueDriverOptions
+      | QueueDriverOptions
+      | DbQueueDriverOptions,
+  ): { config: QueueDriverOptions; client: T } {
+    if (this.drivers.has(connection)) {
+      return this.drivers.get(connection) as {
+        config: QueueDriverOptions;
+        client: T;
       };
-      InternalLogger.success(
-        'QueueService',
-        `Queue connection [${connName}] successfully initiailized ${logTime(
-          Date.now() - time,
-        )}`,
+    }
+
+    const config = ConfigService.get('queue') as QueueOptions;
+    options = options ?? config.connections[connection];
+    if (isEmpty(options)) {
+      throw new Error(
+        `Invalid options passed while trying to make a new driver [${connection}] for Queue`,
       );
     }
-  }
 
-  static getConnection<T = QueueDrivers>(
-    connection: string | undefined,
-  ): { config: QueueDriverOptions; client: T } {
-    const options = QueueMetadata.getData();
-    if (!connection) connection = options.default;
-    return QueueService.connections[connection];
-  }
+    const driverName: string | Type<QueueDrivers> = options.driver;
+    const driver: Type<QueueDrivers> = Str.isString(driverName)
+      ? QueueService.queueDriverMap[driverName as unknown as string]
+      : driverName;
 
-  static getConnectionClient<T = QueueDrivers>(
-    connection: string | undefined,
-  ): T {
-    const options = QueueMetadata.getData();
-    if (!connection) connection = options.default;
-    return QueueService.connections[connection].client;
+    this.drivers.set(connection, {
+      config: options,
+      client: new driver(options),
+    });
+
+    return this.drivers.get(connection) as {
+      config: QueueDriverOptions;
+      client: T;
+    };
   }
 }

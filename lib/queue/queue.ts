@@ -9,9 +9,7 @@ export class Queue {
   static async dispatch(message: Message): Promise<void> {
     const job = QueueMetadata.getJob(message.job);
     const payload = PayloadBuilder.build(message, job?.options ?? {});
-    const { config, client } = QueueService.getConnection(
-      payload['connection'],
-    );
+    const { config, client } = QueueService.makeDriver(payload['connection']);
 
     if (config.listenerType === 'subscribe') {
       return (client as SubscribeQueueDriver).publish(
@@ -27,7 +25,7 @@ export class Queue {
 export async function Dispatch(message: Message): Promise<void> {
   const job = QueueMetadata.getJob(message.job);
   const payload = PayloadBuilder.build(message, job?.options || {});
-  const { config, client } = QueueService.getConnection(payload['connection']);
+  const { config, client } = QueueService.makeDriver(payload['connection']);
 
   if (config.listenerType === 'subscribe') {
     return await (client as SubscribeQueueDriver).publish(

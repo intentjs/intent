@@ -10,7 +10,6 @@ export class SendgridProvider implements BaseProvider {
   }
 
   send(payload: BaseProviderSendOptions): Promise<void> {
-    console.log(payload);
     throw new Error('Method not implemented.');
   }
 

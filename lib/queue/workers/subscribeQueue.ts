@@ -39,11 +39,11 @@ export class SubscribeQueueWorker {
   async initListeners(): Promise<void> {
     const jobs = QueueMetadata.getAllJobs();
     await this.initBroker(this.options.connection, jobs);
-    const connClient = QueueService.getConnectionClient<SubscribeQueueDriver>(
+    const { client } = QueueService.makeDriver<SubscribeQueueDriver>(
       this.options.connection,
     );
 
-    await connClient.startListening(this.processIncomingMessage());
+    await client.startListening(this.processIncomingMessage());
 
     this.attachDeamonListeners();
 
@@ -85,11 +85,10 @@ export class SubscribeQueueWorker {
   ): Promise<void> {
     const topicNames = Object.keys(listeners);
 
-    const brokerClient =
-      QueueService.getConnectionClient<SubscribeQueueDriver>(broker);
+    const { client } = QueueService.makeDriver<SubscribeQueueDriver>(broker);
 
     const workerOptions = Obj.pick(this.options, ['listenerId']);
-    await brokerClient.initListeners({
+    await client.initListeners({
       topics: topicNames,
       workerOptions: workerOptions,
     });
@@ -99,9 +98,8 @@ export class SubscribeQueueWorker {
     const listeners = QueueMetadata.getAllJobs();
     const brokers = Object.keys(listeners);
     for (const broker of brokers) {
-      const brokerClient =
-        QueueService.getConnectionClient<SubscribeQueueDriver>(broker);
-      await brokerClient.disconnect();
+      const { client } = QueueService.makeDriver<SubscribeQueueDriver>(broker);
+      await client.disconnect();
     }
 
     process.exit(0);

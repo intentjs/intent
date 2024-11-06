@@ -49,7 +49,6 @@ export interface DbQueueDriverOptions {
 }
 
 export interface QueueOptions {
-  isGlobal?: boolean;
   default: string;
   connections: {
     [key: string]:

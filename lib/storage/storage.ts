@@ -6,11 +6,11 @@ import { StorageService } from './service';
 @Injectable()
 export class Storage {
   static build(config: S3DiskOptions | LocalDiskOptions): StorageDriver {
-    return StorageService.buildDriver(config);
+    return StorageService.newDisk(config);
   }
 
   static disk(disk?: string) {
-    return StorageService.getDriver(disk);
+    return StorageService.getDisk(disk);
   }
 
   static async download(url: string): Promise<Buffer> {

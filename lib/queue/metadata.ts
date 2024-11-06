@@ -11,7 +11,6 @@ interface JobTarget {
 
 @Injectable()
 export class QueueMetadata {
-  private static data: QueueOptions;
   private static defaultOptions: Record<
     string,
     string | number | boolean | undefined
@@ -20,7 +19,6 @@ export class QueueMetadata {
 
   constructor(private config: ConfigService) {
     const data = this.config.get('queue') as QueueOptions;
-    QueueMetadata.data = data;
     QueueMetadata.defaultOptions = {
       connection: data.default,
       queue: data.connections[data.default].queue as string,
@@ -36,7 +34,7 @@ export class QueueMetadata {
   }
 
   static getData(): QueueOptions {
-    return QueueMetadata.data;
+    return ConfigService.get('queue') as QueueOptions;
   }
 
   static addJob(jobName: string, target: JobTarget): void {

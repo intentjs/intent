@@ -233,7 +233,7 @@ export class S3Storage implements StorageDriver {
   ): Promise<boolean> {
     try {
       const buffer = await this.get(sourcePath);
-      const driver = StorageService.getDriver(destinationDisk);
+      const driver = StorageService.getDisk(destinationDisk);
       await driver.put(destinationPath, buffer);
       return true;
     } catch (e) {
@@ -254,7 +254,7 @@ export class S3Storage implements StorageDriver {
   ): Promise<boolean> {
     try {
       const buffer = await this.get(sourcePath);
-      const driver = StorageService.getDriver(destinationDisk);
+      const driver = StorageService.getDisk(destinationDisk);
       await driver.put(destinationPath, buffer);
       await this.delete(sourcePath);
       return true;
