@@ -1,7 +1,7 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
 
 export interface RedisDriverOption {
-  driver: 'redis';
+  driver?: 'redis';
   host?: string;
   port?: number;
   url?: string;

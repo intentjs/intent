@@ -17,6 +17,7 @@ import { QueueService } from './queue';
 import { QueueConsoleCommands } from './queue/console';
 import { QueueMetadata } from './queue/metadata';
 import { StorageService } from './storage/service';
+import { Limiter } from './limiter';
 import { BuildProjectCommand } from './dev-server/build';
 import { DevServerCommand } from './dev-server/serve';
 import { CONFIG_FACTORY, ConfigBuilder, ConfigService } from './config';
@@ -44,6 +45,7 @@ export const IntentProvidersFactory = (
         LocalizationService,
         EventQueueWorker,
         LoggerService,
+        Limiter,
         BuildProjectCommand,
         DevServerCommand,
         ConfigService,
