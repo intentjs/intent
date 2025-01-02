@@ -1115,7 +1115,7 @@ class Request {
     }
 
     expectsJson() {
-        return this.accepts().includes('application/json');
+        return this.accepts().includes('application/json') || this.accepts().includes('*/*');
     }
 
     setUser(user) {

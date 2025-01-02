@@ -28,11 +28,6 @@ class ExpressRequest {
         return this.get(name);
     }
 
-    accepts() {
-        let instance = accepts(this);
-        return instance.types.apply(instance, arguments);
-    }
-
     acceptsCharsets() {
         charsets = flattened(charsets, arguments);
 

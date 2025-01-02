@@ -6,6 +6,7 @@ import { HttpException } from './http-exception';
 import { ValidationFailed } from './validation-failed';
 import { HttpStatus } from '../rest/http-server/status-codes';
 import { ExecutionContext } from '../rest/http-server/contexts/execution-context';
+import { RouteNotFoundException } from './route-not-found-exception';
 
 export abstract class IntentExceptionFilter {
   doNotReport(): Array<Type<HttpException>> {
@@ -28,8 +29,19 @@ export abstract class IntentExceptionFilter {
 
   async handleHttp(context: ExecutionContext, exception: any): Promise<any> {
     const res = context.switchToHttp().getResponse();
+    const req = context.switchToHttp().getRequest();
 
     const debugMode = ConfigService.get('app.debug');
+
+    if (exception instanceof RouteNotFoundException) {
+      if (req.expectsJson()) {
+        return res.status(HttpStatus.NOT_FOUND).json({
+          message: exception.message,
+          status: exception.getStatus(),
+          // stack: debugMode && exception.stack,
+        });
+      }
+    }
 
     if (exception instanceof ValidationFailed) {
       return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({

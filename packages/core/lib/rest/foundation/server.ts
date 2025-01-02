@@ -22,6 +22,7 @@ import { HttpExecutionContext } from '../http-server/contexts/http-execution-con
 import { ExecutionContext } from '../http-server/contexts/execution-context';
 import { Response } from '../http-server/response';
 import { RouteExplorer } from '../http-server/route-explorer';
+import { RouteNotFoundException } from '../../exceptions/route-not-found-exception';
 
 const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
@@ -98,12 +99,20 @@ export class IntentHttpServer {
 
     await this.container.boot(app);
     await this.kernel.boot(server);
+
+    server.set_not_found_handler((hReq: any, hRes: HyperResponse) => {
+      const httpContext = new HttpExecutionContext(hReq, hRes);
+      const context = new ExecutionContext(httpContext, null, null);
+      const routeNotFoundError = new RouteNotFoundException(
+        `[${hReq.method}] ${hReq.url} is not a valid route.`,
+      );
+      errorHandler.catch(context, routeNotFoundError);
+    });
+
     server.set_error_handler((hReq: any, hRes: HyperResponse, error: Error) => {
-      const res = new Response();
       const httpContext = new HttpExecutionContext(hReq, hRes);
       const context = new ExecutionContext(httpContext, null, null);
       errorHandler.catch(context, error);
-      res.reply(hReq, hRes);
     });
 
     this.configureErrorReporter(config.get('app.sentry'));

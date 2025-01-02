@@ -88,7 +88,7 @@ export class Response<Locals = DefaultResponseLocals> extends Writable {
         value: string | null,
         expiry?: number,
         options?: CookieOptions,
-        sign_cookie?: boolean
+        sign_cookie?: boolean,
     ): Response;
 
     /**
@@ -264,6 +264,7 @@ export class Response<Locals = DefaultResponseLocals> extends Writable {
     sendStatus(status_code: number): Response;
     set(field: string | object, value?: string | Array<string>): Response | void;
     vary(name: string): Response;
+    notFound(): Response;
 
     /* ExpressJS Properties */
     get headersSent(): boolean;

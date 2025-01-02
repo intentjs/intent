@@ -10,8 +10,8 @@ export class UserController {
     return { hello: 'Intent' };
   }
 
-  @Get('hello')
+  @Get('hello/')
   async getHello2(@Req() req: Request) {
-    return { hello: 'Intent' };
+    return { hello: 'Intent2' };
   }
 }
