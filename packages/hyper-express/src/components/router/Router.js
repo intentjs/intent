@@ -119,6 +119,9 @@ class Router {
         // This is because uWebsockets.js does not treat non-leading slashes as catchall stars
         if (pattern.startsWith('*')) pattern = '/' + pattern;
 
+        // Handle trailing slash for all patterns except the root pattern(/).
+        if (pattern !== '/' && pattern.endsWith('/')) pattern = pattern.slice(0, -1);
+
         // Parse the middlewares into a new array to prevent mutating the original
         const middlewares = [];
 

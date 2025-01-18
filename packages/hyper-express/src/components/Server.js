@@ -417,9 +417,14 @@ class Server extends Router {
                 this.#routes[method][pattern] = route;
 
                 // Bind the uWS route handler which pipes all incoming uWS requests to the HyperExpress request lifecycle
-                return this.#uws_instance[method](pattern, (response, request) => {
+                const callback = (response, request) => {
                     this._handle_uws_request(route, request, response, null);
-                });
+                };
+                this.#uws_instance[method](pattern, callback);
+
+                // Shall the registered (/foo) route also handle (/foo/) requests?
+                this.#uws_instance[method](pattern + '/', callback);
+                return;
         }
     }
 
