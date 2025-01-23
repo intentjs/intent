@@ -7,6 +7,9 @@ import { GenericFunction } from './interfaces';
 import { JOB_NAME, JOB_OPTIONS } from './queue/constants';
 import { QueueMetadata } from './queue/metadata';
 import { Injectable } from './foundation';
+import { REFILL_INTERVAL, TOKEN_COUNT } from './limiter/constants';
+import { ulid } from 'ulid';
+import { Limiter } from './limiter';
 
 @Injectable()
 export class IntentExplorer {
@@ -97,5 +100,24 @@ export class IntentExplorer {
       );
 
     CommandMeta.setCommand(command, options, methodRef.bind(instance));
+  }
+
+  lookupLimittedMethods(
+    instance: Record<string, GenericFunction>,
+    key: string,
+  ) {
+    let methodRef = instance[key];
+    const hasCommandMeta = Reflect.hasMetadata(TOKEN_COUNT, instance, key);
+
+    if (!hasCommandMeta) return;
+
+    const tokensCount = Reflect.getMetadata(TOKEN_COUNT, instance, key);
+    const frequency = Reflect.getMetadata(REFILL_INTERVAL, instance, key);
+    const funcKey = ulid();
+    Limiter.initializeToken(key + funcKey, tokensCount, frequency);
+    instance[key] = function (...args) {
+      Limiter.useToken(key + funcKey);
+      return methodRef.apply(instance, args);
+    };
   }
 }
