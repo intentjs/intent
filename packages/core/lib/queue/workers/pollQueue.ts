@@ -15,6 +15,8 @@ import { BaseQueueWorker } from './baseWorker';
 
 export class PollQueueWorker extends BaseQueueWorker {
   protected options: ListenerOptions;
+  protected jobInProgress: boolean;
+  protected killSigReceived: boolean;
 
   constructor(options?: ListenerOptions) {
     super();
@@ -27,13 +29,16 @@ export class PollQueueWorker extends BaseQueueWorker {
       logger: true,
       ...this.options,
     };
-
+    this.jobInProgress = false;
+    this.killSigReceived = false;
     if (!this.options.queue) {
       const data = QueueMetadata.getData();
       this.options['queue'] = data.connections[
         this.options.connection || defaultOptions.connection
       ].queue as string;
     }
+
+    this.attachDeamonListeners();
   }
 
   static init(options?: ListenerOptions): PollQueueWorker {
@@ -60,16 +65,18 @@ export class PollQueueWorker extends BaseQueueWorker {
 
     const runner = new JobRunner(this.options, client);
     // eslint-disable-next-line no-constant-condition
-    while (1) {
+    while (1 && !this.killSigReceived) {
       const jobs = await this.poll(client);
       if (!jobs.length) {
         await new Promise(resolve => setTimeout(resolve, this.options.sleep));
         continue;
       }
 
+      this.jobInProgress = true;
       for (const job of jobs) {
         await this.handleJob(runner, job);
       }
+      this.jobInProgress = false;
     }
   }
 
@@ -188,6 +195,57 @@ export class PollQueueWorker extends BaseQueueWorker {
    */
   fetchMessage(job: DriverJob): InternalMessage {
     const message = job.getMessage();
-    return Obj.isObj(message) ? message : JSON.parse(job.getMessage());
+    return Obj.isObj(message)
+      ? (message as unknown as InternalMessage)
+      : JSON.parse(job.getMessage());
+  }
+
+  attachDeamonListeners() {
+    process.on('SIGINT', async () => {
+      await this.closeConnections();
+    });
+
+    process.on('SIGQUIT', async () => {
+      await this.closeConnections();
+    });
+
+    process.on('SIGTERM', async () => {
+      await this.closeConnections();
+    });
+
+    process.on('message', async (msg: any) => {
+      if (msg === 'shutdown' || msg.type === 'shutdown') {
+        await this.closeConnections();
+      }
+    });
+  }
+
+  async closeConnections() {
+    this.killSigReceived = true;
+    // Wait for job completion with timeout
+    const maxWaitTime = 30000; // 30 seconds timeout
+    const startTime = Date.now();
+
+    while (this.jobInProgress) {
+      this.logInfo('Waiting for current batch to be completed first...');
+      if (Date.now() - startTime > maxWaitTime) {
+        break;
+      }
+
+      await new Promise(resolve => setImmediate(resolve)); // Check every second
+    }
+
+    try {
+      console.log(
+        `Successfully disconnected broker: ${this.options.connection}`,
+      );
+    } catch (error) {
+      console.error(
+        `Error disconnecting broker ${this.options.connection}:`,
+        error,
+      );
+    }
+
+    process.exit(this.jobInProgress ? 1 : 0);
   }
 }

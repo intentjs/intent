@@ -173,9 +173,8 @@ export class SwcFileTransformer {
     const { includeDirs } = tsConfig;
     const cwd = process.cwd();
 
-    const watchPatterns = [...includeDirs, "../../node_modules/@intentjs"].map(
-      (dir: string) => join(cwd, dir)
-    );
+    const watchPatterns = [...includeDirs].map((dir: string) => join(cwd, dir));
+
     const watcher = chokidar.watch(".", {
       persistent: true,
       ignoreInitial: true,
@@ -198,5 +197,33 @@ export class SwcFileTransformer {
       .on("add", () => onChange())
       .on("change", (filepath: string) => onChange())
       .on("error", (error) => onChange());
+
+    if (process.env.NODE_ENV == "coredev") {
+      const libDir = join(process.cwd(), "../../node_modules/@intentjs");
+      const libWatcher = chokidar.watch(".", {
+        persistent: true,
+        ignoreInitial: true,
+        cwd: libDir,
+        awaitWriteFinish: { stabilityThreshold: 50, pollInterval: 10 },
+        ignored: (filepath) => {
+          if (filepath.includes(libDir)) return false;
+
+          if (filepath === libDir) {
+            return false;
+          }
+
+          for (const watchPattern of watchPatterns) {
+            if (filepath.includes(watchPattern)) return false;
+          }
+
+          return true;
+        },
+      });
+
+      libWatcher
+        .on("add", () => onChange())
+        .on("change", (filepath: string) => onChange())
+        .on("error", (error) => onChange());
+    }
   }
 }
