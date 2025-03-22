@@ -1,11 +1,9 @@
 import { dirname } from "path";
-import ts from "typescript";
-import { INTENT_LOG_PREFIX } from "../utils/log-helpers";
+import ts, { ParsedCommandLine } from "typescript";
+import { INTENT_LOG_PREFIX } from "../../utils/log-helpers.js";
 import pc from "picocolors";
-import { NO_TSCONFIG_FOUND } from "../utils/messages";
-
-const TSCONFIG_BUILD_JSON = "tsconfig.build.json";
-const TSCONFIG_JSON = "tsconfig.json";
+import { NO_TSCONFIG_FOUND } from "../../utils/messages.js";
+import { TSCONFIG_BUILD_JSON, TSCONFIG_JSON } from "../../constants.js";
 
 export class TsConfigLoader {
   loadCliOptions(customPath?: string) {
@@ -19,7 +17,7 @@ export class TsConfigLoader {
     return { options, fileNames, projectReferences };
   }
 
-  load(customPath?: string): Record<string, any> {
+  load(customPath?: string): ParsedCommandLine {
     const configPath = this.loadPath(customPath);
 
     const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
@@ -29,14 +27,16 @@ export class TsConfigLoader {
       dirname(configPath)
     );
 
-    return {
-      compilerOptions: parsedConfig.options,
-      include: parsedConfig.fileNames,
-      exclude: parsedConfig.wildcardDirectories
-        ? Object.keys(parsedConfig.wildcardDirectories)
-        : undefined,
-      includeDirs: parsedConfig.raw.include,
-    };
+    return parsedConfig;
+
+    // return {
+    //   compilerOptions: parsedConfig.options,
+    //   include: parsedConfig.fileNames,
+    //   exclude: parsedConfig.wildcardDirectories
+    //     ? Object.keys(parsedConfig.wildcardDirectories)
+    //     : undefined,
+    //   includeDirs: parsedConfig.raw.include,
+    // };
   }
 
   loadPath(customPath?: string): string {

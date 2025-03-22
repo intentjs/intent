@@ -1,5 +1,5 @@
 import pc from "picocolors";
-import { getTime } from "./helpers";
+import { getTime } from "./helpers.js";
 
 export const TIMESTAMP_LOG_PREFIX = pc.gray(`[${getTime()}] `);
 

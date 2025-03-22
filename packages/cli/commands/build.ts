@@ -1,8 +1,14 @@
-import { ConfigurationLoader } from "../lib/configuration/configuration-loader";
-import { defaultSwcOptionsFactory } from "../lib/swc/default-options";
-import { SwcFileTransformer } from "../lib/swc/swc-file-transformer";
-import { TsConfigLoader } from "../lib/typescript/tsconfig-loader";
-import { isTruthy } from "../lib/utils/helpers";
+import { ConfigurationLoader } from "../lib/configuration/configuration-loader.js";
+import { INTENT_CONFIG_FILE_NAME } from "../lib/constants.js";
+import { AssetsManager } from "../lib/dev-server/assets/assets-manager.js";
+import { defaultSwcOptionsFactory } from "../lib/dev-server/swc/default-options.js";
+import { SwcFileTransformer } from "../lib/dev-server/swc/swc-file-transformer.js";
+import { TypeChecker } from "../lib/dev-server/type-checker/type-checker.js";
+import { TsConfigLoader } from "../lib/dev-server/typescript/tsconfig-loader.js";
+import { isTruthy } from "../lib/utils/helpers.js";
+import FSExtra from "fs-extra";
+
+const { existsSync, mkdirSync } = FSExtra;
 
 export class BuildCommand {
   protected readonly configurationLoader = new ConfigurationLoader();
@@ -10,32 +16,29 @@ export class BuildCommand {
   protected readonly swcFileTransformer = new SwcFileTransformer();
 
   async handle(options: Record<string, any>): Promise<void> {
-    const {
-      watch = false,
-      debug = false,
-      disableTypeCheck,
-      path,
-      tsconfig: tsConfigPath,
-    } = options;
+    const { debug = false, disableTypeCheck, tsconfig: tsConfigPath } = options;
 
-    const intentConfigFilePath = this.configurationLoader.loadPath(path);
-    const intentFileConfig =
-      this.configurationLoader.load(intentConfigFilePath);
+    const TS_CONFIG = this.tsConfigLoader.load(tsConfigPath);
 
-    const tsConfig = this.tsConfigLoader.load(tsConfigPath);
+    // check if outdir exists
+    const outDir = TS_CONFIG.options.outDir;
+    if (!existsSync(outDir as string)) {
+      mkdirSync(outDir as string);
+    }
 
-    const extraOptions = {
-      watch,
-      typeCheck: !isTruthy(disableTypeCheck),
-      debug,
-    };
-
-    const swcOptions = defaultSwcOptionsFactory(
-      tsConfig,
-      intentFileConfig,
-      extraOptions
+    const INTENT_CONFIG = await this.configurationLoader.load(
+      INTENT_CONFIG_FILE_NAME,
+      TS_CONFIG,
+      { watch: false, debug, typeCheck: !isTruthy(disableTypeCheck) }
     );
 
-    await this.swcFileTransformer.run(tsConfigPath, swcOptions, extraOptions);
+    const typeChecker = new TypeChecker();
+    await typeChecker.handle(tsConfigPath, INTENT_CONFIG);
+
+    const assetsManager = new AssetsManager();
+    await assetsManager.handle(TS_CONFIG, INTENT_CONFIG);
+
+    const SWC_OPTIONS = defaultSwcOptionsFactory(TS_CONFIG, INTENT_CONFIG);
+    await this.swcFileTransformer.handle(TS_CONFIG, INTENT_CONFIG, SWC_OPTIONS);
   }
 }

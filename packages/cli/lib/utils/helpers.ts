@@ -23,3 +23,7 @@ export const getTime = () => {
 
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
 };
+
+export const isWindows = () => {
+  return process.platform === "win32";
+};

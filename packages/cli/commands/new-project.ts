@@ -1,17 +1,17 @@
 import { join } from "path";
-import { INTENT_LOG_PREFIX } from "../lib/utils/log-helpers";
+import { INTENT_LOG_PREFIX } from "../lib/utils/log-helpers.js";
 import pc from "picocolors";
 import { copyFile, existsSync, remove } from "fs-extra";
 import * as p from "@clack/prompts";
-import { NEW_PROJECT_OPTIONS } from "../lib/configuration/new-project-config";
+import { NEW_PROJECT_OPTIONS } from "../lib/configuration/new-project-config.js";
 import {
   NEW_PROJECT_CONFIG,
   SAFE_DELETE_FILES,
-} from "../lib/new-project/config";
-import { InjectConfigCodegen } from "../lib/codegen/inject-config";
+} from "../lib/new-project/config.js";
+import { InjectConfigCodegen } from "../lib/codegen/inject-config.js";
 import { cwd } from "process";
-import { downloadRepository } from "../lib/new-project/actions/download-helper";
-import { downloadDependenciesUsingNpm } from "../lib/new-project/actions/download-depedencies";
+import { downloadRepository } from "../lib/new-project/actions/download-helper.js";
+import { downloadDependenciesUsingNpm } from "../lib/new-project/actions/download-depedencies.js";
 
 export class NewProjectCommand {
   constructor() {}
@@ -105,9 +105,7 @@ export class NewProjectCommand {
             url + getProjectSettingConfNamespace(`db/${database}`)
           );
 
-          message(
-            `Injecting config for ${pc.yellow(storage)} filesystem`
-          );
+          message(`Injecting config for ${pc.yellow(storage)} filesystem`);
           await injectConfigTask.handle(
             url + getProjectSettingConfNamespace(`storage/${storage}`)
           );
@@ -133,9 +131,7 @@ export class NewProjectCommand {
 
     console.log();
     console.log(`${pc.gray("$")} ${pc.green(`cd ${name}`)}`);
-    console.log(
-      `${pc.gray("$")} ${pc.cyan("node intent dev")}`
-    );
+    console.log(`${pc.gray("$")} ${pc.cyan("node intent dev")}`);
   }
 
   buildPromptOptions(options: Record<string, any>) {
