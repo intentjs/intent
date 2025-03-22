@@ -1,13 +1,13 @@
-import app from './app';
-import auth from './auth';
-import logger from './logger';
-import storage from './storage';
-import localization from './localization';
-import mailer from './mailer';
-import database from './database';
-import cache from './cache';
-import queue from './queue';
-import http from './http';
+import app from './app.js';
+import auth from './auth.js';
+import logger from './logger.js';
+import storage from './storage.js';
+import localization from './localization.js';
+import mailer from './mailer.js';
+import database from './database.js';
+import cache from './cache.js';
+import queue from './queue.js';
+import http from './http.js';
 
 export default [
   http,

@@ -1,5 +1,5 @@
 import { __, Inject, Injectable } from '@intentjs/core';
-import { UserDbRepository } from 'app/repositories/userDbRepository';
+import { UserDbRepository } from '#repositories/userDbRepository';
 
 @Injectable()
 export class UserService {

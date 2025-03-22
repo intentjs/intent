@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| JavaScript entrypoint for running ace commands
+| JavaScript entrypoint for running intent commands
 |--------------------------------------------------------------------------
 |
 | !!! DO NOT MODIFY THIS FILE !!!
@@ -15,9 +15,12 @@
 /**
  *  * Register hook to process TypeScript files using ts-node
  */
-require('ts-node').register();
+import { register } from 'node:module';
+import { pathToFileURL } from 'node:url';
+
+register('ts-node/esm', pathToFileURL('./'), {});
 
 /**
  * Import console commands entrypoint
  */
-require('./bin/console');
+await import('./bin/console.js');

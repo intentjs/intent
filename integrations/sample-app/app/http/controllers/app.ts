@@ -1,14 +1,14 @@
-import { Controller, Get, Req } from '@intentjs/core';
-import { OrderPlacedEvent } from 'app/events/events/sample-event';
-import { UserService } from 'app/services';
+import { Controller, Get, Req, Request, Res, Response } from '@intentjs/core';
+import { OrderPlacedEvent } from '#events/events/sample-event';
+import { UserService } from '#services/index';
 
-@Controller('blogs')
+@Controller('')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Get()
-  async getHello(@Req() req: Request) {
-    return { hello: 'Intent' };
+  async getHello(@Req() req: Request, @Res() res: Response) {
+    return { hello: 'Intent2' };
   }
 
   @Get('hello/')

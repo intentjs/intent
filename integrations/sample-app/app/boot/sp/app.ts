@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
-import { OrderPlacedListener } from 'app/events/listeners/sample-listener';
-import { IntentController } from 'app/http/controllers/icon';
-import { QueueJobs } from 'app/jobs/job';
-import { UserDbRepository } from 'app/repositories/userDbRepository';
-import { UserService } from 'app/services';
-import { AuthService } from 'app/services/auth';
+import { OrderPlacedListener } from '#events/listeners/sample-listener';
+import { QueueJobs } from '#jobs/job';
+import { UserDbRepository } from '#repositories/userDbRepository';
+import { UserService } from '#services/index';
+import { AuthService } from '#services/auth';
 
 export class AppServiceProvider extends ServiceProvider {
   /**

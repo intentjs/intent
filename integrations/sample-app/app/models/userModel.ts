@@ -20,7 +20,7 @@ export class UserModel extends BaseModel {
   /**
    * Columns
    */
-  id?: string;
+  declare id: string;
   firstName: string;
   lastName: string;
   email: string;
