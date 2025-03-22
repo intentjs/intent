@@ -1,26 +1,19 @@
-import { Package } from '../../utils';
-import { NodemailerOptions } from '../interfaces';
-import { BaseProvider, BaseProviderSendOptions } from '../interfaces/provider';
+import { Package } from '../../utils/index.js';
+import { NodemailerOptions } from '../interfaces/options.js';
+import {
+  BaseProvider,
+  BaseProviderSendOptions,
+} from '../interfaces/provider.js';
 
 export class NodemailerProvider implements BaseProvider {
   private client: any;
 
   constructor(private options: NodemailerOptions) {
-    const nodemailer = Package.load('nodemailer');
-    this.client = nodemailer.createTransport({
-      host: options.host,
-      port: options.port,
-      secure: options.port === '465',
-      ignoreTLS: options.ignoreTLS,
-      requireTLS: options.requireTLS,
-      auth: {
-        user: options.username,
-        pass: options.password,
-      },
-    });
+    this.initialiseModules();
   }
 
   async send(payload: BaseProviderSendOptions): Promise<void> {
+    await this.initialiseModules();
     return this.client.sendMail({
       from: payload.from,
       to: payload.to,
@@ -40,5 +33,21 @@ export class NodemailerProvider implements BaseProvider {
 
   getClient<T>(): T {
     return this.client as unknown as T;
+  }
+
+  async initialiseModules(): Promise<void> {
+    if (this.client) return;
+    const nodemailer = await Package.load('nodemailer');
+    this.client = nodemailer.createTransport({
+      host: this.options.host,
+      port: this.options.port,
+      secure: this.options.port === '465',
+      ignoreTLS: this.options.ignoreTLS,
+      requireTLS: this.options.requireTLS,
+      auth: {
+        user: this.options.username,
+        pass: this.options.password,
+      },
+    });
   }
 }

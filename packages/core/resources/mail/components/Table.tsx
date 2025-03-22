@@ -1,5 +1,5 @@
-import * as React from "react";
-import { ComponentProps } from "./interface";
+import * as React from 'react';
+import { ComponentProps } from './interface.js';
 
 export const Table = ({ value }: ComponentProps) => {
   const { header, rows } = value;
@@ -12,10 +12,10 @@ export const Table = ({ value }: ComponentProps) => {
               <th
                 key={index}
                 className={
-                  (index === 0 && "pl-3 pr-3 pt-2 pb-2 rounded-l-md") ||
+                  (index === 0 && 'pl-3 pr-3 pt-2 pb-2 rounded-l-md') ||
                   (index === rows[0].length - 1 &&
-                    "pl-3 pr-3 pt-2 pb-2 rounded-r-md") ||
-                  "pl-3 pr-3 pt-2 pb-2"
+                    'pl-3 pr-3 pt-2 pb-2 rounded-r-md') ||
+                  'pl-3 pr-3 pt-2 pb-2'
                 }
               >
                 {h}

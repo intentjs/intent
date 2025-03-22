@@ -1,6 +1,5 @@
-export * from './guards/base-guard';
-export * from './kernel';
-export * from './middlewares/middleware';
-export * from './middlewares/configurator';
-export * from './server';
-export { MiddlewareNext } from '@intentjs/hyper-express';
+export * from './guards/base-guard.js';
+export * from './kernel.js';
+export * from './middlewares/middleware.js';
+export * from './middlewares/configurator.js';
+export * from './server.js';

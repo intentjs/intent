@@ -1,4 +1,4 @@
-import { GenericFunction } from '../../interfaces';
+import { GenericFunction } from '../../interfaces/index.js';
 
 export interface CacheDriver {
   /**

@@ -6,10 +6,10 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ConfigService } from '../../config/service';
-import { Obj } from '../../utils';
-import { Arr } from '../../utils/array';
-import { isEmpty } from '../../utils/helpers';
+import { ConfigService } from '../../config/service.js';
+import { Obj } from '../../utils/index.js';
+import { Arr } from '../../utils/array.js';
+import { isEmpty } from '../../utils/helpers.js';
 
 @Injectable()
 @ValidatorConstraint({ async: false })

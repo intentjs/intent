@@ -1,12 +1,12 @@
-import { ConfigService } from '../config/service';
-import { Log } from '../logger';
-import { Package } from '../utils';
-import { Type } from '../interfaces';
-import { HttpException } from './http-exception';
-import { ValidationFailed } from './validation-failed';
-import { HttpStatus } from '../rest/http-server/status-codes';
-import { ExecutionContext } from '../rest/http-server/contexts/execution-context';
-import { RouteNotFoundException } from './route-not-found-exception';
+import { ConfigService } from '../config/service.js';
+import { Log } from '../logger/index.js';
+import { Package } from '../utils/index.js';
+import { Type } from '../interfaces/index.js';
+import { HttpException } from './http-exception.js';
+import { ValidationFailed } from './validation-failed.js';
+import { HttpStatus } from '../rest/http-server/status-codes.js';
+import { ExecutionContext } from '../rest/http-server/contexts/execution-context.js';
+import { RouteNotFoundException } from './route-not-found-exception.js';
 
 export abstract class IntentExceptionFilter {
   doNotReport(): Array<Type<HttpException>> {
@@ -20,7 +20,7 @@ export abstract class IntentExceptionFilter {
   async catch(context: ExecutionContext, exception: any): Promise<any> {
     const ctx = context.switchToHttp();
 
-    this.reportToSentry(exception);
+    await this.reportToSentry(exception);
 
     Log().error('', exception);
 
@@ -61,12 +61,12 @@ export abstract class IntentExceptionFilter {
     return res.status(this.getStatus(exception)).json(exception);
   }
 
-  reportToSentry(exception: any): void {
+  async reportToSentry(exception: any): Promise<void> {
     const sentryConfig = ConfigService.get('app.sentry');
     if (!sentryConfig?.dsn) return;
 
     const exceptionConstructor = exception?.constructor;
-    const sentry = Package.load('@sentry/node');
+    const sentry = await Package.load('@sentry/node');
     if (
       exceptionConstructor &&
       !this.doNotReport().includes(exceptionConstructor)

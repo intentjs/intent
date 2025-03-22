@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Heading, Img, Section } from '@react-email/components';
-import { ComponentProps } from './interface';
+import { ComponentProps } from './interface.js';
 
 export const Header = ({ value, className }: ComponentProps) => {
   const { logo, title } = value;

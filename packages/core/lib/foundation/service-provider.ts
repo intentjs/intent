@@ -5,7 +5,7 @@ import {
   OptionalFactoryDependency,
   Provider,
 } from '@nestjs/common';
-import { IntentApplicationContext, Type } from '../interfaces';
+import type { IntentApplicationContext, Type } from '../interfaces/index.js';
 
 export type ImportType =
   | Type<any>

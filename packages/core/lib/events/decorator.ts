@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { GenericClass } from '../interfaces';
-import { IntentEventConstants } from './constants';
+import { GenericClass } from '../interfaces/index.js';
+import { IntentEventConstants } from './constants.js';
 
 export function Event(name?: string) {
   return function (target: GenericClass) {

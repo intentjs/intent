@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { Project } from 'ts-morph';
-import { findProjectRoot } from '../utils';
+import { findProjectRoot } from '../utils/index.js';
 
 export const getClassNamesFromFilePath = (filePath: string): string[] => {
   const project = new Project();

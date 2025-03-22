@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Heading } from "@react-email/components";
-import { ComponentProps } from "./interface";
+import * as React from 'react';
+import { Heading } from '@react-email/components';
+import { ComponentProps } from './interface.js';
 
 export const Greetings = ({ value }: ComponentProps) => {
   return (

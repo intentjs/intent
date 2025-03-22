@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as pc from 'picocolors';
-import { Command, ConsoleIO } from '../../console';
-import { Str } from '../../utils/string';
-import { ObjectionService } from '../service';
+import { Command, ConsoleIO } from '../../console/index.js';
+import { Str } from '../../utils/string.js';
+import { ObjectionService } from '../service.js';
 
 @Injectable()
 export class DbOperationsCommand {

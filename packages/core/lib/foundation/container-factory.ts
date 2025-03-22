@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { IntentApplicationContext, Type } from '../interfaces';
-import { ModuleBuilder } from './module-builder';
-import { IntentAppContainer } from './app-container';
+import type { IntentApplicationContext, Type } from '../interfaces/index.js';
+import { ModuleBuilder } from './module-builder.js';
+import { IntentAppContainer } from './app-container.js';
 
 export class ContainerFactory {
   static async createStandalone(
@@ -19,7 +19,9 @@ export class ContainerFactory {
     /**
      * Build NestJS DI Container
      */
-    const app = await NestFactory.createApplicationContext(module);
+    const app = await NestFactory.createApplicationContext(module, {
+      logger: ['error'],
+    });
 
     /**
      * Run the `boot` method of the main application container

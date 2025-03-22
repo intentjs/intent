@@ -1,4 +1,4 @@
-import { ConfigService } from '../config/service';
+import { ConfigService } from '../config/service.js';
 
 interface NumOptions {
   precision?: number;

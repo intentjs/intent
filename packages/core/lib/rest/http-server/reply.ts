@@ -1,9 +1,9 @@
 import { Request, Response } from '@intentjs/hyper-express';
-import { HttpStatus } from './status-codes';
-import { isClass, isUndefined } from '../../utils/helpers';
-import { StreamableFile } from './streamable-file';
-import { Obj } from '../../utils';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { HttpStatus } from './status-codes.js';
+import { isUndefined } from '../../utils/helpers.js';
+import { StreamableFile } from './streamable-file.js';
+import { Obj } from '../../utils/index.js';
+import { instanceToPlain } from 'class-transformer';
 
 export class Reply {
   async handle(req: Request, res: Response, dataFromHandler: any) {

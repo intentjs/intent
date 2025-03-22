@@ -1,7 +1,7 @@
-import { PollQueueDriver } from './pollQueueDriver';
-import { SubscribeQueueDriver } from './subscribeQueueDriver';
+import { PollQueueDriver } from './pollQueueDriver.js';
+import { SubscribeQueueDriver } from './subscribeQueueDriver.js';
 
-export * from './message';
-export * from './driverJob';
+export * from './message.js';
+export * from './driverJob.js';
 
 export type QueueDrivers = PollQueueDriver | SubscribeQueueDriver;

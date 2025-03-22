@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '../config/service';
-import { ChannelProviderOptions, MailData } from './interfaces';
-import { BaseProvider, BaseProviderSendOptions } from './interfaces/provider';
-import { MAIL_PROVIDER_MAP } from './providers';
-import { InvalidMailProviderException } from './exceptions/invalid-mail-provider';
-import { isEmpty } from '../utils';
+import { ConfigService } from '../config/service.js';
+import { ChannelProviderOptions, MailData } from './interfaces/index.js';
+import {
+  BaseProvider,
+  BaseProviderSendOptions,
+} from './interfaces/provider.js';
+import { MAIL_PROVIDER_MAP } from './providers/index.js';
+import { InvalidMailProviderException } from './exceptions/invalid-mail-provider.js';
+import { isEmpty } from '../utils/helpers.js';
 
 @Injectable()
 export class MailerService {

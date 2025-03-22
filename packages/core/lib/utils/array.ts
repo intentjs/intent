@@ -1,5 +1,5 @@
-import { InvalidValue } from '../exceptions/invalid-value';
-import { Obj } from './object';
+import { InvalidValue } from '../exceptions/invalid-value.js';
+import { Obj } from './object.js';
 
 export class Arr {
   static toObj(

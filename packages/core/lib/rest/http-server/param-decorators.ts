@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
-import { ROUTE_ARGS } from './constants';
-import { ExecutionContext } from './contexts/execution-context';
+import { ROUTE_ARGS } from './constants.js';
+import { ExecutionContext } from './contexts/execution-context.js';
 
 export enum RouteParamtypes {
   REQUEST = 0,

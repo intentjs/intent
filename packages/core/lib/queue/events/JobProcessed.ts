@@ -1,5 +1,5 @@
-import { EmitsEvent, Event } from '../../events';
-import { events } from '../constants';
+import { EmitsEvent, Event } from '../../events/index.js';
+import { events } from '../constants.js';
 
 @Event(events.jobProcessed)
 export class JobProcessed extends EmitsEvent {

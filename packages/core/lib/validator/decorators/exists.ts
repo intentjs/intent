@@ -6,8 +6,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ObjectionService } from '../../database';
-import { isEmpty } from '../../utils/helpers';
+import { isEmpty } from '../../utils/helpers.js';
+import { ObjectionService } from '../../database/service.js';
 
 @Injectable()
 @ValidatorConstraint({ async: true })

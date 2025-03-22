@@ -1,8 +1,8 @@
 import cors, { CorsOptions } from 'cors';
-import { IntentMiddleware, MiddlewareNext } from '../foundation';
-import { ConfigService } from '../../config';
+import { ConfigService } from '../../config/service.js';
 import { Injectable } from '@nestjs/common';
 import { Request, Response } from '@intentjs/hyper-express';
+import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
 
 @Injectable()
 export class CorsMiddleware extends IntentMiddleware {

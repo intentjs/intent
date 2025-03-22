@@ -3,7 +3,7 @@ import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 import { Eta } from 'eta';
 import { Node, Project, SyntaxKind } from 'ts-morph';
-import { findProjectRoot } from '../utils';
+import { findProjectRoot } from '../utils/index.js';
 
 @Injectable()
 export class CodegenService {

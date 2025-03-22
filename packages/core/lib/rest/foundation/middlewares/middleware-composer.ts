@@ -1,8 +1,8 @@
 import { ModuleRef } from '@nestjs/core';
-import { MiddlewareConfigurator } from './configurator';
-import { IntentMiddleware } from './middleware';
-import { ControllerScanner } from '../controller-scanner';
-import { Type } from '../../../interfaces/utils';
+import { MiddlewareConfigurator } from './configurator.js';
+import { IntentMiddleware } from './middleware.js';
+import { ControllerScanner } from '../controller-scanner.js';
+import { Type } from '../../../interfaces/utils.js';
 
 export class MiddlewareComposer {
   private middlewareRoute = new Map<string, IntentMiddleware[]>();

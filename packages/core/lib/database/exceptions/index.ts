@@ -1,2 +1,2 @@
-export * from './connectionNotFound';
-export * from './modelNotFound';
+export * from './connectionNotFound.js';
+export * from './modelNotFound.js';

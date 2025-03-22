@@ -1,11 +1,11 @@
-import { Type } from '../../interfaces';
+import { Type } from '../../interfaces/index.js';
 import {
   CONTROLLER_KEY,
   METHOD_KEY,
   METHOD_PATH,
-} from '../http-server/constants';
-import { HttpRoute } from '../http-server/interfaces';
-import { joinRoute } from '../helpers';
+} from '../http-server/constants.js';
+import { HttpRoute } from '../http-server/interfaces.js';
+import { joinRoute } from '../helpers.js';
 
 export class ControllerScanner {
   handle(cls: Type<any>): HttpRoute[] {

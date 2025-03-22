@@ -1,6 +1,9 @@
-import { Obj } from '../utils';
-import { TransformableContextOptions, TransformerContext } from './interfaces';
-import { Transformer } from './transformer';
+import { Obj } from '../utils/index.js';
+import {
+  TransformableContextOptions,
+  TransformerContext,
+} from './interfaces.js';
+import { Transformer } from './transformer.js';
 
 export class Transformable {
   /**

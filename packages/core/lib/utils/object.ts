@@ -1,5 +1,5 @@
-import { InvalidValue } from '../exceptions/invalid-value';
-import { Arr } from './array';
+import { InvalidValue } from '../exceptions/invalid-value.js';
+import { Arr } from './array.js';
 
 export class Obj {
   static dot(obj: Record<string, any>): Record<string, any> {

@@ -1,5 +1,5 @@
-import { Command, ConsoleIO } from '../console';
-import { getTime, Package } from '../utils';
+import { Command, ConsoleIO } from '../console/index.js';
+import { getTime, Package } from '../utils/index.js';
 import pc from 'picocolors';
 
 @Command(
@@ -18,7 +18,7 @@ export class BuildProjectCommand {
     const config = _cli.option('config');
 
     const now = Date.now();
-    const { BuildCommand } = Package.load('@intentjs/cli');
+    const { BuildCommand } = await Package.load('@intentjs/cli');
     const command = new BuildCommand();
     await command.handle({
       debug,

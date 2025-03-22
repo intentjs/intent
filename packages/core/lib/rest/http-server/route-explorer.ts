@@ -1,28 +1,27 @@
 import { DiscoveryService, MetadataScanner, ModuleRef } from '@nestjs/core';
-import { HttpRoute } from './interfaces';
+import { HttpRoute } from './interfaces.js';
 import {
   Request,
   Response as HResponse,
   MiddlewareNext,
 } from '@intentjs/hyper-express';
-import { HttpExecutionContext } from './contexts/http-execution-context';
-import { HttpRouteHandler } from './http-handler';
-import { Response } from './response';
-import { ExecutionContext } from './contexts/execution-context';
-import { Type } from '../../interfaces';
+import { HttpExecutionContext } from './contexts/http-execution-context.js';
+import { HttpRouteHandler } from './http-handler.js';
+import { ExecutionContext } from './contexts/execution-context.js';
+import { Type } from '../../interfaces/index.js';
 import {
   CONTROLLER_KEY,
   GUARD_KEY,
   METHOD_KEY,
   METHOD_PATH,
   ROUTE_ARGS,
-} from './constants';
-import { RouteArgType } from './param-decorators';
-import { IntentGuard } from '../foundation/guards/base-guard';
-import { IntentMiddleware } from '../foundation/middlewares/middleware';
-import { IntentExceptionFilter } from '../../exceptions/base-exception-handler';
-import { Reply } from './reply';
-import { joinRoute } from '../helpers';
+} from './constants.js';
+import { RouteArgType } from './param-decorators.js';
+import { IntentGuard } from '../foundation/guards/base-guard.js';
+import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
+import { IntentExceptionFilter } from '../../exceptions/base-exception-handler.js';
+import { Reply } from './reply.js';
+import { joinRoute } from '../helpers.js';
 
 export class RouteExplorer {
   globalGuards: Type<IntentGuard>[] = [];

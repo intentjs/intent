@@ -1,6 +1,6 @@
 import { ValidationError } from 'class-validator';
-import { isEmpty } from '../utils/helpers';
-import { Str } from '../utils/string';
+import { isEmpty } from '../utils/helpers.js';
+import { Str } from '../utils/string.js';
 
 export class ValidationErrorSerializer {
   async handle(errors: ValidationError[]): Promise<Record<string, any>> {

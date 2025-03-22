@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InMemoryDriver } from './drivers/inMemory';
-import { RedisDriver } from './drivers/redis';
+import { InMemoryDriver } from './drivers/inMemory.js';
+import { RedisDriver } from './drivers/redis.js';
 import {
   CacheDriver,
   InMemoryDriverOption,
   RedisDriverOption,
-} from './interfaces';
-import { DiceDbDriver } from './drivers/dice-db';
+} from './interfaces/index.js';
+import { DiceDbDriver } from './drivers/dice-db.js';
 
 @Injectable()
 export class CacheService {

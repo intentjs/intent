@@ -1,12 +1,12 @@
 import { DiscoveryService, MetadataScanner } from '@nestjs/core';
-import { CommandMeta, CommandMetaOptions } from './console';
-import { ConsoleConstants } from './console/constants';
-import { EventMetadata } from './events';
-import { IntentEventConstants } from './events/constants';
-import { GenericFunction } from './interfaces';
-import { JOB_NAME, JOB_OPTIONS } from './queue/constants';
-import { QueueMetadata } from './queue/metadata';
-import { Injectable } from './foundation';
+import { CommandMeta, CommandMetaOptions } from './console/index.js';
+import { ConsoleConstants } from './console/constants.js';
+import { EventMetadata } from './events/index.js';
+import { IntentEventConstants } from './events/constants.js';
+import { GenericFunction } from './interfaces/index.js';
+import { JOB_NAME, JOB_OPTIONS } from './queue/constants.js';
+import { QueueMetadata } from './queue/metadata.js';
+import { Injectable } from './foundation/decorators.js';
 
 @Injectable()
 export class IntentExplorer {

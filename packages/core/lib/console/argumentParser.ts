@@ -1,6 +1,6 @@
-import { InternalLogger } from '../utils/logger';
-import { Str } from '../utils/string';
-import { ArgumentOptionObject, ArgumentParserOutput } from './interfaces';
+import { InternalLogger } from '../utils/logger.js';
+import { Str } from '../utils/string.js';
+import { ArgumentOptionObject, ArgumentParserOutput } from './interfaces.js';
 
 export class ArgumentParser {
   constructor(private exp: string) {}

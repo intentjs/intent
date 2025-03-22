@@ -1,9 +1,9 @@
 import { join } from 'path';
-import { Command, CommandRunner, ConsoleIO } from '../console';
-import { Str } from '../utils/string';
-import { CodegenService } from './service';
-import { getClassNamesFromFilePath } from './utils';
-import { Injectable } from '../foundation/decorators';
+import { Command, CommandRunner, ConsoleIO } from '../console/index.js';
+import { Str } from '../utils/string.js';
+import { CodegenService } from './service.js';
+import { getClassNamesFromFilePath } from './utils.js';
+import { Injectable } from '../foundation/decorators.js';
 
 @Injectable()
 export class CodegenCommand {

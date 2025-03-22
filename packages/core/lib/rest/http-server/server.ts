@@ -1,15 +1,15 @@
 import HyperExpress, { MiddlewareHandler } from '@intentjs/hyper-express';
-import { HttpMethods, HttpRoute } from './interfaces';
-import { IntentMiddleware } from '../foundation/middlewares/middleware';
-import { Validator } from '../../validator';
-import { ConfigService } from '../../config';
+import { HttpMethods, HttpRoute } from './interfaces.js';
+import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
+import { Validator } from '../../validator/index.js';
+import { ConfigService } from '../../config/service.js';
 import LiveDirectory from 'live-directory';
-import { FileNotFoundException } from '../../exceptions/file-not-found-exception';
-import { Str } from '../../utils';
-import { joinRoute } from '../helpers';
+import { FileNotFoundException } from '../../exceptions/file-not-found-exception.js';
+import { Str } from '../../utils/index.js';
+import { joinRoute } from '../helpers.js';
 import { PassThrough } from 'node:stream';
-import { HttpException } from '../../exceptions';
-import { HttpStatus } from './status-codes';
+import { HttpException } from '../../exceptions/index.js';
+import { HttpStatus } from './status-codes.js';
 
 export class HyperServer {
   protected hyper: HyperExpress.Server;

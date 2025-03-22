@@ -1,4 +1,4 @@
-import { Str } from '../../utils/string';
+import { Str } from '../../utils/string.js';
 
 export class ErrorSendingMail extends Error {
   constructor(message: string | Record<string, any>) {

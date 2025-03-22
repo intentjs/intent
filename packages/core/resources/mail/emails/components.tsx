@@ -1,68 +1,68 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Image } from "../components/Image";
-import { Greetings } from "../components/Greetings";
-import { ActionButton } from "../components/button";
-import { Regards } from "../components/Regards";
-import { Table } from "../components/Table";
-import { InjectMarkdown } from "../components/InjectMarkdown";
-import { InjectReactComponent } from "../components/InjectReactComponent";
-import { CodeSnippets } from "../components/codeBlock";
-import { CText } from "../components/CText";
-import { CLink } from "../components/CLink";
-import { HrLine } from "../components/HrLine";
-import { ICodeInline } from "../components/codeInline";
+import { Image } from '../components/Image.js';
+import { Greetings } from '../components/Greetings.js';
+import { ActionButton } from '../components/button.js';
+import { Regards } from '../components/Regards.js';
+import { Table } from '../components/Table.js';
+import { InjectMarkdown } from '../components/InjectMarkdown.js';
+import { InjectReactComponent } from '../components/InjectReactComponent.js';
+import { CodeSnippets } from '../components/codeBlock.js';
+import { CText } from '../components/CText.js';
+import { CLink } from '../components/CLink.js';
+import { HrLine } from '../components/HrLine.js';
+import { ICodeInline } from '../components/codeInline.js';
 
 export const ComponentBuilder = ({
   type,
   value,
   ...props
 }: Record<string, any>) => {
-  if (type === "button") {
+  if (type === 'button') {
     return <ActionButton value={value} className={props.className} />;
   }
 
-  if (type === "code") {
+  if (type === 'code') {
     return <CodeSnippets value={value} className={props.className} />;
   }
 
-  if (type === "greeting") {
+  if (type === 'greeting') {
     return <Greetings value={value} {...props} />;
   }
 
-  if (type === "image") {
+  if (type === 'image') {
     return <Image value={value} {...props} />;
   }
 
-  if (type === "line") {
+  if (type === 'line') {
     return <HrLine value={value} {...props} />;
   }
 
-  if (type === "link") {
+  if (type === 'link') {
     return <CLink value={value} className={props.className} />;
   }
 
-  if (type === "markdown") {
+  if (type === 'markdown') {
     return <InjectMarkdown value={value} className={props.className} />;
   }
 
-  if (type === "component") {
+  if (type === 'component') {
     return <InjectReactComponent {...props} />;
   }
 
-  if (type === "regard") {
+  if (type === 'regard') {
     return <Regards value={value} {...props} />;
   }
 
-  if (type === "table") {
+  if (type === 'table') {
     return <Table value={value} {...props} />;
   }
 
-  if (type === "text") {
+  if (type === 'text') {
     return <CText value={value} className={props.className} />;
   }
 
-  if (type === "code-inline") {
+  if (type === 'code-inline') {
     return <ICodeInline value={value} />;
   }
 };

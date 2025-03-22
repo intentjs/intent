@@ -1,10 +1,10 @@
 import { ulid } from 'ulid';
-import { Package } from '../../utils';
-import { validateOptions } from '../../utils/helpers';
-import { RedisJob } from '../interfaces/job';
-import { RedisQueueOptionsDto } from '../schema';
-import { InternalMessage } from '../strategy';
-import { PollQueueDriver } from '../strategy/pollQueueDriver';
+import { Package } from '../../utils/index.js';
+import { validateOptions } from '../../utils/helpers.js';
+import { RedisJob } from '../interfaces/job.js';
+import { RedisQueueOptionsDto } from '../schema/index.js';
+import { InternalMessage } from '../strategy/index.js';
+import { PollQueueDriver } from '../strategy/pollQueueDriver.js';
 
 const FIND_DELAYED_JOB = `
 local source_key = KEYS[1]
@@ -35,18 +35,13 @@ return processed
 export class RedisQueueDriver implements PollQueueDriver {
   private client: any;
   private queuePrefix: string;
-
+  private IORedis: any;
   constructor(private options: Record<string, any>) {
     validateOptions(this.options, RedisQueueOptionsDto, {
       cls: 'RedisQueueDriver',
     });
     this.queuePrefix = this.options.prefix || 'intent_queue';
-    const Redis = Package.load('ioredis');
-    this.client = new Redis(options);
-    this.client.defineCommand('findDelayedJob', {
-      numberOfKeys: 2,
-      lua: FIND_DELAYED_JOB,
-    });
+    this.initializeModules();
   }
 
   async init(): Promise<void> {}
@@ -85,6 +80,7 @@ export class RedisQueueDriver implements PollQueueDriver {
     message: string,
     rawPayload: InternalMessage,
   ): Promise<void> {
+    await this.initializeModules();
     await this.client.zadd(
       this.getDelayedQueue(`${rawPayload.queue}`),
       rawPayload.delay,
@@ -112,5 +108,16 @@ export class RedisQueueDriver implements PollQueueDriver {
 
   getQueue(queue: string): string {
     return `${this.queuePrefix}::${queue}`;
+  }
+
+  async initializeModules(): Promise<void> {
+    if (this.IORedis && this.client) return Promise.resolve();
+    const { Redis } = await Package.load('ioredis');
+    this.IORedis = Redis;
+    this.client = new this.IORedis(this.options);
+    this.client.defineCommand('findDelayedJob', {
+      numberOfKeys: 2,
+      lua: FIND_DELAYED_JOB,
+    });
   }
 }

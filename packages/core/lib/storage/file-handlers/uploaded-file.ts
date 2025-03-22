@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs-extra';
-import { Str } from '../../utils';
+import { Str } from '../../utils/index.js';
 
 export class UploadedFile {
   constructor(

@@ -1,1 +1,1 @@
-export * from './payloadBuilder';
+export * from './payloadBuilder.js';

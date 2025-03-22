@@ -1,5 +1,5 @@
-import * as React from "react";
-import { ComponentProps } from "./interface";
+import * as React from 'react';
+import { ComponentProps } from './interface.js';
 
 export const ICodeInline = ({ value }: ComponentProps) => {
   return (

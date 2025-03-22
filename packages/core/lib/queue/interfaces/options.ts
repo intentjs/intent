@@ -1,5 +1,5 @@
 import { Type } from '@nestjs/common';
-import { QueueDrivers } from '../strategy';
+import { QueueDrivers } from '../strategy/index.js';
 
 export interface QueueDriverOptions {
   listenerType: 'poll' | 'subscribe';

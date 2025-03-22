@@ -1,7 +1,7 @@
 import ms from 'ms';
 import { ulid } from 'ulid';
-import { QueueMetadata } from '../metadata';
-import { Message, JobOptions, InternalMessage } from '../strategy';
+import { QueueMetadata } from '../metadata.js';
+import { Message, JobOptions, InternalMessage } from '../strategy/index.js';
 
 type Complete<T> = {
   [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>>

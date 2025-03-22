@@ -1,5 +1,5 @@
-import { MailMessage } from './message';
-import { MailerService } from './service';
+import { MailMessage } from './message.js';
+import { MailerService } from './service.js';
 
 export class Mail {
   private receipents: string | string[];

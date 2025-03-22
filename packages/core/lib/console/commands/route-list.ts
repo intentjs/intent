@@ -1,7 +1,7 @@
 import { DiscoveryService, MetadataScanner, ModuleRef } from '@nestjs/core';
-import { Command } from '../decorators';
-import { columnify } from '../../utils/columnify';
-import { RouteExplorer } from '../../rest';
+import { Command } from '../decorators.js';
+import { columnify } from '../../utils/columnify.js';
+import { RouteExplorer } from '../../rest/index.js';
 
 @Command('routes:list')
 export class ListRouteCommand {

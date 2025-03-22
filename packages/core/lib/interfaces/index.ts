@@ -1,3 +1,3 @@
-export * from './config';
-export * from './utils';
-export * from './transformer';
+export * from './config.js';
+export * from './utils.js';
+export * from './transformer.js';

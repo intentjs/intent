@@ -1,23 +1,27 @@
 import { DiscoveryModule } from '@nestjs/core';
-import { CacheService } from './cache';
-import { ViewConfigCommand } from './config/command';
-import { ListCommands } from './console';
-import { ObjectionService } from './database';
-import { DbOperationsCommand } from './database/commands/migrations';
-import { EventQueueWorker } from './events/jobListener';
-import { IntentExplorer } from './explorer';
-import { ServiceProvider } from './foundation';
-import { Type } from './interfaces';
-import { LocalizationService } from './localization';
-import { LoggerService } from './logger';
-import { MailerService } from './mailer';
-import { QueueService } from './queue';
-import { QueueConsoleCommands } from './queue/console';
-import { QueueMetadata } from './queue/metadata';
-import { StorageService } from './storage/service';
-import { BuildProjectCommand } from './dev-server/build';
-import { DevServerCommand } from './dev-server/serve';
-import { CONFIG_FACTORY, ConfigBuilder, ConfigService } from './config';
+import { CacheService } from './cache/service.js';
+import { ViewConfigCommand } from './config/command.js';
+import { ListCommands } from './console/index.js';
+import { ObjectionService } from './database/service.js';
+import { DbOperationsCommand } from './database/commands/migrations.js';
+import { EventQueueWorker } from './events/jobListener.js';
+import { IntentExplorer } from './explorer.js';
+import { ServiceProvider } from './foundation/service-provider.js';
+import { Type } from './interfaces/index.js';
+import { LocalizationService } from './localization/service.js';
+import { LoggerService } from './logger/service.js';
+import { MailerService } from './mailer/service.js';
+import { QueueService } from './queue/service.js';
+import { QueueConsoleCommands } from './queue/console/commands.js';
+import { QueueMetadata } from './queue/metadata.js';
+import { StorageService } from './storage/service.js';
+import { BuildProjectCommand } from './dev-server/build.js';
+import { DevServerCommand } from './dev-server/serve.js';
+import {
+  CONFIG_FACTORY,
+  ConfigBuilder,
+  ConfigService,
+} from './config/index.js';
 
 export const IntentProvidersFactory = (
   config: any[],

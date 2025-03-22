@@ -1,7 +1,7 @@
 import { Model } from 'objection';
-import { LoadRelOptions, LoadRelSchema } from './interfaces';
-import { CustomQueryBuilder } from './queryBuilders/custom';
-import { SoftDeleteQueryBuilder } from './queryBuilders/softDelete';
+import { LoadRelOptions, LoadRelSchema } from './interfaces.js';
+import { CustomQueryBuilder } from './queryBuilders/custom.js';
+import { SoftDeleteQueryBuilder } from './queryBuilders/softDelete.js';
 
 export class BaseModel extends Model {
   readonly id?: number | string;
@@ -17,7 +17,9 @@ export class BaseModel extends Model {
    */
   static softDelete = false;
 
-  QueryBuilderType!: CustomQueryBuilder<this> | SoftDeleteQueryBuilder<this>;
+  declare QueryBuilderType:
+    | CustomQueryBuilder<this>
+    | SoftDeleteQueryBuilder<this>;
 
   static get QueryBuilder() {
     if (this.softDelete) return SoftDeleteQueryBuilder;

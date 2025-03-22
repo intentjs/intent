@@ -1,4 +1,4 @@
-import { JobOptions } from '../queue/strategy';
+import { JobOptions } from '../queue/strategy/index.js';
 
 export interface QueueableEvent {
   /**
