@@ -7,13 +7,13 @@ import {
   MiddlewareConfigurator,
   Type,
 } from '@intentjs/core';
-import { UserController } from './controllers/app';
-import { AuthController } from './controllers/auth';
-import { SampleMiddleware } from './middlewares/sample';
-import { IntentController } from './controllers/icon';
-import { GlobalMiddleware } from './middlewares/global';
+import { UserController } from '#http/controllers/app';
+import { AuthController } from '#http/controllers/auth';
+import { SampleMiddleware } from '#http/middlewares/sample';
+import { IntentController } from '#http/controllers/icon';
+import { GlobalMiddleware } from '#http/middlewares/global';
 import { Server } from '@intentjs/hyper-express';
-import { GlobalGuard } from './guards/global';
+import { GlobalGuard } from '#http/guards/global';
 
 export class HttpKernel extends Kernel {
   /**

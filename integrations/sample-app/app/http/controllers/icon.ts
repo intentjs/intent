@@ -18,13 +18,11 @@ import {
   StreamableFile,
   UseGuards,
   UserAgent,
-  Validate,
 } from '@intentjs/core';
-import { CustomGuard } from '../guards/custom';
-import { Request, UploadedFile } from '@intentjs/hyper-express';
+import { CustomGuard } from '#http/guards/custom';
 import { createReadStream } from 'fs';
 import { join } from 'path';
-import { LoginDto } from 'app/validators/auth';
+import { LoginDto } from '#validators/auth';
 
 @Controller('/icon')
 @UseGuards(CustomGuard)
@@ -109,7 +107,7 @@ export class IntentController {
     @BufferBody() bufferBody: Promise<Buffer>,
     @UserAgent() userAgent: string,
     @Header() headers: Record<string, any>,
-    @File('file') file: UploadedFile,
+    // @File('file') file: UploadedFile,
     @Res() res: Response,
   ) {
     // console.log(

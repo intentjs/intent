@@ -9,9 +9,9 @@ import {
   Unauthorized,
   ValidationFailed,
 } from '@intentjs/core';
-import { UserModel } from 'app/models/userModel';
-import { UserDbRepository } from 'app/repositories/userDbRepository';
-import { generateOtp } from 'app/utils';
+import { UserModel } from '#models/userModel';
+import { UserDbRepository } from '#repositories/userDbRepository';
+import { generateOtp } from '#utils/index';
 import {
   ChangePasswordUsingTokenDto,
   LoginDto,
@@ -19,11 +19,13 @@ import {
   RequestPasswordChangeOtpDto,
   VerifyEmailDto,
   VerifyOtpForChangePasswordDto,
-} from 'app/validators/auth';
+} from '#validators/auth';
 import { compareSync, hashSync } from 'bcrypt';
-import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { ulid } from 'ulid';
+import JWT from 'jsonwebtoken';
+import type { JwtPayload } from 'jsonwebtoken';
 
+const { sign, verify } = JWT;
 @Injectable()
 export class AuthService {
   constructor(

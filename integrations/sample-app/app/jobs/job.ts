@@ -4,7 +4,7 @@ import { Injectable, Job } from '@intentjs/core';
 export class QueueJobs {
   @Job('db_job')
   async handleDbJob(data: Record<string, any>) {
-    console.log(data);
+    console.log('db job ===> ', data);
   }
 
   @Job('redis_job', { connection: 'redis' })

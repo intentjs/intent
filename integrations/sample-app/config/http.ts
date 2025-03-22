@@ -18,7 +18,7 @@ export default configNamespace(
 
     staticServe: {
       httpPath: 'assets',
-      filePath: join(findProjectRoot(), 'storage/uploads'),
+      filePath: join(findProjectRoot(), 'public'),
       keep: {
         extensions: ['css', 'js', 'json', 'png', 'jpg', 'jpeg'],
       },

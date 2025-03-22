@@ -1,10 +1,14 @@
-import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
-import { TestCacheConsoleCommand } from 'app/console/cache';
-import { GreetingCommand } from 'app/console/greeting';
-import { TestLogConsoleCommand } from 'app/console/log';
-import { TestMailConsoleCommand } from 'app/console/mailer';
-import { TestQueueConsoleCommand } from 'app/console/queue';
-import { TestStorageConsoleCommand } from 'app/console/storage';
+import {
+  Dispatch,
+  IntentApplicationContext,
+  ServiceProvider,
+} from '@intentjs/core';
+import { TestCacheConsoleCommand } from '#console/cache';
+import { GreetingCommand } from '#console/greeting';
+import { TestLogConsoleCommand } from '#console/log';
+import { TestMailConsoleCommand } from '#console/mailer';
+import { TestQueueConsoleCommand } from '#console/queue';
+import { TestStorageConsoleCommand } from '#console/storage';
 
 export class ConsoleServiceProvider extends ServiceProvider {
   /**
@@ -23,5 +27,13 @@ export class ConsoleServiceProvider extends ServiceProvider {
    *
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  boot(app: IntentApplicationContext) {}
+  boot(app: IntentApplicationContext) {
+    let i = 0;
+    setInterval(async () => {
+      await Dispatch({
+        job: 'redis_job',
+        data: { count: i++ },
+      });
+    }, 1000);
+  }
 }

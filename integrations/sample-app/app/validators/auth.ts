@@ -18,15 +18,6 @@ export class RegisterDto extends LoginDto {
 
   @IsString()
   lastName: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(6)
-  password: string;
 }
 
 export class VerifyEmailDto {

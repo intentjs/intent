@@ -25,7 +25,9 @@
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
+    "@types/react": "^19.0.10",
     "husky": "^9.1.6",
-    "lerna": "^8.1.8"
+    "lerna": "^8.1.8",
+    "picomatch": "^4.0.2"
   }
 }
