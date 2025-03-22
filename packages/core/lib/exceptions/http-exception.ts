@@ -1,6 +1,6 @@
-import { HttpStatus } from '../rest/http-server/status-codes';
-import { Obj } from '../utils/object';
-import { Str } from '../utils/string';
+import { HttpStatus } from '../rest/http-server/status-codes.js';
+import { Obj } from '../utils/object.js';
+import { Str } from '../utils/string.js';
 
 export interface HttpExceptionOptions {
   cause?: string;

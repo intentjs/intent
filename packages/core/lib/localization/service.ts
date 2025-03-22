@@ -1,11 +1,13 @@
 import { join } from 'path';
 import { Injectable } from '@nestjs/common';
-import { readdirSync, readFileSync } from 'fs-extra';
-import { ConfigService } from '../config/service';
-import { Obj } from '../utils';
-import { Num } from '../utils/number';
-import { Str } from '../utils/string';
-import { LocalizationOptions } from './interfaces';
+import fsExtra from 'fs-extra';
+import { ConfigService } from '../config/service.js';
+import { Obj } from '../utils/object.js';
+import { Num } from '../utils/number.js';
+import { Str } from '../utils/string.js';
+import { LocalizationOptions } from './interfaces/index.js';
+
+const { readdirSync, readFileSync } = fsExtra;
 
 @Injectable()
 export class LocalizationService {

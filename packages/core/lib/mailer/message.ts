@@ -1,15 +1,15 @@
 // eslint-disable-next-line import/no-named-as-default
-import IntentMailComponent from '../../resources/mail/emails';
-import { ConfigService } from '../config/service';
-import { GENERIC_MAIL, RAW_MAIL, VIEW_BASED_MAIL } from './constants';
+import { ConfigService } from '../config/service.js';
+import { GENERIC_MAIL, RAW_MAIL, VIEW_BASED_MAIL } from './constants.js';
 import {
   MailData,
   MailMessageMetaPayload,
   MailType,
   MailMessagePayload,
-} from './interfaces';
-import { AttachmentOptions } from './interfaces/provider';
-import { Package } from '../utils';
+} from './interfaces/index.js';
+import { AttachmentOptions } from './interfaces/provider.js';
+import { Package } from '../utils/index.js';
+import IntentMailComponent from '../../resources/mail/emails/index.js';
 
 export class MailMessage {
   private mailSubject?: string;
@@ -204,7 +204,7 @@ export class MailMessage {
 
     if (this.mailType === GENERIC_MAIL) {
       const templateConfig = ConfigService.get('mailers.template');
-      const { render } = Package.load('@react-email/render');
+      const { render } = await Package.load('@react-email/render');
       const html = await render(
         IntentMailComponent({
           header: { value: { title: templateConfig.appName } },
@@ -225,7 +225,7 @@ export class MailMessage {
 
     if (this.mailType === VIEW_BASED_MAIL && this.viewFile) {
       const component = this.viewFile;
-      const { render } = Package.load('@react-email/render');
+      const { render } = await Package.load('@react-email/render');
       const html = await render(component(this.payload));
 
       this.compiledHtml = html;

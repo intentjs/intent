@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Hr, Img, Section, Text } from "@react-email/components";
-import { ComponentProps } from "./interface";
+import * as React from 'react';
+import { Hr, Img, Section, Text } from '@react-email/components';
+import { ComponentProps } from './interface.js';
 
 export const BrandFooter = ({ value }: ComponentProps) => {
   const { logo, title } = value;
@@ -17,7 +17,7 @@ export const BrandFooter = ({ value }: ComponentProps) => {
         </div>
         <div className="flex flex-row justify-end gap-4">
           <Img
-            src={"https://avatars.githubusercontent.com/u/159687000?s=200&v=4"}
+            src={'https://avatars.githubusercontent.com/u/159687000?s=200&v=4'}
             alt="discord"
             width={22}
             height={22}

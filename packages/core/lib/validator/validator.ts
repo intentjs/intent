@@ -1,9 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 import { ValidationError, validate } from 'class-validator';
-import { ConfigService } from '../config/service';
-import { ValidationFailed } from '../exceptions/validation-failed';
-import { Obj } from '../utils';
-import { Type } from '../interfaces/utils';
+import { ConfigService } from '../config/service.js';
+import { ValidationFailed } from '../exceptions/validation-failed.js';
+import { Type } from '../interfaces/utils.js';
 
 export class Validator<T> {
   private meta: Record<string, any>;

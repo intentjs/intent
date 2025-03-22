@@ -1,3 +1,4 @@
-export * from './valueIn';
-export * from './isValueFromConfig';
-export * from './isEqualToProp';
+export * from './isEqualToProp.js';
+export * from './isValueFromConfig.js';
+export * from './valueIn.js';
+export * from './exists.js';

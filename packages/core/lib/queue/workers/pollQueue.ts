@@ -1,20 +1,20 @@
-import { EmitsEvent } from '../../events';
-import { Obj } from '../../utils';
-import { logTime } from '../../utils/helpers';
-import { JobStatusEnum } from '../constants';
-import { JobFailed, JobProcessed, JobProcessing } from '../events';
-import { JobMaxRetriesExceeed } from '../events/jobMaxRetries';
-import { ListenerOptions } from '../interfaces';
-import { JobRunner } from '../jobRunners/base';
-import { QueueMetadata } from '../metadata';
-import { Dispatch } from '../queue';
-import { QueueService } from '../service';
-import { DriverJob, InternalMessage } from '../strategy';
-import { PollQueueDriver } from '../strategy/pollQueueDriver';
-import { BaseQueueWorker } from './baseWorker';
+import { EmitsEvent } from '../../events/index.js';
+import { Obj } from '../../utils/index.js';
+import { logTime } from '../../utils/helpers.js';
+import { JobStatusEnum } from '../constants.js';
+import { JobFailed, JobProcessed, JobProcessing } from '../events/index.js';
+import { JobMaxRetriesExceeed } from '../events/jobMaxRetries.js';
+import { ListenerOptions } from '../interfaces/index.js';
+import { JobRunner } from '../jobRunners/base.js';
+import { QueueMetadata } from '../metadata.js';
+import { Dispatch } from '../queue.js';
+import { QueueService } from '../service.js';
+import { DriverJob, InternalMessage } from '../strategy/index.js';
+import { PollQueueDriver } from '../strategy/pollQueueDriver.js';
+import { BaseQueueWorker } from './baseWorker.js';
 
 export class PollQueueWorker extends BaseQueueWorker {
-  protected options: ListenerOptions;
+  declare protected options: ListenerOptions;
   protected jobInProgress: boolean;
   protected killSigReceived: boolean;
 

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { Arr } from '../../utils/array';
+import { Arr } from '../../utils/array.js';
 
 export const genKeyFromObj = (
   obj: Record<string, any>,

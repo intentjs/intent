@@ -1,6 +1,6 @@
-import { GenericFunction } from '../interfaces';
-import { ArgumentParser } from './argumentParser';
-import { CommandObject, CommandMetaOptions } from './interfaces';
+import { GenericFunction } from '../interfaces/index.js';
+import { ArgumentParser } from './argumentParser.js';
+import { CommandObject, CommandMetaOptions } from './interfaces.js';
 
 export class CommandMeta {
   private static commands: Record<string, CommandObject> = {};

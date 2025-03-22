@@ -2,13 +2,13 @@ import {
   Response as HResponse,
   Request as HRequest,
 } from '@intentjs/hyper-express';
-import { StreamableFile } from './streamable-file';
-import { HttpStatus } from './status-codes';
+import { StreamableFile } from './streamable-file.js';
+import { HttpStatus } from './status-codes.js';
 import {
   EXTENSTION_TO_MIME,
   SupportedExtentions,
-} from '../../utils/extension-to-mime';
-import { isUndefined, Obj } from '../../utils';
+} from '../../utils/extension-to-mime.js';
+import { isUndefined, Obj } from '../../utils/index.js';
 
 export class Response {
   private statusCode: HttpStatus;

@@ -1,6 +1,6 @@
-import { Transformer$IncludeMethodOptions } from '../interfaces';
-import { ExpParser } from '../utils/expParser';
-import { TransformerContext } from './interfaces';
+import { Transformer$IncludeMethodOptions } from '../interfaces/index.js';
+import { ExpParser } from '../utils/index.js';
+import { TransformerContext } from './interfaces.js';
 
 export abstract class Transformer {
   public availableIncludes = [];

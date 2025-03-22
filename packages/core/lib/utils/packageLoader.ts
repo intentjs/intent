@@ -1,10 +1,10 @@
 import * as pc from 'picocolors';
-import { InternalLogger } from './logger';
+import { InternalLogger } from './logger.js';
 
 export class Package {
-  static load(pkgName: string): any {
+  static async load(pkgName: string): Promise<any> {
     try {
-      return require(pkgName);
+      return import(pkgName);
     } catch (e) {
       InternalLogger.error(
         'PackageLoader',

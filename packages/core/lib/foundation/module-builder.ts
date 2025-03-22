@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { Kernel } from '../rest/foundation/kernel';
-import { IntentAppContainer } from './app-container';
+import { Kernel } from '../rest/foundation/kernel.js';
+import { IntentAppContainer } from './app-container.js';
 
 export class ModuleBuilder {
   static build(container: IntentAppContainer, kernel?: Kernel) {

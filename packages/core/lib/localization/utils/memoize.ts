@@ -1,4 +1,4 @@
-import { GenericFunction } from '../../interfaces';
+import { GenericFunction } from '../../interfaces/utils.js';
 
 /**
  * Creates a function that memoizes the result of `func`. If `resolver` is

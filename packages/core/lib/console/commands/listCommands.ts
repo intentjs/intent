@@ -1,12 +1,12 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Injectable } from '@nestjs/common';
-import * as pc from 'picocolors';
-import { columnify } from '../../utils/columnify';
-import { Str } from '../../utils/string';
-import { Command } from '../decorators';
-import { CommandMeta } from '../metadata';
-import { findProjectRoot } from '../../utils';
+import pc from 'picocolors';
+import { columnify } from '../../utils/columnify.js';
+import { Str } from '../../utils/string.js';
+import { Command } from '../decorators.js';
+import { CommandMeta } from '../metadata.js';
+import { findProjectRoot } from '../../utils/index.js';
 
 @Injectable()
 @Command('list', { desc: 'Command to list all the commands' })

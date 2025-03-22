@@ -1,4 +1,4 @@
-import { DriverJob } from '../strategy';
+import { DriverJob } from '../strategy/index.js';
 
 export class RedisJob extends DriverJob {
   public getId(): string {

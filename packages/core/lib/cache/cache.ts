@@ -1,7 +1,7 @@
-import { ConfigService } from '../config';
-import { CacheDriver } from './interfaces';
-import { CacheService } from './service';
-import { genKeyFromObj } from './utils/genKey';
+import { ConfigService } from '../config/service.js';
+import { CacheDriver } from './interfaces/index.js';
+import { CacheService } from './service.js';
+import { genKeyFromObj } from './utils/genKey.js';
 
 export class Cache {
   static store = CacheStore;

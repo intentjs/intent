@@ -1,4 +1,4 @@
-import { LoggerService } from './service';
+import { LoggerService } from './service.js';
 
 export const Log = (name?: string) => {
   return LoggerService.logger(name);

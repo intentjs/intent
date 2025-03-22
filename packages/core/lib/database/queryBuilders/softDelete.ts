@@ -4,7 +4,7 @@ import {
   PartialModelObject,
   QueryBuilder,
 } from 'objection';
-import { CustomQueryBuilder } from './custom';
+import { CustomQueryBuilder } from './custom.js';
 
 export class SoftDeleteQueryBuilder<
   M extends Model,

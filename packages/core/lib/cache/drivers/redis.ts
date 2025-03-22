@@ -1,23 +1,27 @@
-import { GenericFunction } from '../../interfaces';
-import { Package } from '../../utils';
-import { CacheDriver, RedisDriverOption } from '../interfaces';
+import { GenericFunction } from '../../interfaces/index.js';
+import { Package } from '../../utils/packageLoader.js';
+import { CacheDriver, RedisDriverOption } from '../interfaces/index.js';
 
 export class RedisDriver implements CacheDriver {
   private client: any;
+  private IORedis: any;
 
   constructor(private options: RedisDriverOption) {
-    const IORedis = Package.load('ioredis');
-    if (options.url) {
-      this.client = new IORedis(options.url, { db: options.database || 0 });
-    } else {
-      this.client = new IORedis({
-        host: options.host,
-        port: options.port,
-        username: options.username,
-        password: options.password,
-        db: options.database,
-      });
-    }
+    this.initializeModules().then(() => {
+      if (options.url) {
+        this.client = new this.IORedis(options.url, {
+          db: options.database || 0,
+        });
+      } else {
+        this.client = new this.IORedis({
+          host: options.host,
+          port: options.port,
+          username: options.username,
+          password: options.password,
+          db: options.database,
+        });
+      }
+    });
   }
 
   async get(key: string): Promise<any> {
@@ -87,5 +91,10 @@ export class RedisDriver implements CacheDriver {
 
   getClient<T>(): T {
     return this.client as unknown as T;
+  }
+
+  async initializeModules(): Promise<void> {
+    const { Redis } = await Package.load('ioredis');
+    this.IORedis = Redis;
   }
 }

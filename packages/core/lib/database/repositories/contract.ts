@@ -1,6 +1,6 @@
 import { Knex as KnexType } from 'knex';
-import { BaseModel } from '../baseModel';
-import { ModelKeys } from '../interfaces';
+import { BaseModel } from '../baseModel.js';
+import { ModelKeys } from '../interfaces.js';
 
 export interface RepositoryContract<T extends BaseModel> {
   model: any;

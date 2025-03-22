@@ -1,5 +1,5 @@
-import { isEmpty } from '../utils/helpers';
-import { EventMetadata } from './metadata';
+import { isEmpty } from '../utils/helpers.js';
+import { EventMetadata } from './metadata.js';
 
 export class EventListenerRunner {
   async handle(eventName: string, eventData: any): Promise<void> {

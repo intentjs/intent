@@ -1,24 +1,23 @@
-import { Storage } from '../../storage';
-import { Package } from '../../utils';
-import { isEmpty } from '../../utils/helpers';
-import { Str } from '../../utils/string';
-import { MailgunOptions } from '../interfaces';
-import { BaseProvider, BaseProviderSendOptions } from '../interfaces/provider';
+import { Storage } from '../../storage/index.js';
+import { Package } from '../../utils/index.js';
+import { isEmpty } from '../../utils/helpers.js';
+import { Str } from '../../utils/string.js';
+import { MailgunOptions } from '../interfaces/options.js';
+import {
+  BaseProvider,
+  BaseProviderSendOptions,
+} from '../interfaces/provider.js';
 
 export class MailgunProvider implements BaseProvider {
   protected client: any;
 
   constructor(private options: MailgunOptions) {
-    const formData = Package.load('form-data');
-    const Mailgun = Package.load('mailgun.js');
-    const mailgun = new Mailgun(formData);
-    this.client = mailgun.client({
-      username: this.options.username,
-      key: this.options.key,
-    });
+    this.initialiseModules();
   }
 
   async send(payload: BaseProviderSendOptions): Promise<void> {
+    await this.initialiseModules();
+
     const { attachments } = payload;
     if (!isEmpty(attachments)) {
       for (const attachment of attachments) {
@@ -49,5 +48,15 @@ export class MailgunProvider implements BaseProvider {
 
   getClient<T>(): T {
     return this.client as unknown as T;
+  }
+
+  async initialiseModules(): Promise<void> {
+    if (this.client) return;
+    const formData = await Package.load('form-data');
+    const Mailgun = await Package.load('mailgun.js');
+    this.client = new Mailgun(formData).client({
+      username: this.options.username,
+      key: this.options.key,
+    });
   }
 }

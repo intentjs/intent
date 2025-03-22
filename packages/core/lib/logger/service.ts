@@ -1,9 +1,9 @@
 import { join } from 'path';
 import { Injectable } from '@nestjs/common';
 import * as winston from 'winston';
-import { ConfigService } from '../config/service';
-import { findProjectRoot, Obj } from '../utils';
-import { Num } from '../utils/number';
+import { ConfigService } from '../config/service.js';
+import { findProjectRoot, Obj } from '../utils/index.js';
+import { Num } from '../utils/number.js';
 import {
   Formats,
   FormatsMap,
@@ -13,7 +13,7 @@ import {
   TransportsMap,
   TransportOptions,
   defaultLoggerOptions,
-} from './options';
+} from './options.js';
 
 @Injectable()
 export class LoggerService {

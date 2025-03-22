@@ -5,24 +5,29 @@ import {
   NestFactory,
 } from '@nestjs/core';
 import { useContainer } from 'class-validator';
-import { ConfigService } from '../../config/service';
-import { IntentExceptionFilter } from '../../exceptions';
-import { IntentAppContainer, ModuleBuilder } from '../../foundation';
-import { Type } from '../../interfaces';
-import { findProjectRoot, getPackageJson, Obj, Package } from '../../utils';
-import { Kernel } from '../foundation/kernel';
+import { ConfigService } from '../../config/service.js';
+import { IntentExceptionFilter } from '../../exceptions/index.js';
+import { IntentAppContainer, ModuleBuilder } from '../../foundation/index.js';
+import { Type } from '../../interfaces/index.js';
+import {
+  findProjectRoot,
+  getPackageJson,
+  Obj,
+  Package,
+} from '../../utils/index.js';
+import { Kernel } from '../foundation/kernel.js';
 import pc from 'picocolors';
-import { printBulletPoints } from '../../utils/console-helpers';
+import { printBulletPoints } from '../../utils/console-helpers.js';
 import 'console.mute';
 import { Response as HyperResponse, Server } from '@intentjs/hyper-express';
-import { MiddlewareConfigurator } from './middlewares/configurator';
-import { MiddlewareComposer } from './middlewares/middleware-composer';
-import { HyperServer } from '../http-server/server';
-import { HttpExecutionContext } from '../http-server/contexts/http-execution-context';
-import { ExecutionContext } from '../http-server/contexts/execution-context';
-import { Response } from '../http-server/response';
-import { RouteExplorer } from '../http-server/route-explorer';
-import { RouteNotFoundException } from '../../exceptions/route-not-found-exception';
+import { MiddlewareConfigurator } from './middlewares/configurator.js';
+import { MiddlewareComposer } from './middlewares/middleware-composer.js';
+import { HyperServer } from '../http-server/server.js';
+import { HttpExecutionContext } from '../http-server/contexts/http-execution-context.js';
+import { ExecutionContext } from '../http-server/contexts/execution-context.js';
+import { Response } from '../http-server/response.js';
+import { RouteExplorer } from '../http-server/route-explorer.js';
+import { RouteNotFoundException } from '../../exceptions/route-not-found-exception.js';
 
 const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
@@ -133,7 +138,7 @@ export class IntentHttpServer {
     config: ConfigService<unknown>,
     extraInfo: [string, string, string][] = [],
   ) {
-    console.clear();
+    // console.clear();
     console.log();
     const port = config.get('app.port');
     const hostname = config.get('app.hostname');
@@ -179,7 +184,7 @@ export class IntentHttpServer {
     }
   }
 
-  configureErrorReporter(config: Record<string, any>) {
+  async configureErrorReporter(config: Record<string, any>): Promise<void> {
     if (!config) return;
 
     if (Obj.isObj(config) && config?.dsn) {
@@ -191,13 +196,13 @@ export class IntentHttpServer {
       } = config;
 
       if (dsn) {
-        const Sentry = Package.load('@sentry/node');
+        const Sentry = await Package.load('@sentry/node');
         const integrations = [];
         /**
          * Load integrations
          */
         if (integrateNodeProfile) {
-          const { nodeProfilingIntegration } = Package.load(
+          const { nodeProfilingIntegration } = await Package.load(
             '@sentry/profiling-node',
           );
 

@@ -1,23 +1,25 @@
-import { Package } from '../../utils';
-import { joinUrl, validateOptions } from '../../utils/helpers';
-import { SqsJob } from '../interfaces/job';
-import { SqsQueueOptionsDto } from '../schema';
-import { InternalMessage } from '../strategy';
-import { PollQueueDriver } from '../strategy/pollQueueDriver';
+import { Package } from '../../utils/index.js';
+import { joinUrl, validateOptions } from '../../utils/helpers.js';
+import { SqsJob } from '../interfaces/job.js';
+import { SqsQueueOptionsDto } from '../schema/index.js';
+import { InternalMessage } from '../strategy/index.js';
+import { PollQueueDriver } from '../strategy/pollQueueDriver.js';
 
 export class SqsQueueDriver implements PollQueueDriver {
   private client: any;
+  private AWS: any;
 
   constructor(private options: Record<string, any>) {
     validateOptions(options, SqsQueueOptionsDto, { cls: SqsQueueDriver.name });
-    const AWS = Package.load('@aws-sdk/client-sqs');
-    this.client = new AWS.SQS({
-      region: options.region,
-      apiVersion: options.apiVersion,
-      credentials: options.credentials || {
-        accessKeyId: options.accessKey,
-        secretAccessKey: options.secretKey,
-      },
+    this.initializeModules().then(() => {
+      this.client = new this.AWS.SQS({
+        region: options.region,
+        apiVersion: options.apiVersion,
+        credentials: options.credentials || {
+          accessKeyId: options.accessKey,
+          secretAccessKey: options.secretKey,
+        },
+      });
     });
   }
 
@@ -79,5 +81,9 @@ export class SqsQueueDriver implements PollQueueDriver {
     const response: Record<string, any> =
       await this.client.getQueueAttributes(params);
     return +response.Attributes.ApproximateNumberOfMessages;
+  }
+
+  async initializeModules(): Promise<void> {
+    this.AWS = await Package.load('@aws-sdk/client-sqs');
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import Knex, { Knex as KnexType } from 'knex';
-import { BaseModel } from './baseModel';
-import { ConnectionNotFound } from './exceptions';
-import { DatabaseOptions, DbConnectionOptions } from './options';
-import { ConfigService } from '../config';
+import { BaseModel } from './baseModel.js';
+import { ConnectionNotFound } from './exceptions/connectionNotFound.js';
+import { DatabaseOptions, DbConnectionOptions } from './options.js';
+import { ConfigService } from '../config/index.js';
 
 @Injectable()
 export class ObjectionService implements OnModuleInit {

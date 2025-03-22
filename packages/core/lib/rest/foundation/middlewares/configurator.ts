@@ -1,6 +1,6 @@
-import { Type } from '../../../interfaces';
-import { HttpMethods } from '../../http-server/interfaces';
-import { IntentMiddleware } from './middleware';
+import { Type } from '../../../interfaces/index.js';
+import { HttpMethods } from '../../http-server/interfaces.js';
+import { IntentMiddleware } from './middleware.js';
 
 type MiddlewareRuleApplicationInfo =
   | string

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { LocalDiskOptions, S3DiskOptions, StorageDriver } from './interfaces';
-import { StorageService } from './service';
+import {
+  LocalDiskOptions,
+  S3DiskOptions,
+  StorageDriver,
+} from './interfaces/index.js';
+import { StorageService } from './service.js';
 
 @Injectable()
 export class Storage {

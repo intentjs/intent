@@ -1,10 +1,6 @@
-import {
-  CorsOptions,
-  CorsOptionsDelegate,
-} from '@nestjs/common/interfaces/external/cors-options.interface';
+import { CorsOptions, CorsOptionsDelegate } from 'cors';
 import { ServerConstructorOptions } from '@intentjs/hyper-express';
-import { GenericClass } from './utils';
-import { WatchOptions } from 'fs-extra';
+import { GenericClass } from './utils.js';
 
 export interface SentryConfig {
   dsn: string;

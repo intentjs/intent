@@ -4,7 +4,7 @@ import {
   StorageDriver$PutFileResponse,
   StorageDriver$RenameFileResponse,
   FileOptions,
-} from '.';
+} from './index.js';
 
 export interface StorageDriver {
   /**

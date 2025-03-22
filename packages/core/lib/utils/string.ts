@@ -1,6 +1,6 @@
 import { ConflictException } from '@nestjs/common';
-import { Num } from './number';
-import { pluralize, singularize } from './pluralise';
+import { Num } from './number.js';
+import { pluralize, singularize } from './pluralise.js';
 
 export class Str {
   static wordsArr = (str: string, stripAllSpecialChars?: boolean): string[] => {

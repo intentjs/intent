@@ -1,11 +1,11 @@
-import { ConfigMap } from './options';
-import { CONFIG_FACTORY } from './constant';
+import { CONFIG_FACTORY } from './constant.js';
+import type { ConfigMap } from './options.js';
 import pc from 'picocolors';
 import archy from 'archy';
-import { jsonToArchy } from '../utils/console-helpers';
-import { Command } from '../console/decorators';
-import { ConsoleIO } from '../console/consoleIO';
-import { Inject } from '../foundation/decorators';
+import { jsonToArchy } from '../utils/console-helpers.js';
+import { Command } from '../console/decorators.js';
+import { ConsoleIO } from '../console/consoleIO.js';
+import { Inject } from '../foundation/decorators.js';
 
 @Command('config:view {--ns : Namespace of a particular config}', {
   desc: 'Command to view config for a given namespace',

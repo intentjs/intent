@@ -1,2 +1,2 @@
-export * from './reflector';
-export * from './set-metadata';
+export * from './reflector.js';
+export * from './set-metadata.js';

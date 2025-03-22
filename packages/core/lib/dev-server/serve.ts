@@ -1,5 +1,5 @@
-import { Command, ConsoleIO } from '../console';
-import { Package } from '../utils';
+import { Command, ConsoleIO } from '../console/index.js';
+import { Package } from '../utils/index.js';
 
 @Command(
   `dev
@@ -16,7 +16,7 @@ export class DevServerCommand {
     const config = _cli.option('config');
     const port = +_cli.option('port');
 
-    const { StartServerCommand } = Package.load('@intentjs/cli');
+    const { StartServerCommand } = await Package.load('@intentjs/cli');
     const command = new StartServerCommand();
     await command.handle({
       watch: true,

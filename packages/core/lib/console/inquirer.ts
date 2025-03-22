@@ -1,5 +1,6 @@
-import { prompt } from 'enquirer';
+import eqnuirer from 'enquirer';
 
+const { prompt } = eqnuirer;
 export class Inquirer {
   /**
    * Use this method to ask the client about any input.

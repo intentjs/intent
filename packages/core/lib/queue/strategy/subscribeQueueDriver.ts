@@ -1,5 +1,5 @@
-import { GenericFunction } from '../../interfaces';
-import { DriverJob } from './driverJob';
+import { GenericFunction } from '../../interfaces/index.js';
+import { DriverJob } from './driverJob.js';
 
 export interface BaseQueueDriver {
   init(): Promise<void>;

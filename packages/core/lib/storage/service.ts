@@ -1,9 +1,9 @@
-import { LocalDiskOptions, S3DiskOptions } from './interfaces';
-import { StorageDriver } from './interfaces';
-import { DiskNotFoundException } from './exceptions/diskNotFound';
-import { ConfigService } from '../config';
-import { DriverMap } from './driver-mapper';
-import { Injectable } from '../foundation/decorators';
+import { LocalDiskOptions, S3DiskOptions } from './interfaces/index.js';
+import { StorageDriver } from './interfaces/index.js';
+import { DiskNotFoundException } from './exceptions/diskNotFound.js';
+import { ConfigService } from '../config/service.js';
+import { DriverMap } from './driver-mapper.js';
+import { Injectable } from '../foundation/decorators.js';
 
 @Injectable()
 export class StorageService {

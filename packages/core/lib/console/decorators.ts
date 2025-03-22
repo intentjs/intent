@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { ConsoleConstants } from './constants';
-import { CommandMetaOptions } from './interfaces';
+import { ConsoleConstants } from './constants.js';
+import { CommandMetaOptions } from './interfaces.js';
 
 /**
  * Command decorator function to add a new command to CommandMeta class

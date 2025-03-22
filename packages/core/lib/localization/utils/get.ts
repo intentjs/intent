@@ -1,4 +1,4 @@
-import stringToPath from './stringToPath';
+import stringToPath from './stringToPath.js';
 
 // function baseGet(object: Record<string, any>, path: any): any {
 //   path = castPath(path, object);

@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '../foundation/decorators';
-import { DotNotation, GetNestedPropertyType } from '../type-helpers';
-import { Obj } from '../utils/object';
-import { CONFIG_FACTORY } from './constant';
-import { ConfigMap, NamespacedConfigMapValues } from './options';
+import { Inject, Injectable } from '../foundation/decorators.js';
+import { DotNotation, GetNestedPropertyType } from '../type-helpers/index.js';
+import { Obj } from '../utils/object.js';
+import { CONFIG_FACTORY } from './constant.js';
+import type { ConfigMap, NamespacedConfigMapValues } from './options.js';
 
 type ConfigPaths<T> = DotNotation<T>;
 

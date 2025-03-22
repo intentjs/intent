@@ -1,17 +1,16 @@
-import { GenericFunction } from '../../interfaces';
-import { Package } from '../../utils/packageLoader';
-import { CacheDriver, InMemoryDriverOption } from '../interfaces';
+import { GenericFunction } from '../../interfaces/index.js';
+import { Package } from '../../utils/packageLoader.js';
+import { CacheDriver, InMemoryDriverOption } from '../interfaces/index.js';
 
 export class InMemoryDriver implements CacheDriver {
   private client: any;
 
   constructor(private options: InMemoryDriverOption) {
-    const NodeCache = Package.load('node-cache');
-
-    this.client = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+    this.initialiseModules();
   }
 
   async get<T>(key: string): Promise<T> {
+    await this.initialiseModules();
     const cacheKey = `${this.options.prefix}:::${key}`;
     return this.client.get(cacheKey);
   }
@@ -21,6 +20,7 @@ export class InMemoryDriver implements CacheDriver {
     value: string | Record<string, any>,
     ttlInSec?: number | undefined,
   ): Promise<boolean> {
+    await this.initialiseModules();
     const cacheKey = `${this.options.prefix}:::${key}`;
 
     if (ttlInSec) {
@@ -31,6 +31,7 @@ export class InMemoryDriver implements CacheDriver {
   }
 
   async has(key: string): Promise<boolean> {
+    await this.initialiseModules();
     const cacheKey = `${this.options.prefix}:::${key}`;
     return this.client.has(cacheKey);
   }
@@ -40,6 +41,7 @@ export class InMemoryDriver implements CacheDriver {
     cb: GenericFunction,
     ttlInSec: number,
   ): Promise<T> {
+    await this.initialiseModules();
     const exists = await this.has(key);
     if (exists) return this.get(key);
 
@@ -66,6 +68,7 @@ export class InMemoryDriver implements CacheDriver {
   }
 
   async forget(key: string): Promise<boolean> {
+    await this.initialiseModules();
     try {
       const cacheKey = `${this.options.prefix}:::${key}`;
       await this.client.del(cacheKey);
@@ -77,5 +80,11 @@ export class InMemoryDriver implements CacheDriver {
 
   getClient<T>(): T {
     return this.client as unknown as T;
+  }
+
+  async initialiseModules(): Promise<void> {
+    if (this.client) return;
+    const NodeCache = await Package.load('node-cache');
+    this.client = new NodeCache({ stdTTL: 100, checkperiod: 120 });
   }
 }

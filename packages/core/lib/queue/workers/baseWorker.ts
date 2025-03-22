@@ -1,7 +1,7 @@
 import * as pc from 'picocolors';
-import { getTimestampForLog } from '../../utils/helpers';
-import { ListenerOptions } from '../interfaces';
-import { QueueDrivers } from '../strategy';
+import { getTimestampForLog } from '../../utils/helpers.js';
+import { ListenerOptions } from '../interfaces/index.js';
+import { QueueDrivers } from '../strategy/index.js';
 
 export class BaseQueueWorker {
   protected silent: boolean;

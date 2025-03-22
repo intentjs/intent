@@ -1,5 +1,5 @@
-import { GenericFunction } from '../index';
-import { BaseModel } from './baseModel';
+import { GenericFunction } from '../interfaces/index.js';
+import { BaseModel } from './baseModel.js';
 
 export function InjectModel(model: any): GenericFunction {
   if (!(model.prototype instanceof BaseModel)) {

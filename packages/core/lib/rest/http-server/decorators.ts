@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { applyDecorators } from '../../reflections/apply-decorators';
-import { Type } from '../../interfaces';
+import { applyDecorators } from '../../reflections/apply-decorators.js';
+import { Type } from '../../interfaces/index.js';
 import {
   CONTROLLER_KEY,
   CONTROLLER_OPTIONS,
   GUARD_KEY,
   METHOD_KEY,
   METHOD_PATH,
-} from './constants';
-import { HttpMethods } from './interfaces';
-import { IntentGuard } from '../foundation/guards/base-guard';
+} from './constants.js';
+import { HttpMethods } from './interfaces.js';
+import { IntentGuard } from '../foundation/guards/base-guard.js';
 
 export type ControllerOptions = {
   host?: string;

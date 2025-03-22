@@ -1,6 +1,6 @@
-import { GenericClass } from '../../../interfaces';
-import { Reflector } from '../../../reflections';
-import { HttpExecutionContext } from './http-execution-context';
+import { GenericClass } from '../../../interfaces/index.js';
+import { Reflector } from '../../../reflections/reflector.js';
+import { HttpExecutionContext } from './http-execution-context.js';
 
 export class ExecutionContext {
   private reflectorClass: Reflector;

@@ -1,11 +1,11 @@
-import { LiteralString } from '../type-helpers';
+import { LiteralString } from '../type-helpers/index.js';
 import {
   RegisterNamespaceOptions,
   RegisterNamespaceReturnType,
-} from './options';
+} from './options.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const configNamespace = <N extends string, T>(
   namespace: LiteralString<N>,

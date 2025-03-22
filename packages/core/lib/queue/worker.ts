@@ -1,8 +1,8 @@
-import { ListenerOptions } from './interfaces';
-import { QueueMetadata } from './metadata';
-import { QueueService } from './service';
-import { PollQueueWorker } from './workers/pollQueue';
-import { SubscribeQueueWorker } from './workers/subscribeQueue';
+import { ListenerOptions } from './interfaces/index.js';
+import { QueueMetadata } from './metadata.js';
+import { QueueService } from './service.js';
+import { PollQueueWorker } from './workers/pollQueue.js';
+import { SubscribeQueueWorker } from './workers/subscribeQueue.js';
 
 interface QueueWorkerOptions extends ListenerOptions {
   listenerType: 'poll' | 'subscribe';

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Job } from '../queue/decorators';
-import { IntentEventConstants } from './constants';
-import { EventListenerRunner } from './runner';
+import { Job } from '../queue/decorators.js';
+import { IntentEventConstants } from './constants.js';
+import { EventListenerRunner } from './runner.js';
 
 @Injectable()
 export class EventQueueWorker {

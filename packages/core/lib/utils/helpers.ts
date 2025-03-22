@@ -2,15 +2,16 @@ import { Type } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync, ValidationError } from 'class-validator';
 import * as pc from 'picocolors';
-import { GenericClass } from '../interfaces';
-import { Arr } from './array';
-import { InternalLogger } from './logger';
-import { Obj } from './object';
-import { Str } from './string';
-import { readFileSync } from 'fs-extra';
+import { GenericClass } from '../interfaces/index.js';
+import { Arr } from './array.js';
+import { InternalLogger } from './logger.js';
+import { Obj } from './object.js';
+import { Str } from './string.js';
 import { join } from 'path';
-import { findProjectRoot } from './path';
+import { findProjectRoot } from './path.js';
+import fsExtra from 'fs-extra';
 
+const { readFileSync } = fsExtra;
 export const isEmpty = (value: any) => {
   if (Str.isString(value)) {
     return value === '';

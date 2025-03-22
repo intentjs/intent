@@ -33,4 +33,5 @@ export type NamespacedConfigMap = Map<
   NamespacedConfigMapKeys,
   NamespacedConfigMapValues
 >;
+
 export type ConfigMap = Map<string, NamespacedConfigMap>;

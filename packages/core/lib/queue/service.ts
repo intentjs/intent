@@ -6,16 +6,16 @@ import {
   RedisQueueDriverOptions,
   SqsQueueDriverOptions,
   SyncQueueDriverOptions,
-} from './interfaces';
+} from './interfaces/index.js';
 import {
   DatabaseQueueDriver,
   RedisQueueDriver,
   SqsQueueDriver,
   SyncQueueDriver,
-} from './drivers';
-import { QueueDrivers } from './strategy';
-import { ConfigService } from '../config';
-import { isEmpty, Str } from '../utils';
+} from './drivers/index.js';
+import { QueueDrivers } from './strategy/index.js';
+import { ConfigService } from '../config/service.js';
+import { isEmpty, Str } from '../utils/index.js';
 
 @Injectable()
 export class QueueService {

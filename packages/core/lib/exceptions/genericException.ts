@@ -1,5 +1,5 @@
-import { HttpException } from './http-exception';
-import { HttpStatus } from '../rest/http-server/status-codes';
+import { HttpException } from './http-exception.js';
+import { HttpStatus } from '../rest/http-server/status-codes.js';
 
 export class GenericException extends HttpException {
   constructor(message?: string, status: HttpStatus = HttpStatus.FORBIDDEN) {

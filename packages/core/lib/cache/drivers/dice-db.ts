@@ -1,7 +1,6 @@
-import { GenericFunction } from '../../interfaces';
-import { Package } from '../../utils';
-import { CacheDriver, RedisDriverOption } from '../interfaces';
-import IORedis from 'ioredis';
+import { GenericFunction } from '../../interfaces/index.js';
+import { CacheDriver, RedisDriverOption } from '../interfaces/index.js';
+import { Redis } from 'ioredis';
 
 export class DiceDbDriver implements CacheDriver {
   private client: any;
@@ -9,12 +8,12 @@ export class DiceDbDriver implements CacheDriver {
   constructor(private options: RedisDriverOption) {
     // const IORedis = Package.load('ioredis');
     if (options.url) {
-      this.client = new IORedis(options.url, {
+      this.client = new Redis(options.url, {
         db: options.database || 0,
         enableReadyCheck: false,
       });
     } else {
-      this.client = new IORedis({
+      this.client = new Redis({
         host: options.host,
         port: options.port,
         username: options.username,

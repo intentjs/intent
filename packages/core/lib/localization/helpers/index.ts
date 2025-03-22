@@ -1,4 +1,4 @@
-import { LocalizationService } from '../service';
+import { LocalizationService } from '../service.js';
 
 export const __ = (
   key: string,

@@ -1,4 +1,4 @@
-import { RouteArgType, RouteParamtypes } from '../param-decorators';
+import { RouteArgType, RouteParamtypes } from '../param-decorators.js';
 import { MiddlewareNext, Request, Response } from '@intentjs/hyper-express';
 
 export class HttpExecutionContext {

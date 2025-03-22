@@ -1,4 +1,4 @@
-import { EmitsEvent } from './event';
+import { EmitsEvent } from './event.js';
 
 export async function Emit(...events: EmitsEvent[]): Promise<void> {
   const promises = [];

@@ -1,9 +1,9 @@
-import { PayloadBuilder } from './core';
-import { QueueMetadata } from './metadata';
-import { QueueService } from './service';
-import { Message } from './strategy';
-import { PollQueueDriver } from './strategy/pollQueueDriver';
-import { SubscribeQueueDriver } from './strategy/subscribeQueueDriver';
+import { PayloadBuilder } from './core/index.js';
+import { QueueMetadata } from './metadata.js';
+import { QueueService } from './service.js';
+import { Message } from './strategy/index.js';
+import { PollQueueDriver } from './strategy/pollQueueDriver.js';
+import { SubscribeQueueDriver } from './strategy/subscribeQueueDriver.js';
 
 export class Queue {
   static async dispatch(message: Message): Promise<void> {

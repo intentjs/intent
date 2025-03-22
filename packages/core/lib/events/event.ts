@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { Dispatch } from '../queue/queue';
-import { JobOptions } from '../queue/strategy';
-import { isBoolean } from '../utils/helpers';
-import { IntentEventConstants } from './constants';
-import { difference } from './helpers';
-import { EventListenerRunner } from './runner';
+import { Dispatch } from '../queue/queue.js';
+import { JobOptions } from '../queue/strategy/index.js';
+import { isBoolean } from '../utils/helpers.js';
+import { IntentEventConstants } from './constants.js';
+import { difference } from './helpers.js';
+import { EventListenerRunner } from './runner.js';
 
 export class EmitsEvent {
   private reservedKeyNames = [

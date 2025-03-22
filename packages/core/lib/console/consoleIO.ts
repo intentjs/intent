@@ -1,8 +1,8 @@
-import { Obj } from '../utils';
-import { ArgumentParser } from './argumentParser';
-import { Inquirer } from './inquirer';
-import { ArgumentParserOutput } from './interfaces';
-import { ConsoleLogger } from './logger';
+import { Obj } from '../utils/object.js';
+import { ArgumentParser } from './argumentParser.js';
+import { Inquirer } from './inquirer.js';
+import { ArgumentParserOutput } from './interfaces.js';
+import { ConsoleLogger } from './logger.js';
 
 export class ConsoleIO {
   schema: ArgumentParserOutput;

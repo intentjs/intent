@@ -2,7 +2,7 @@ import {
   NamespacedConfigMapKeys,
   NamespacedConfigMapValues,
   RegisterNamespaceReturnType,
-} from './options';
+} from './options.js';
 
 export class ConfigBuilder {
   static async build(

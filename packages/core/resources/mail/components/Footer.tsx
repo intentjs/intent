@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Img, Text } from "@react-email/components";
-import { ComponentProps } from "./interface";
+import * as React from 'react';
+import { Img, Text } from '@react-email/components';
+import { ComponentProps } from './interface.js';
 
 export const Footer = ({ value }: ComponentProps) => {
   const { logo, title, appName } = value;

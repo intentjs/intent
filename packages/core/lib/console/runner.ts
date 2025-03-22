@@ -1,11 +1,11 @@
 import * as pc from 'picocolors';
 import yargsParser from 'yargs-parser';
-import { columnify } from '../utils/columnify';
-import { isEmpty } from '../utils/helpers';
-import { ConsoleIO } from './consoleIO';
-import { CommandObject } from './interfaces';
-import { ConsoleLogger } from './logger';
-import { CommandMeta } from './metadata';
+import { columnify } from '../utils/columnify.js';
+import { isEmpty } from '../utils/helpers.js';
+import { ConsoleIO } from './consoleIO.js';
+import { CommandObject } from './interfaces.js';
+import { ConsoleLogger } from './logger.js';
+import { CommandMeta } from './metadata.js';
 
 export class CommandRunner {
   static async run(cmd: string, options?: { silent: boolean }): Promise<void> {
@@ -45,7 +45,7 @@ export class CommandRunner {
     const returnFromCommand = await command.target(_cli);
 
     process.nextTick(() => {
-      returnFromCommand && process.exit(1);
+      returnFromCommand && process.exit(0);
     });
 
     return;

@@ -1,4 +1,4 @@
-import { Str } from './string';
+import { Str } from './string.js';
 
 export const columnify = (
   rows: Record<string, any>[],

@@ -1,5 +1,5 @@
-import { ForbiddenException } from '../../../exceptions/forbidden-exception';
-import { ExecutionContext } from '../../http-server/contexts/execution-context';
+import { ForbiddenException } from '../../../exceptions/forbidden-exception.js';
+import { ExecutionContext } from '../../http-server/contexts/execution-context.js';
 
 export abstract class IntentGuard {
   async handle(context: ExecutionContext): Promise<void> {

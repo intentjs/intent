@@ -1,6 +1,7 @@
-import { existsSync } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import path from 'path';
 
+const { existsSync } = fsExtra;
 export const findProjectRoot = (startPath = process.cwd()) => {
   // Markers that indicate project root
   const rootMarkers = ['.intentrc', 'package.json'];

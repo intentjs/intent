@@ -1,10 +1,9 @@
 import { ReadStream } from 'fs';
-import { GenericFunction } from '../../interfaces';
-import { Package } from '../../utils';
-import { Str } from '../../utils/string';
-import { CannotParseAsJsonException } from '../exceptions/cannotParseAsJson';
-import { CannotPerformFileOpException } from '../exceptions/cannotPerformFileOp';
-import { getMimeFromExtension } from '../helpers';
+import { GenericFunction } from '../../interfaces/index.js';
+import { Str } from '../../utils/string.js';
+import { CannotParseAsJsonException } from '../exceptions/cannotParseAsJson.js';
+import { CannotPerformFileOpException } from '../exceptions/cannotPerformFileOp.js';
+import { getMimeFromExtension } from '../helpers/index.js';
 import {
   StorageDriver,
   FileOptions,
@@ -12,8 +11,9 @@ import {
   StorageDriver$PutFileResponse,
   StorageDriver$RenameFileResponse,
   S3DiskOptions,
-} from '../interfaces';
-import { StorageService } from '../service';
+} from '../interfaces/index.js';
+import { StorageService } from '../service.js';
+import { Package } from '../../utils/packageLoader.js';
 
 export class S3Storage implements StorageDriver {
   private readonly disk: string;
@@ -25,16 +25,7 @@ export class S3Storage implements StorageDriver {
   constructor(disk: string, config: S3DiskOptions) {
     this.disk = disk;
     this.config = config;
-    const { getSignedUrl } = Package.load('@aws-sdk/s3-request-presigner');
-    this.getSignedUrlFn = getSignedUrl;
-    this.AWS = Package.load('@aws-sdk/client-s3');
-    this.client = new this.AWS.S3({
-      region: this.config.region,
-      credentials: config.credentials || {
-        accessKeyId: config.accessKey,
-        secretAccessKey: config.secretKey,
-      },
-    });
+    this.initialiseModules();
   }
 
   getStream(filePath: string): ReadStream {
@@ -337,5 +328,22 @@ export class S3Storage implements StorageDriver {
     return this.config.throwOnFailure === undefined
       ? true
       : this.config.throwOnFailure;
+  }
+
+  async initialiseModules(): Promise<void> {
+    if (this.AWS && this.getSignedUrlFn) return;
+
+    this.AWS = await Package.load('@aws-sdk/client-s3');
+    const { getSignedUrl } = await Package.load(
+      '@aws-sdk/s3-request-presigner',
+    );
+    this.getSignedUrlFn = getSignedUrl;
+    this.client = new this.AWS.S3({
+      region: this.config.region,
+      credentials: this.config.credentials || {
+        accessKeyId: this.config.accessKey,
+        secretAccessKey: this.config.secretKey,
+      },
+    });
   }
 }

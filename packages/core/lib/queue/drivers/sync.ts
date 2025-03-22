@@ -1,6 +1,6 @@
-import { QueueMetadata } from '../metadata';
-import { InternalMessage, DriverJob } from '../strategy';
-import { PollQueueDriver } from '../strategy/pollQueueDriver';
+import { QueueMetadata } from '../metadata.js';
+import { InternalMessage, DriverJob } from '../strategy/index.js';
+import { PollQueueDriver } from '../strategy/pollQueueDriver.js';
 
 export class SyncQueueDriver implements PollQueueDriver {
   constructor() {}

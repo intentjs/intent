@@ -1,8 +1,8 @@
-import { ObjectionService } from '../../database';
-import { DbQueueDriverOptions } from '../interfaces';
-import { DbJob } from '../interfaces/job';
-import { InternalMessage } from '../strategy';
-import { PollQueueDriver } from '../strategy/pollQueueDriver';
+import { ObjectionService } from '../../database/index.js';
+import { DbQueueDriverOptions } from '../interfaces/index.js';
+import { DbJob } from '../interfaces/job.js';
+import { InternalMessage } from '../strategy/index.js';
+import { PollQueueDriver } from '../strategy/pollQueueDriver.js';
 
 export class DatabaseQueueDriver implements PollQueueDriver {
   private client: any;

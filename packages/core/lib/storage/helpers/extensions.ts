@@ -1,4 +1,4 @@
-import { MimeTypes } from '../data/mime-db';
+import { MimeTypes } from '../data/mime-db.js';
 
 export const getMimeFromExtension = (fileName: string): string => {
   const fileSplit = fileName.split('.');
