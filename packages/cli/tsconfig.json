@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "module": "commonjs",
-    "target": "ES2021",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,

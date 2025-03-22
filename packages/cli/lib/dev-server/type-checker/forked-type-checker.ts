@@ -1,6 +1,6 @@
 import ts from "typescript";
-import { TypeCheckerHost } from "./type-checker";
-import { ExtraOptions } from "../interfaces";
+import { TypeCheckerHost } from "./type-checker-host.js";
+import { ExtraOptions } from "../../interfaces.js";
 
 const [tsConfigPath, stringifiedExtra] = process.argv.slice(2);
 

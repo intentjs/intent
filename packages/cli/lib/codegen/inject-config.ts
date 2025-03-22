@@ -1,8 +1,8 @@
 import { join, normalize } from "path";
-import { DownloadFromRegistry } from "./download-registry";
-import { InjectConfig } from "./ast/inject-config";
-import { downloadPackageUsingNpm } from "../new-project/actions/download-depedencies";
-import { EnvManager } from "./env-manager";
+import { DownloadFromRegistry } from "./download-registry.js";
+import { InjectConfig } from "./ast/inject-config.js";
+import { downloadPackageUsingNpm } from "../new-project/actions/download-depedencies.js";
+import { EnvManager } from "./env-manager.js";
 
 export class InjectConfigCodegen {
   constructor(private projectDirectory: string) {}

@@ -1,10 +1,14 @@
-export const defaultIntentConfiguration = () => {
+import { IntentConfiguration } from "./interface.js";
+
+export const DEFAULT_INTENT_CONFIG = (): IntentConfiguration => {
   return {
     sourceRoot: "app",
-    containerFile: "main",
-    serverFile: "server",
+    serverBootFile: "server",
     debug: true,
     buildOptions: { deleteOutDir: true },
-    swc: { configPath: ".swcrc" },
+    metaFiles: ["package.json"],
+    watchMetaFiles: true,
+    typeCheck: true,
+    watch: true,
   };
 };

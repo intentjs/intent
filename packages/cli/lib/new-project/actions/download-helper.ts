@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
-import simpleGit from "simple-git";
+import { simpleGit } from "simple-git";
 import pc from "picocolors";
-import { NEW_PROJECT_CONFIG } from "../config";
+import { NEW_PROJECT_CONFIG } from "../config.js";
 
 export const downloadRepository = async (
   starterTemplateName: string,

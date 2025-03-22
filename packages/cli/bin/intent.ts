@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import { Option, program } from "commander";
-import { StartServerCommand } from "../commands/start-server";
-import { BuildCommand } from "../commands/build";
-import { NEW_PROJECT_OPTIONS } from "../lib/configuration/new-project-config";
-import { NewProjectCommand } from "../commands/new-project";
+import { StartServerCommand } from "../commands/start-server.js";
+import { BuildCommand } from "../commands/build.js";
+import { NEW_PROJECT_OPTIONS } from "../lib/configuration/new-project-config.js";
+import { NewProjectCommand } from "../commands/new-project.js";
 
 program
   .command("start")
@@ -33,8 +33,10 @@ program
   .option("-d, --debug [hostport] ", "Run in debug mode (with --inspect flag).")
   .option("--disable-type-check", "Disable type checking. Enabled by default")
   .action((str) => {
+    const now = performance.now();
     const buildCommand = new BuildCommand();
     buildCommand.handle(str);
+    console.log(`Build completed in ${performance.now() - now}ms`);
   });
 
 const newProjectProgram = program
