@@ -1,4 +1,4 @@
-import * as pc from 'picocolors';
+import pc from 'picocolors';
 import yargsParser from 'yargs-parser';
 import { columnify } from '../utils/columnify.js';
 import { isEmpty } from '../utils/helpers.js';
@@ -6,6 +6,7 @@ import { ConsoleIO } from './consoleIO.js';
 import { CommandObject } from './interfaces.js';
 import { ConsoleLogger } from './logger.js';
 import { CommandMeta } from './metadata.js';
+import { IntentApplicationContext } from '../interfaces/utils.js';
 
 export class CommandRunner {
   static async run(cmd: string, options?: { silent: boolean }): Promise<void> {
@@ -17,38 +18,47 @@ export class CommandRunner {
   static async handle(
     command: CommandObject | null,
     args: Record<string, any>,
+    app?: IntentApplicationContext,
   ): Promise<void> {
     if (command == null) {
       ConsoleLogger.error('No command found');
       return;
     }
 
-    if (args.silent) {
-      console.log = () => {};
-    }
+    if (args.silent) console.log = () => {};
 
     if (args.help) {
       CommandRunner.printOptions(command);
       return;
     }
 
-    const _cli = ConsoleIO.from(command.expression, args);
-    if (_cli.hasErrors && _cli.missingArguments.length > 0) {
-      _cli.error(` Missing Arguments: ${_cli.missingArguments.join(', ')} `);
-      return;
-    }
+    const _cli = this.buildConsoleIO(command, args, app);
 
     if (args.debug) {
       console.log(_cli);
     }
 
-    const returnFromCommand = await command.target(_cli);
+    const returnFromCommand = await command.target(_cli, app);
 
     process.nextTick(() => {
       returnFromCommand && process.exit(0);
     });
 
     return;
+  }
+
+  static buildConsoleIO(
+    command: CommandObject,
+    args: Record<string, any>,
+    app?: IntentApplicationContext,
+  ): ConsoleIO {
+    const _cli = ConsoleIO.from(command.expression, args);
+    if (_cli.hasErrors && _cli.missingArguments.length > 0) {
+      _cli.error(` Missing Arguments: ${_cli.missingArguments.join(', ')} `);
+      return;
+    }
+
+    return _cli;
   }
 
   static printOptions(command: CommandObject) {
@@ -105,38 +115,5 @@ export class CommandRunner {
 
       console.log(printRows.join('\n'));
     }
-
-    // if (command.arguments.length > 0) {
-    //   Logger.success(pc.bgBlue(pc.white(pc.bold(' Arguments '))));
-
-    //   const list = [];
-    //   for (const argument of command.arguments) {
-    //     console.log(argument);
-    //     list.push({
-    //       name: argument.name,
-    //       desc: 'No description passed',
-    //       default: argument.defaultValue,
-    //       isArray: argument.isArray ? 'Y' : 'N',
-    //     });
-    //   }
-
-    //   Logger.table(['Name', 'Description', 'Default', 'Is Array?'], list);
-    // }
-
-    // if (command.options.length > 0) {
-    //   Logger.success(pc.bgBlue(pc.white(pc.bold(' Options '))));
-
-    //   const list = [];
-    //   for (const option of command.options) {
-    //     list.push({
-    //       name: option.name,
-    //       desc: '',
-    //       default: option.defaultValue || 'null',
-    //       isArray: option.isArray ? 'Y' : 'N',
-    //     });
-    //   }
-
-    //   Logger.table(['Name', 'Desc', 'Default', 'Is Array?'], list);
-    // }
   }
 }

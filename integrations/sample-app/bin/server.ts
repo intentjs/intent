@@ -1,14 +1,14 @@
 import { HttpKernel } from '#http/kernel';
-import { ApplicationContainer } from '#boot/container';
-import { ApplicationExceptionFilter } from '#errors/filter';
-import { IntentHttpServer } from '@intentjs/core';
+import { ApplicationExceptionHandler } from '#errors/filter';
+import { Actuator } from '@intentjs/core';
 
-const server = IntentHttpServer.init();
+const CONTAINER_IMPORTER = async () => {
+  const { ApplicationContainer } = await import('../app/boot/container.js');
+  return ApplicationContainer;
+};
 
-server.useContainer(ApplicationContainer);
-
-server.useKernel(HttpKernel);
-
-server.handleErrorsWith(ApplicationExceptionFilter);
-
-server.start();
+Actuator.init(CONTAINER_IMPORTER)
+  .http()
+  .initKernel(HttpKernel)
+  .catchErrorsWith(ApplicationExceptionHandler)
+  .start();
