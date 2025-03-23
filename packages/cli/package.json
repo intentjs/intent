@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/cli",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "description": "Helper commands for building Intent application.",
   "repository": {
     "type": "git",
@@ -44,37 +44,36 @@
     }
   },
   "dependencies": {
-    "@clack/prompts": "^0.9.1",
+    "@clack/prompts": "^0.10.0",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-typescript": "^12.1.2",
     "@swc/cli": "^0.6.0",
-    "@swc/core": "^1.10.7",
+    "@swc/core": "^1.11.11",
     "@swc/plugin-transform-imports": "^7.0.0",
     "chokidar": "^4.0.3",
-    "commander": "^13.0.0",
+    "commander": "^13.1.0",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.3.0",
     "picocolors": "^1.1.0",
     "picomatch": "^4.0.2",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "radash": "^12.1.0",
-    "rollup": "^4.35.0",
     "rollup-plugin-terser": "^7.0.2",
     "simple-git": "^3.27.0",
     "tree-kill": "^1.2.2",
-    "ts-morph": "^25.0.0",
+    "ts-morph": "^25.0.1",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.13",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.13.11",
     "@types/picomatch": "^3.0.2",
     "ts-jest": "^29.2.5",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2"
   }
 }
