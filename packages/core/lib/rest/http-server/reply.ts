@@ -2,7 +2,6 @@ import { Request, Response } from '@intentjs/hyper-express';
 import { HttpStatus } from './status-codes.js';
 import { isUndefined } from '../../utils/helpers.js';
 import { StreamableFile } from './streamable-file.js';
-import { Obj } from '../../utils/index.js';
 import { instanceToPlain } from 'class-transformer';
 
 export class Reply {
@@ -52,10 +51,6 @@ export class Reply {
       ? dataFromHandler.map(r => this.transformToPlain(r))
       : this.transformToPlain(dataFromHandler);
 
-    // console.log(plainData);
-    // console.time('time_to_detect_object');
-    // console.log(Obj.isObj(dataFromHandler), instanceToPlain(dataFromHandler));
-    // console.timeEnd('time_to_detect_object');
     if (typeof plainData != null && typeof plainData === 'object') {
       return res.json(plainData);
     }

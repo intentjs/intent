@@ -25,6 +25,10 @@
     ".": {
       "types": "./dist/lib/index.d.ts",
       "default": "./dist/lib/index.js"
+    },
+    "./rest": {
+      "types": "./dist/lib/rest/index.d.ts",
+      "default": "./dist/lib/rest/index.js"
     }
   },
   "scripts": {
