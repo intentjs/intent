@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/core",
-  "version": "0.1.45",
+  "version": "0.1.46-alpha.1",
   "description": "Core module for Intent",
   "repository": {
     "type": "git",

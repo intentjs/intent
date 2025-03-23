@@ -54,7 +54,7 @@ export default configNamespace(
      *
      * This address to bind the HTTP Listener to.
      */
-    hostname: process.env.HOSTNAME || '0.0.0.0',
+    hostname: process.env.HOSTNAME || '127.0.0.1',
 
     /**
      * -----------------------------------------------------

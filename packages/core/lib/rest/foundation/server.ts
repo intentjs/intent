@@ -159,11 +159,7 @@ export class IntentHttpServer {
       ...extraInfo,
     ]);
 
-    const url = new URL(
-      ['127.0.0.1', 'localhost', undefined].includes(hostname)
-        ? 'http://localhost'
-        : `http://${hostname}`,
-    );
+    const url = new URL(`http://${hostname ?? 'localhost'}`);
     url.port = port;
 
     console.log();
