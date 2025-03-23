@@ -28,7 +28,7 @@
     "noFallthroughCasesInSwitch": false,
   },
   "include": ["app", "bin", "libs", "config", "resources"],
-  "exclude": ["node_modules","dist"],
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
   "ts-node": {
     "esm": true,
     "swc": true,
