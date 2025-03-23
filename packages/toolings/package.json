@@ -1,0 +1,31 @@
+{
+  "name": "@intentjs/tooling",
+  "version": "0.0.3",
+  "description": "A collection of tooling for IntentJS.",
+  "type": "module",
+  "keywords": [
+    "intentjs",
+    "tsconfig"
+  ],
+  "files": [
+    "tsconfig.app.json"
+  ],
+  "scripts": {
+    "test": "node tests/index.js",
+    "publish:npm": "npm publish --access public",
+    "publish:next": "npm publish --access public --tag next"
+  },
+  "exports": {
+    "./tsconfig.app.json": "./tsconfig.app.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intentjs/intent.git"
+  },
+  "author": "Vinayak Sarawagi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/intentjs/intent/issues"
+  },
+  "homepage": "https://github.com/intentjs/intent#readme"
+}

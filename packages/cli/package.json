@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/cli",
-  "version": "0.0.18-alpha.2",
+  "version": "0.0.18-alpha.3",
   "description": "Helper commands for building Intent application.",
   "repository": {
     "type": "git",
@@ -41,6 +41,10 @@
     "./build": {
       "types": "./commands/build.d.ts",
       "default": "./commands/build.js"
+    },
+    "./commands": {
+      "types": "./commands/index.d.ts",
+      "default": "./commands/index.js"
     }
   },
   "dependencies": {

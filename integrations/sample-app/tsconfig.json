@@ -1,44 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@intentjs/tooling/tsconfig.app.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "lib": ["ES2022", "ESNext"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022",
-    "declaration": true,
-    "removeComments": true,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "rewriteRelativeImportExtensions": true,
-    // "allowImportingTsExtensions":true,
-    "noEmit": true,
-    "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": ".",
     "rootDir": ".",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
   },
   "include": ["app", "bin", "libs", "config", "resources"],
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
-  "ts-node": {
-    "esm": true,
-    "swc": true,
-    "files": true,
-    "transpileOnly":true,
-    "compilerOptions": {
-      "module": "NodeNext",
-      "esModuleInterop": true
-    },
-    "experimentalSpecifierResolution": "node",
-    "require": ["tsconfig-paths/register"]
-  },
+  "exclude": ["node_modules", "dist"]
 }
