@@ -49,6 +49,7 @@ export class S3Storage implements StorageDriver {
     fileContent: any,
     options?: FileOptions,
   ): Promise<StorageDriver$PutFileResponse> {
+    await this.initialiseModules();
     const { mimeType } = options || {};
     const params = {
       Bucket: this.config.bucket,
@@ -73,6 +74,7 @@ export class S3Storage implements StorageDriver {
     expireInMinutes = 20,
     command: 'get' | 'put' = 'get',
   ): Promise<string> {
+    await this.initialiseModules();
     const commandMap = {
       get: this.AWS.GetObjectCommand,
       put: this.AWS.PutObjectCommand,
@@ -93,6 +95,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async get(path: string): Promise<Buffer | null> {
+    await this.initialiseModules();
     try {
       const command = new this.AWS.GetObjectCommand({
         Bucket: this.config.bucket,
@@ -111,6 +114,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async meta(path: string): Promise<StorageDriver$FileMetadataResponse> {
+    await this.initialiseModules();
     try {
       const command = new this.AWS.HeadObjectCommand({
         Bucket: this.config.bucket,
@@ -134,6 +138,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async exists(path: string): Promise<boolean> {
+    await this.initialiseModules();
     const meta = await this.meta(this.getPath(path));
     return !!Object.keys(meta || {}).length;
   }
@@ -144,6 +149,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async missing(path: string): Promise<boolean> {
+    await this.initialiseModules();
     const meta = await this.meta(this.getPath(path));
     return !!Object.keys(meta || {}).length;
   }
@@ -154,6 +160,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async url(path: string): Promise<string> {
+    await this.initialiseModules();
     const signedUrl = await this.signedUrl(path, 20, 'get');
     return Str.before(signedUrl, '?');
   }
@@ -164,6 +171,7 @@ export class S3Storage implements StorageDriver {
    * @param path
    */
   async delete(filePath: string): Promise<boolean> {
+    await this.initialiseModules();
     const params = {
       Bucket: this.config.bucket || '',
       Key: this.getPath(filePath),
@@ -192,6 +200,7 @@ export class S3Storage implements StorageDriver {
     sourcePath: string,
     destinationPath: string,
   ): Promise<StorageDriver$RenameFileResponse> {
+    await this.initialiseModules();
     const copyCommand = new this.AWS.CopyObjectCommand({
       Bucket: this.config.bucket || '',
       CopySource: '/' + this.config.bucket + '/' + this.getPath(sourcePath),
@@ -212,6 +221,7 @@ export class S3Storage implements StorageDriver {
     path: string,
     newPath: string,
   ): Promise<StorageDriver$RenameFileResponse> {
+    await this.initialiseModules();
     await this.copy(this.getPath(path), newPath);
     await this.delete(this.getPath(path));
     return { path: newPath, url: await this.url(newPath) };
@@ -222,6 +232,7 @@ export class S3Storage implements StorageDriver {
     destinationDisk: string,
     destinationPath: string,
   ): Promise<boolean> {
+    await this.initialiseModules();
     try {
       const buffer = await this.get(sourcePath);
       const driver = StorageService.getDriver(destinationDisk);
@@ -243,6 +254,7 @@ export class S3Storage implements StorageDriver {
     destinationDisk: string,
     destinationPath: string,
   ): Promise<boolean> {
+    await this.initialiseModules();
     try {
       const buffer = await this.get(sourcePath);
       const driver = StorageService.getDriver(destinationDisk);
@@ -263,6 +275,7 @@ export class S3Storage implements StorageDriver {
     path: string,
     throwError = false,
   ): Promise<Record<string, any>> {
+    await this.initialiseModules();
     const buffer = await this.get(path);
     try {
       return JSON.parse(buffer.toString());
@@ -279,6 +292,7 @@ export class S3Storage implements StorageDriver {
     ttlInMins: number,
     params?: Record<string, any>,
   ): Promise<string> {
+    this.initialiseModules();
     console.log(path, ttlInMins, params);
     throw new Error('Method not implemented.');
   }
@@ -289,6 +303,7 @@ export class S3Storage implements StorageDriver {
   }
 
   async lastModifiedAt(path: string): Promise<Date> {
+    await this.initialiseModules();
     const meta = await this.meta(path);
     return meta.lastModified;
   }
@@ -299,7 +314,7 @@ export class S3Storage implements StorageDriver {
   }
 
   async path(path: string): Promise<string> {
-    console.log(path);
+    await this.initialiseModules();
     return this.getPath(path);
   }
 

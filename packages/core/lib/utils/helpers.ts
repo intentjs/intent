@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validateSync, ValidationError } from 'class-validator';
-import * as pc from 'picocolors';
+import pc from 'picocolors';
 import { GenericClass } from '../interfaces/index.js';
 import { Arr } from './array.js';
 import { InternalLogger } from './logger.js';
