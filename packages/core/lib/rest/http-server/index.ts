@@ -8,7 +8,4 @@ export * from './streamable-file.js';
 export * from './status-codes.js';
 export * from './param-decorators.js';
 export * from './interfaces.js';
-import HyperExpress from '@intentjs/hyper-express';
-export type { MiddlewareNext } from '@intentjs/hyper-express';
-
-export const { Request, Response } = HyperExpress;
+export { MiddlewareNext, Response, Request } from '@intentjs/hyper-express';

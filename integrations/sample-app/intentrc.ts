@@ -27,7 +27,7 @@ export default defineConfig({
   metaFiles: [{ path: 'resources/lang/*.json', watch: false }],
 
   /**
-   * @description Whether to enable type checking.
+   * @description Whether to enable type checking in dev and build mode.
    */
   typeCheck: false,
 });

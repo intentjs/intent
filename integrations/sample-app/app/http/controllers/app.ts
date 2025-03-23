@@ -1,4 +1,11 @@
-import { Controller, Get, Req, Request, Res, Response } from '@intentjs/core';
+import {
+  Controller,
+  Get,
+  Req,
+  Request,
+  Res,
+  Response,
+} from '@intentjs/core/rest';
 import { OrderPlacedEvent } from '#events/events/sample-event';
 import { UserService } from '#services/index';
 
@@ -8,7 +15,7 @@ export class UserController {
 
   @Get()
   async getHello(@Req() req: Request, @Res() res: Response) {
-    return { hello: 'Intent2' };
+    return res.json({ hello: 'Intent2' });
   }
 
   @Get('hello/')
