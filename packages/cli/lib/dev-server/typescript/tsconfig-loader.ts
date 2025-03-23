@@ -3,7 +3,7 @@ import ts, { ParsedCommandLine } from "typescript";
 import { INTENT_LOG_PREFIX } from "../../utils/log-helpers.js";
 import pc from "picocolors";
 import { NO_TSCONFIG_FOUND } from "../../utils/messages.js";
-import { TSCONFIG_BUILD_JSON, TSCONFIG_JSON } from "../../constants.js";
+import { TSCONFIG_JSON } from "../../constants.js";
 
 export class TsConfigLoader {
   loadCliOptions(customPath?: string) {
@@ -41,7 +41,7 @@ export class TsConfigLoader {
 
   loadPath(customPath?: string): string {
     try {
-      const tsConfigFile = customPath || TSCONFIG_BUILD_JSON || TSCONFIG_JSON;
+      const tsConfigFile = customPath || TSCONFIG_JSON;
 
       const configPath = ts.findConfigFile(
         process.cwd(),
