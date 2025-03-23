@@ -7,24 +7,11 @@ export class RedisDriver implements CacheDriver {
   private IORedis: any;
 
   constructor(private options: RedisDriverOption) {
-    this.initializeModules().then(() => {
-      if (options.url) {
-        this.client = new this.IORedis(options.url, {
-          db: options.database || 0,
-        });
-      } else {
-        this.client = new this.IORedis({
-          host: options.host,
-          port: options.port,
-          username: options.username,
-          password: options.password,
-          db: options.database,
-        });
-      }
-    });
+    this.initializeModules();
   }
 
   async get(key: string): Promise<any> {
+    await this.initializeModules();
     const value = await this.client.get(`${this.options.prefix}:::${key}`);
     if (!value) return null;
     try {
@@ -39,6 +26,7 @@ export class RedisDriver implements CacheDriver {
     value: string | number | Record<string, any>,
     ttlInSec?: number,
   ): Promise<boolean> {
+    await this.initializeModules();
     try {
       const redisKey = `${this.options.prefix}:::${key}`;
       ttlInSec
@@ -51,6 +39,7 @@ export class RedisDriver implements CacheDriver {
   }
 
   async has(key: string): Promise<boolean> {
+    await this.initializeModules();
     const num = await this.client.exists(`${this.options.prefix}:::${key}`);
     return !!num;
   }
@@ -77,6 +66,7 @@ export class RedisDriver implements CacheDriver {
   }
 
   async forget(key: string): Promise<boolean> {
+    await this.initializeModules();
     try {
       await this.client.del(this.storeKey(key));
       return true;
@@ -90,11 +80,26 @@ export class RedisDriver implements CacheDriver {
   }
 
   getClient<T>(): T {
+    this.initializeModules();
     return this.client as unknown as T;
   }
 
   async initializeModules(): Promise<void> {
+    if (this.client) return;
     const { Redis } = await Package.load('ioredis');
     this.IORedis = Redis;
+    if (this.options.url) {
+      this.client = new this.IORedis(this.options.url, {
+        db: this.options.database || 0,
+      });
+    } else {
+      this.client = new this.IORedis({
+        host: this.options.host,
+        port: this.options.port,
+        username: this.options.username,
+        password: this.options.password,
+        db: this.options.database,
+      });
+    }
   }
 }

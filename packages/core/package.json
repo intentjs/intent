@@ -125,6 +125,7 @@
     "eslint-plugin-sonarjs": "^3.0.2",
     "jest": "^29.7.0",
     "prettier": "^3.5.3",
+    "react-email": "3.0.7",
     "reflect-metadata": "^0.2.2",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.6",
@@ -134,7 +135,7 @@
     "@intentjs/hyper-express": "^0.0.7",
     "@nestjs/common": "^11.0.12",
     "@nestjs/core": "^11.0.12",
-    "@react-email/components": "^0.0.34",
+    "@react-email/components": "^0.0.32",
     "archy": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -151,16 +152,16 @@
     "live-directory": "^3.0.3",
     "objection": "^3.1.4",
     "picocolors": "^1.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "ts-morph": "^22.0.0",
     "ulid": "^2.4.0",
     "winston": "^3.17.0",
     "yargs-parser": "^21.1.1"
   },
   "peerDependencies": {
+    "@intentjs/cli": "*",
     "knex": "^3.1.0",
-    "objection": "^3.1.4",
-    "@intentjs/cli": "*"
+    "objection": "^3.1.4"
   }
 }

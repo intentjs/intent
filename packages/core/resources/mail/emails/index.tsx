@@ -22,6 +22,7 @@ export const IntentMailComponent = (props?: Record<string, any>) => {
     theme: { isDarkThemed },
   } = props;
 
+  console.log(components, footer);
   return (
     <Html>
       <Head>
@@ -66,14 +67,17 @@ export const IntentMailComponent = (props?: Record<string, any>) => {
                   <Hr />
                 </>
               )}
-              {components?.map((item, index) => (
-                <ComponentBuilder
-                  value={item.value}
-                  type={item.type}
-                  // className={item.className}
-                  key={`email-comp-${index}`}
-                />
-              ))}
+              {components?.map((item, index) => {
+                console.log('item ===> ', item);
+                return (
+                  <ComponentBuilder
+                    value={item.value}
+                    type={item.type}
+                    // className={item.className}
+                    key={`email-comp-${index}`}
+                  />
+                );
+              })}
               {footer && (
                 <>
                   <Hr />

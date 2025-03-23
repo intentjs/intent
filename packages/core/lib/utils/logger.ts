@@ -1,4 +1,4 @@
-import * as pc from 'picocolors';
+import pc from 'picocolors';
 import { Str } from './string.js';
 
 export class InternalLogger {

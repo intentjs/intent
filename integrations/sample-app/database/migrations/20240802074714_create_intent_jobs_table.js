@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 
-exports.up = async function (knex) {
+export const up = async function (knex) {
   const migration = await knex.schema.createTableIfNotExists(
     'intent_jobs',
     (table) => {
@@ -23,6 +23,6 @@ exports.up = async function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
+export const down = function (knex) {
   return knex.schema.dropTableIfExists('intent_jobs');
 };

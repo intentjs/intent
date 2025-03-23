@@ -8,8 +8,9 @@ import {
   MailMessagePayload,
 } from './interfaces/index.js';
 import { AttachmentOptions } from './interfaces/provider.js';
-import { Package } from '../utils/index.js';
-import IntentMailComponent from '../../resources/mail/emails/index.js';
+import { IntentMailComponent } from '../../resources/mail/emails/index.js';
+import { render } from '@react-email/render';
+import { ReactElement } from 'react';
 
 export class MailMessage {
   private mailSubject?: string;
@@ -204,7 +205,7 @@ export class MailMessage {
 
     if (this.mailType === GENERIC_MAIL) {
       const templateConfig = ConfigService.get('mailers.template');
-      const { render } = await Package.load('@react-email/render');
+
       const html = await render(
         IntentMailComponent({
           header: { value: { title: templateConfig.appName } },
@@ -225,8 +226,10 @@ export class MailMessage {
 
     if (this.mailType === VIEW_BASED_MAIL && this.viewFile) {
       const component = this.viewFile;
-      const { render } = await Package.load('@react-email/render');
-      const html = await render(component(this.payload));
+
+      const html = await render(
+        component(this.payload) as unknown as ReactElement,
+      );
 
       this.compiledHtml = html;
       return this.compiledHtml;

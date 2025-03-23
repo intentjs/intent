@@ -47,6 +47,7 @@ export class RedisQueueDriver implements PollQueueDriver {
   async init(): Promise<void> {}
 
   async push(message: string, rawPayload: InternalMessage): Promise<void> {
+    await this.initializeModules();
     if (rawPayload.delay > Date.now()) {
       await this.pushToDelayedQueue(message, rawPayload);
       return;
@@ -59,6 +60,7 @@ export class RedisQueueDriver implements PollQueueDriver {
   }
 
   async pull(options: Record<string, any>): Promise<RedisJob[]> {
+    await this.initializeModules();
     const data = await this.client.lpop(this.getQueue(options.queue));
     return data ? [new RedisJob({ message: data })] : [];
   }

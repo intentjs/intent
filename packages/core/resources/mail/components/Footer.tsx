@@ -4,6 +4,7 @@ import { ComponentProps } from './interface.js';
 
 export const Footer = ({ value }: ComponentProps) => {
   const { logo, title, appName } = value;
+  console.log('footer ===> ', value);
   return (
     <>
       {logo && <Img src={logo?.src} alt={logo?.alt} width={40} />}

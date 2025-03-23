@@ -83,7 +83,6 @@ export class PollQueueWorker extends BaseQueueWorker {
   async handleJob(runner: JobRunner, job: DriverJob): Promise<void> {
     const now = Date.now();
     const message = this.fetchMessage(job);
-    this.logInfo(`[${message.job}] Job Processing...`);
     this.emitEvent(new JobProcessing(message, job));
     const { status, error } = await runner.run(message);
     await this.handleStatus(status, message, job, error, now);

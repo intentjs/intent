@@ -1,30 +1,16 @@
 import { GenericFunction } from '../../interfaces/index.js';
+import { Package } from '../../utils/packageLoader.js';
 import { CacheDriver, RedisDriverOption } from '../interfaces/index.js';
-import { Redis } from 'ioredis';
 
 export class DiceDbDriver implements CacheDriver {
   private client: any;
 
   constructor(private options: RedisDriverOption) {
-    // const IORedis = Package.load('ioredis');
-    if (options.url) {
-      this.client = new Redis(options.url, {
-        db: options.database || 0,
-        enableReadyCheck: false,
-      });
-    } else {
-      this.client = new Redis({
-        host: options.host,
-        port: options.port,
-        username: options.username,
-        password: options.password,
-        db: options.database,
-        enableReadyCheck: false,
-      });
-    }
+    this.initializeModules();
   }
 
   async get(key: string): Promise<any> {
+    await this.initializeModules();
     const value = await this.client.get(`${this.options.prefix}:::${key}`);
     if (!value) return null;
     try {
@@ -39,6 +25,7 @@ export class DiceDbDriver implements CacheDriver {
     value: string | number | Record<string, any>,
     ttlInSec?: number,
   ): Promise<boolean> {
+    await this.initializeModules();
     try {
       const redisKey = `${this.options.prefix}:::${key}`;
       ttlInSec
@@ -51,6 +38,7 @@ export class DiceDbDriver implements CacheDriver {
   }
 
   async has(key: string): Promise<boolean> {
+    await this.initializeModules();
     const num = await this.client.exists(`${this.options.prefix}:::${key}`);
     return !!num;
   }
@@ -77,6 +65,7 @@ export class DiceDbDriver implements CacheDriver {
   }
 
   async forget(key: string): Promise<boolean> {
+    await this.initializeModules();
     try {
       await this.client.del(this.storeKey(key));
       return true;
@@ -91,5 +80,25 @@ export class DiceDbDriver implements CacheDriver {
 
   getClient<T>(): T {
     return this.client as unknown as T;
+  }
+
+  async initializeModules(): Promise<void> {
+    if (this.client) return;
+    const { Redis } = await Package.load('ioredis');
+    if (this.options.url) {
+      this.client = new Redis(this.options.url, {
+        db: this.options.database || 0,
+        enableReadyCheck: false,
+      });
+    } else {
+      this.client = new Redis({
+        host: this.options.host,
+        port: this.options.port,
+        username: this.options.username,
+        password: this.options.password,
+        db: this.options.database,
+        enableReadyCheck: false,
+      });
+    }
   }
 }

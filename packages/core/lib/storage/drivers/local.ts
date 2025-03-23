@@ -1,6 +1,6 @@
 import { ReadStream, createReadStream } from 'fs';
 import { extname, join } from 'path';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { CannotParseAsJsonException } from '../exceptions/cannotParseAsJson.js';
 import { CannotPerformFileOpException } from '../exceptions/cannotPerformFileOp.js';
 import { getMimeTypeFromExtention } from '../helpers/index.js';

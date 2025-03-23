@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as pc from 'picocolors';
+import pc from 'picocolors';
 import { Command, ConsoleIO } from '../../console/index.js';
 import { Str } from '../../utils/string.js';
 import { ObjectionService } from '../service.js';

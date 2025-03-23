@@ -84,7 +84,7 @@ export class InMemoryDriver implements CacheDriver {
 
   async initialiseModules(): Promise<void> {
     if (this.client) return;
-    const NodeCache = await Package.load('node-cache');
+    const { default: NodeCache } = await Package.load('node-cache');
     this.client = new NodeCache({ stdTTL: 100, checkperiod: 120 });
   }
 }
