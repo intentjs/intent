@@ -22,7 +22,6 @@ import {
 import { Kernel } from '../foundation/kernel.js';
 import pc from 'picocolors';
 import { printBulletPoints } from '../../utils/console-helpers.js';
-import 'console.mute';
 import { Response as HyperResponse, Server } from '@intentjs/hyper-express';
 import { MiddlewareConfigurator } from './middlewares/configurator.js';
 import { MiddlewareComposer } from './middlewares/middleware-composer.js';
@@ -56,7 +55,7 @@ export class IntentHttpServer {
     const module = ModuleBuilder.build(container, this.kernel);
 
     const app = await NestFactory.createApplicationContext(module, {
-      logger: ['error', 'warn'],
+      logger: ['error'],
     });
 
     const globalGuards = this.kernel.guards();
