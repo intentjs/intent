@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/cli",
-  "version": "0.0.18-alpha.1",
+  "version": "0.0.18-alpha.2",
   "description": "Helper commands for building Intent application.",
   "repository": {
     "type": "git",
@@ -47,7 +47,6 @@
     "@clack/prompts": "^0.10.0",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.11.11",
-    "@swc/plugin-transform-imports": "^7.0.0",
     "chokidar": "^4.0.3",
     "commander": "^13.1.0",
     "fast-glob": "^3.3.3",
