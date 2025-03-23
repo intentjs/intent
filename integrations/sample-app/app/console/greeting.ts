@@ -1,4 +1,4 @@
-import { Command, ConsoleIO } from '@intentjs/core';
+import { Command, ConsoleIO } from '@intentjs/core/console';
 
 /**
  * Sample command, feel free to remove this file.

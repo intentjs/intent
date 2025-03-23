@@ -1,4 +1,5 @@
-import { MailerOptions, configNamespace } from '@intentjs/core';
+import { configNamespace } from '@intentjs/core/config';
+import { MailerOptions } from '@intentjs/core/mail';
 
 export default configNamespace(
   'mailers',

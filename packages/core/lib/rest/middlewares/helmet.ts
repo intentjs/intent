@@ -2,10 +2,10 @@ import helmet from 'helmet';
 import { Injectable } from '../../foundation/index.js';
 import { ConfigService } from '../../config/service.js';
 import { MiddlewareNext, Request, Response } from '@intentjs/hyper-express';
-import { IntentMiddleware } from '../foundation/index.js';
+import { HttpMiddleware } from '../foundation/middlewares/middleware.js';
 
 @Injectable()
-export class HelmetMiddleware extends IntentMiddleware {
+export class HelmetMiddleware extends HttpMiddleware {
   constructor(private readonly config: ConfigService) {
     super();
   }

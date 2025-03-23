@@ -1,21 +1,20 @@
 import { Server } from '@intentjs/hyper-express';
 import { Type } from '../../interfaces/index.js';
-import { IntentGuard } from './guards/base-guard.js';
 import { MiddlewareConfigurator } from './middlewares/configurator.js';
-import { IntentMiddleware } from './middlewares/middleware.js';
-
+import { HttpMiddleware } from './middlewares/middleware.js';
+import { HttpGuard } from './guards/base-guard.js';
 export abstract class Kernel {
   public controllers(): Type<any>[] {
     return [];
   }
 
-  public middlewares(): Type<IntentMiddleware>[] {
+  public middlewares(): Type<HttpMiddleware>[] {
     return [];
   }
 
   public routeMiddlewares(configurator: MiddlewareConfigurator) {}
 
-  public guards(): Type<IntentGuard>[] {
+  public guards(): Type<HttpGuard>[] {
     return [];
   }
 

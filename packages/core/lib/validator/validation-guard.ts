@@ -1,10 +1,10 @@
 import { Request } from '@intentjs/hyper-express';
 import { Injectable } from '../foundation/decorators.js';
-import { IntentGuard } from '../rest/foundation/guards/base-guard.js';
 import { ExecutionContext } from '../rest/http-server/contexts/execution-context.js';
+import { HttpGuard } from '../rest/foundation/guards/base-guard.js';
 
 @Injectable()
-export class IntentValidationGuard extends IntentGuard {
+export class ValidationGuard extends HttpGuard {
   constructor() {
     super();
   }

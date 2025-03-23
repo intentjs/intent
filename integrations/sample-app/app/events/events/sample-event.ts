@@ -1,4 +1,4 @@
-import { EmitsEvent, Event } from '@intentjs/core';
+import { EmitsEvent, Event } from '@intentjs/core/events';
 
 @Event('order_placed')
 export class OrderPlacedEvent extends EmitsEvent {

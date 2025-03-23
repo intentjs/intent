@@ -7,7 +7,7 @@ import { Num } from '../utils/number.js';
 import {
   Formats,
   FormatsMap,
-  IntentLoggerOptions,
+  LoggerOptions,
   LoggerConfig,
   Transports,
   TransportsMap,
@@ -28,7 +28,7 @@ export class LoggerService {
     options = { ...defaultLoggerOptions(), ...options };
     const projectRoot = findProjectRoot();
 
-    const config = ConfigService.get('logger') as IntentLoggerOptions;
+    const config = ConfigService.get('logger') as LoggerOptions;
     const transportsConfig = [];
     for (const transportOptions of options.transports) {
       let transport = transportOptions.transport;
@@ -74,7 +74,7 @@ export class LoggerService {
   }
 
   static logger(name?: string): winston.Logger {
-    const config = ConfigService.get('logger') as IntentLoggerOptions;
+    const config = ConfigService.get('logger') as LoggerOptions;
     name = name ?? config.default;
 
     if (this.store.has(name)) return this.store.get(name);

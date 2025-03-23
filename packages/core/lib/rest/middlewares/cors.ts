@@ -2,10 +2,10 @@ import cors, { CorsOptions } from 'cors';
 import { ConfigService } from '../../config/service.js';
 import { Injectable } from '@nestjs/common';
 import { Request, Response } from '@intentjs/hyper-express';
-import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
+import { HttpMiddleware } from '../foundation/middlewares/middleware.js';
 
 @Injectable()
-export class CorsMiddleware extends IntentMiddleware {
+export class CorsMiddleware extends HttpMiddleware {
   constructor(private readonly config: ConfigService) {
     super();
   }

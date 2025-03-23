@@ -1,4 +1,5 @@
-import { Cache, Command, ConsoleIO } from '@intentjs/core';
+import { Cache } from '@intentjs/core/cache';
+import { Command, ConsoleIO } from '@intentjs/core/console';
 
 @Command('test:cache', { desc: 'Command to test the cache drivers' })
 export class TestCacheConsoleCommand {

@@ -9,7 +9,7 @@ import {
   METHOD_PATH,
 } from './constants.js';
 import { HttpMethods } from './interfaces.js';
-import { IntentGuard } from '../foundation/guards/base-guard.js';
+import { HttpGuard } from '../foundation/index.js';
 
 export type ControllerOptions = {
   host?: string;
@@ -81,7 +81,7 @@ export const ANY: RouteDecoratorType = (
   options?: ControllerOptions,
 ) => createRouteDecorators(HttpMethods.ANY, path, options);
 
-export const UseGuards = (...guards: Type<IntentGuard>[]) => {
+export const UseGuards = (...guards: Type<HttpGuard>[]) => {
   return function (target: object, key?: string | symbol, descriptor?: any) {
     if (key) {
       const existingGuards = Reflect.getMetadata(GUARD_KEY, target, key);

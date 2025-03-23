@@ -1,4 +1,5 @@
-import { __, Inject, Injectable } from '@intentjs/core';
+import { Inject, Injectable } from '@intentjs/core';
+import { __ } from '@intentjs/core/locale';
 import { UserDbRepository } from '#repositories/userDbRepository';
 
 @Injectable()

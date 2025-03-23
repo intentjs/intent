@@ -1,4 +1,5 @@
-import { Command, ConsoleIO, Storage } from '@intentjs/core';
+import { Command, ConsoleIO } from '@intentjs/core/console';
+import { Storage } from '@intentjs/core/storage';
 
 @Command('test:storage', { desc: 'Command to test the storage drivers' })
 export class TestStorageConsoleCommand {

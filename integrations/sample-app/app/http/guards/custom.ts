@@ -1,7 +1,8 @@
-import { ExecutionContext, Injectable, IntentGuard } from '@intentjs/core';
+import { Injectable } from '@intentjs/core';
+import { ExecutionContext, HttpGuard } from '@intentjs/core/http';
 
 @Injectable()
-export class CustomGuard extends IntentGuard {
+export class CustomGuard extends HttpGuard {
   async guard(ctx: ExecutionContext): Promise<boolean> {
     return true;
   }

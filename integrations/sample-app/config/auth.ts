@@ -1,4 +1,4 @@
-import { configNamespace } from '@intentjs/core';
+import { configNamespace } from '@intentjs/core/config';
 
 export default configNamespace('auth', () => ({
   /**

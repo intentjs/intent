@@ -1,14 +1,11 @@
-import {
-  Dispatch,
-  IntentApplicationContext,
-  ServiceProvider,
-} from '@intentjs/core';
+import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
 import { TestCacheConsoleCommand } from '#console/cache';
 import { GreetingCommand } from '#console/greeting';
 import { TestLogConsoleCommand } from '#console/log';
 import { TestMailConsoleCommand } from '#console/mailer';
 import { TestQueueConsoleCommand } from '#console/queue';
 import { TestStorageConsoleCommand } from '#console/storage';
+import { Dispatch } from '@intentjs/core/queue';
 
 export class ConsoleServiceProvider extends ServiceProvider {
   /**

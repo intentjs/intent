@@ -1,6 +1,6 @@
 import { MiddlewareNext, Request, Response } from '@intentjs/hyper-express';
 
-export abstract class IntentMiddleware {
+export abstract class HttpMiddleware {
   abstract use(
     req: Request,
     res: Response,
