@@ -1,9 +1,7 @@
-import {
-  AppConfig,
-  configNamespace,
-  toBoolean,
-  ValidationErrorSerializer,
-} from '@intentjs/core';
+import { configNamespace } from '@intentjs/core/config';
+import { toBoolean } from '@intentjs/core/helpers';
+import { ValidationErrorSerializer } from '@intentjs/core';
+import { AppConfig } from '@intentjs/core/app';
 
 export default configNamespace(
   'app',

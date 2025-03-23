@@ -1,12 +1,3 @@
-import {
-  CorsMiddleware,
-  HttpMethods,
-  IntentGuard,
-  IntentMiddleware,
-  Kernel,
-  MiddlewareConfigurator,
-  Type,
-} from '@intentjs/core';
 import { UserController } from '#http/controllers/app';
 import { AuthController } from '#http/controllers/auth';
 import { SampleMiddleware } from '#http/middlewares/sample';
@@ -14,6 +5,15 @@ import { IntentController } from '#http/controllers/icon';
 import { GlobalMiddleware } from '#http/middlewares/global';
 import { Server } from '@intentjs/hyper-express';
 import { GlobalGuard } from '#http/guards/global';
+import {
+  CorsMiddleware,
+  HttpGuard,
+  HttpMethods,
+  HttpMiddleware,
+  Kernel,
+  MiddlewareConfigurator,
+} from '@intentjs/core/http';
+import { Type } from '@intentjs/core';
 
 export class HttpKernel extends Kernel {
   /**
@@ -31,7 +31,7 @@ export class HttpKernel extends Kernel {
    *
    * Read more - https://tryintent.com/docs/middlewares
    */
-  public middlewares(): Type<IntentMiddleware>[] {
+  public middlewares(): Type<HttpMiddleware>[] {
     return [GlobalMiddleware, CorsMiddleware];
   }
 
@@ -61,7 +61,7 @@ export class HttpKernel extends Kernel {
    *
    * Read more - https://tryintent.com/docs/guards
    */
-  public guards(): Type<IntentGuard>[] {
+  public guards(): Type<HttpGuard>[] {
     return [GlobalGuard];
   }
 

@@ -17,13 +17,13 @@ import {
   ROUTE_ARGS,
 } from './constants.js';
 import { RouteArgType } from './param-decorators.js';
-import { IntentGuard } from '../foundation/guards/base-guard.js';
+import { HttpGuard } from '../foundation/guards/base-guard.js';
 import { Reply } from './reply.js';
 import { joinRoute } from '../helpers.js';
-import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
+import { ExceptionHandler } from '../../exceptions/base-exception-handler.js';
 
 export class RouteExplorer {
-  globalGuards: Type<IntentGuard>[] = [];
+  globalGuards: Type<HttpGuard>[] = [];
 
   constructor(
     private discoveryService: DiscoveryService,
@@ -32,7 +32,7 @@ export class RouteExplorer {
   ) {}
 
   async exploreFullRoutes(
-    exceptionHandler: IntentExceptionHandler,
+    exceptionHandler: ExceptionHandler,
   ): Promise<HttpRoute[]> {
     const routes = [];
     const providers = this.discoveryService.getProviders();
@@ -109,7 +109,7 @@ export class RouteExplorer {
   async scanFullRoute(
     instance: any,
     key: string,
-    exceptionHandler: IntentExceptionHandler,
+    exceptionHandler: ExceptionHandler,
   ): Promise<HttpRoute> {
     const controllerKey = Reflect.getMetadata(
       CONTROLLER_KEY,
@@ -131,7 +131,7 @@ export class RouteExplorer {
     const composedGuardTypes = [
       ...(controllerGuards || []),
       ...(methodGuards || []),
-    ] as Type<IntentGuard>[];
+    ] as Type<HttpGuard>[];
 
     const composedGuards = [];
     for (const globalGuard of this.globalGuards) {
@@ -192,7 +192,7 @@ export class RouteExplorer {
     };
   }
 
-  useGlobalGuards(guards: Type<IntentGuard>[]): RouteExplorer {
+  useGlobalGuards(guards: Type<HttpGuard>[]): RouteExplorer {
     this.globalGuards.push(...guards);
     return this;
   }

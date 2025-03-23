@@ -1,20 +1,20 @@
 import { ModuleRef } from '@nestjs/core';
 import { MiddlewareConfigurator } from './configurator.js';
-import { IntentMiddleware } from './middleware.js';
+import { HttpMiddleware } from './middleware.js';
 import { ControllerScanner } from '../controller-scanner.js';
 import { Type } from '../../../interfaces/utils.js';
 
 export class MiddlewareComposer {
-  private middlewareRoute = new Map<string, IntentMiddleware[]>();
+  private middlewareRoute = new Map<string, HttpMiddleware[]>();
   private excludedMiddlewareRoutes = new Map<string, string[]>();
 
   constructor(
     private moduleRef: ModuleRef,
     private middlewareConfigurator: MiddlewareConfigurator,
-    private middlewares: Type<IntentMiddleware>[],
+    private middlewares: Type<HttpMiddleware>[],
   ) {}
 
-  async globalMiddlewares(): Promise<IntentMiddleware[]> {
+  async globalMiddlewares(): Promise<HttpMiddleware[]> {
     const globalMiddlewares = [];
     for (const middleware of this.middlewares) {
       globalMiddlewares.push(await this.moduleRef.create(middleware));
@@ -22,7 +22,7 @@ export class MiddlewareComposer {
     return globalMiddlewares;
   }
 
-  async getRouteMiddlewares(): Promise<Map<string, IntentMiddleware[]>> {
+  async getRouteMiddlewares(): Promise<Map<string, HttpMiddleware[]>> {
     /**
      * Prepares a map like
      *
@@ -83,7 +83,7 @@ export class MiddlewareComposer {
 
   async excludeMiddlewareForRoute(
     routeKey: string,
-    middleware: Type<IntentMiddleware>,
+    middleware: Type<HttpMiddleware>,
   ) {
     const existingMiddlewares = this.excludedMiddlewareRoutes.get(
       routeKey,
@@ -102,7 +102,7 @@ export class MiddlewareComposer {
   async setMiddlewareForRoute(
     routePath: string,
     routeMethod: string,
-    middleware: Type<IntentMiddleware>,
+    middleware: Type<HttpMiddleware>,
   ) {
     const routeKey = `${routeMethod}:${routePath}`;
 

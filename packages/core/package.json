@@ -26,9 +26,65 @@
       "types": "./dist/lib/index.d.ts",
       "default": "./dist/lib/index.js"
     },
-    "./rest": {
+    "./app": {
+      "types": "./dist/lib/application/interface.d.ts",
+      "default": "./dist/lib/application/interface.js"
+    },
+    "./http": {
       "types": "./dist/lib/rest/index.d.ts",
       "default": "./dist/lib/rest/index.js"
+    },
+    "./console": {
+      "types": "./dist/lib/console/index.d.ts",
+      "default": "./dist/lib/console/index.js"
+    },
+    "./cache": {
+      "types": "./dist/lib/cache/index.d.ts",
+      "default": "./dist/lib/cache/index.js"
+    },
+    "./config": {
+      "types": "./dist/lib/config/index.d.ts",
+      "default": "./dist/lib/config/index.js"
+    },
+    "./events": {
+      "types": "./dist/lib/events/index.d.ts",
+      "default": "./dist/lib/events/index.js"
+    },
+    "./errors": {
+      "types": "./dist/lib/exceptions/index.d.ts",
+      "default": "./dist/lib/exceptions/index.js"
+    },
+    "./locale": {
+      "types": "./dist/lib/localization/index.d.ts",
+      "default": "./dist/lib/localization/index.js"
+    },
+    "./logger": {
+      "types": "./dist/lib/logger/index.d.ts",
+      "default": "./dist/lib/logger/index.js"
+    },
+    "./helpers": {
+      "types": "./dist/lib/utils/index.d.ts",
+      "default": "./dist/lib/utils/index.js"
+    },
+    "./validator": {
+      "types": "./dist/lib/validator/index.d.ts",
+      "default": "./dist/lib/validator/index.js"
+    },
+    "./queue": {
+      "types": "./dist/lib/queue/index.d.ts",
+      "default": "./dist/lib/queue/index.js"
+    },
+    "./db": {
+      "types": "./dist/lib/database/index.d.ts",
+      "default": "./dist/lib/database/index.js"
+    },
+    "./mail": {
+      "types": "./dist/lib/mailer/index.d.ts",
+      "default": "./dist/lib/mailer/index.js"
+    },
+    "./storage": {
+      "types": "./dist/lib/storage/index.d.ts",
+      "default": "./dist/lib/storage/index.js"
     }
   },
   "scripts": {

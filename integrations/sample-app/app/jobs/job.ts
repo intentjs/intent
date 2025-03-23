@@ -1,4 +1,5 @@
-import { Injectable, Job } from '@intentjs/core';
+import { Injectable } from '@intentjs/core';
+import { Job } from '@intentjs/core/queue';
 
 @Injectable()
 export class QueueJobs {

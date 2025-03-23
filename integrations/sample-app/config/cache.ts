@@ -1,4 +1,5 @@
-import { CacheOptions, configNamespace } from '@intentjs/core';
+import { CacheOptions } from '@intentjs/core/cache';
+import { configNamespace } from '@intentjs/core/config';
 
 export default configNamespace(
   'cache',

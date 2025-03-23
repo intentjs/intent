@@ -8,7 +8,7 @@ import { HttpStatus } from '../rest/http-server/status-codes.js';
 import { ExecutionContext } from '../rest/http-server/contexts/execution-context.js';
 import { RouteNotFoundException } from './route-not-found-exception.js';
 
-export abstract class IntentExceptionHandler {
+export abstract class ExceptionHandler {
   doNotReport(): Array<Type<HttpException>> {
     return [];
   }

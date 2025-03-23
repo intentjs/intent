@@ -1,3 +1,5 @@
+import { OrderPlacedEvent } from '#events/events/sample-event';
+import { UserService } from '#services/index';
 import {
   Controller,
   Get,
@@ -5,9 +7,7 @@ import {
   Request,
   Res,
   Response,
-} from '@intentjs/core/rest';
-import { OrderPlacedEvent } from '#events/events/sample-event';
-import { UserService } from '#services/index';
+} from '@intentjs/core/http';
 
 @Controller('')
 export class UserController {

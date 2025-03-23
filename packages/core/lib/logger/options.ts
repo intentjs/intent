@@ -52,7 +52,7 @@ export const defaultLoggerOptions = (): {
   transports: [{ transport: Transports.Default, format: Formats.Default }],
 });
 
-export interface IntentLoggerOptions {
+export interface LoggerOptions {
   default: string;
   disableConsole: boolean;
   loggers: {

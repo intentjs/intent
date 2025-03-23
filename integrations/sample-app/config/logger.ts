@@ -1,15 +1,15 @@
+import { toBoolean } from '@intentjs/core';
+import { configNamespace } from '@intentjs/core/config';
 import {
-  Formats,
-  IntentLoggerOptions,
+  LoggerOptions,
   LogLevel,
-  configNamespace,
-  toBoolean,
   Transports,
-} from '@intentjs/core';
+  Formats,
+} from '@intentjs/core/logger';
 
 export default configNamespace(
   'logger',
-  (): IntentLoggerOptions => ({
+  (): LoggerOptions => ({
     /**
      * -----------------------------------------------------
      * Default Logger

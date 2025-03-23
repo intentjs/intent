@@ -1,6 +1,6 @@
 import { Type } from '../../../interfaces/index.js';
 import { HttpMethods } from '../../http-server/interfaces.js';
-import { IntentMiddleware } from './middleware.js';
+import { HttpMiddleware } from './middleware.js';
 
 type MiddlewareRuleApplicationInfo =
   | string
@@ -10,7 +10,7 @@ type MiddlewareRuleApplicationInfo =
 export class MiddlewareConfigurator {
   private rules: { [key: string]: MiddlewareRule } = {};
 
-  use(middleware: Type<IntentMiddleware>): MiddlewareRule {
+  use(middleware: Type<HttpMiddleware>): MiddlewareRule {
     if (this.rules[middleware.name]) {
       return this.rules[middleware.name];
     }
@@ -34,7 +34,7 @@ export class MiddlewareRule {
   public excludedFor: Array<string | { path: string; method: HttpMethods }> =
     [];
 
-  constructor(public middleware: Type<IntentMiddleware>) {}
+  constructor(public middleware: Type<HttpMiddleware>) {}
 
   for(...path: MiddlewareRuleApplicationInfo[]): this {
     this.appliedFor.push(...path);

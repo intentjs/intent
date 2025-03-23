@@ -1,4 +1,5 @@
-import { Command, ConsoleIO, Dispatch } from '@intentjs/core';
+import { Command, ConsoleIO } from '@intentjs/core/console';
+import { Dispatch } from '@intentjs/core/queue';
 
 @Command('test:queue', { desc: 'Command to test the queue drivers' })
 export class TestQueueConsoleCommand {

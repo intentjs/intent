@@ -1,10 +1,12 @@
+import { CustomGuard } from '#http/guards/custom';
+import { createReadStream } from 'fs';
+import { join } from 'path';
+import { LoginDto } from '#validators/auth';
 import {
   Accepts,
   BufferBody,
   Controller,
   Dto,
-  File,
-  findProjectRoot,
   Get,
   Header,
   Host,
@@ -14,15 +16,11 @@ import {
   Query,
   Req,
   Res,
-  Response,
   StreamableFile,
   UseGuards,
   UserAgent,
-} from '@intentjs/core';
-import { CustomGuard } from '#http/guards/custom';
-import { createReadStream } from 'fs';
-import { join } from 'path';
-import { LoginDto } from '#validators/auth';
+} from '@intentjs/core/http';
+import { findProjectRoot } from '@intentjs/core';
 
 @Controller('/icon')
 @UseGuards(CustomGuard)

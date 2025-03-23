@@ -1,12 +1,9 @@
-import {
-  ConfigService,
-  ExecutionContext,
-  HttpException,
-  IntentExceptionHandler,
-  Type,
-} from '@intentjs/core';
+import { Type } from '@intentjs/core';
+import { ConfigService } from '@intentjs/core/config';
+import { ExceptionHandler, HttpException } from '@intentjs/core/errors';
+import { ExecutionContext } from '@intentjs/core/http';
 
-export class ApplicationExceptionHandler extends IntentExceptionHandler {
+export class ApplicationExceptionHandler extends ExceptionHandler {
   constructor(private config: ConfigService) {
     super();
   }

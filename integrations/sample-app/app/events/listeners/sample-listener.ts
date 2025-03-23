@@ -1,4 +1,5 @@
-import { Injectable, ListensTo } from '@intentjs/core';
+import { Injectable } from '@intentjs/core';
+import { ListensTo } from '@intentjs/core/events';
 
 @Injectable()
 export class OrderPlacedListener {

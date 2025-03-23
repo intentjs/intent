@@ -1,6 +1,5 @@
 import HyperExpress, { MiddlewareHandler } from '@intentjs/hyper-express';
 import { HttpMethods, HttpRoute } from './interfaces.js';
-import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
 import { Validator } from '../../validator/index.js';
 import { ConfigService } from '../../config/service.js';
 import LiveDirectory from 'live-directory';
@@ -10,11 +9,12 @@ import { joinRoute } from '../helpers.js';
 import { PassThrough } from 'node:stream';
 import { HttpException } from '../../exceptions/index.js';
 import { HttpStatus } from './status-codes.js';
+import { HttpMiddleware } from '../foundation/index.js';
 
 export class HyperServer {
   protected hyper: HyperExpress.Server;
-  globalMiddlewares: IntentMiddleware[] = [];
-  routeMiddlewares: Map<string, IntentMiddleware[]>;
+  globalMiddlewares: HttpMiddleware[] = [];
+  routeMiddlewares: Map<string, HttpMiddleware[]>;
   excludedRouteMiddlewares: Map<string, string[]>;
 
   constructor() {}
@@ -150,7 +150,7 @@ export class HyperServer {
     return middlewares;
   }
 
-  useGlobalMiddlewares(globalMiddlewares: IntentMiddleware[]): HyperServer {
+  useGlobalMiddlewares(globalMiddlewares: HttpMiddleware[]): HyperServer {
     this.globalMiddlewares = globalMiddlewares;
     return this;
   }
@@ -163,7 +163,7 @@ export class HyperServer {
   }
 
   useRouteMiddlewares(
-    routeMiddlewares: Map<string, IntentMiddleware[]>,
+    routeMiddlewares: Map<string, HttpMiddleware[]>,
   ): HyperServer {
     this.routeMiddlewares = routeMiddlewares;
     return this;

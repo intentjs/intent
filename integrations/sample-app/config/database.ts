@@ -1,4 +1,5 @@
-import { DatabaseOptions, configNamespace } from '@intentjs/core';
+import { DatabaseOptions } from '@intentjs/core/db';
+import { configNamespace } from '@intentjs/core/config';
 import { knexSnakeCaseMappers } from 'objection';
 
 export default configNamespace(

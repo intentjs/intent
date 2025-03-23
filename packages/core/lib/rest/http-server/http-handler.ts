@@ -1,14 +1,14 @@
 import { Response } from '@intentjs/hyper-express';
-import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
-import { IntentGuard } from '../foundation/guards/base-guard.js';
 import { ExecutionContext } from './contexts/execution-context.js';
 import { Reply } from './reply.js';
+import { HttpGuard } from '../foundation/guards/base-guard.js';
+import { ExceptionHandler } from '../../exceptions/base-exception-handler.js';
 
 export class HttpRouteHandler {
   constructor(
-    protected readonly guards: IntentGuard[],
+    protected readonly guards: HttpGuard[],
     protected readonly handler: Function,
-    protected readonly exceptionHandler: IntentExceptionHandler,
+    protected readonly exceptionHandler: ExceptionHandler,
   ) {}
 
   async handle(

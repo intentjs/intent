@@ -1,8 +1,6 @@
-import {
-  findProjectRoot,
-  LocalizationOptions,
-  configNamespace,
-} from '@intentjs/core';
+import { LocalizationOptions } from '@intentjs/core/locale';
+import { configNamespace } from '@intentjs/core/config';
+import { findProjectRoot } from '@intentjs/core/helpers';
 import { join } from 'path';
 
 export default configNamespace(

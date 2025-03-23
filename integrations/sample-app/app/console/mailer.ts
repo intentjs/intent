@@ -1,4 +1,6 @@
-import { Command, ConsoleIO, log, Mail, MailMessage } from '@intentjs/core';
+import { Command, ConsoleIO } from '@intentjs/core/console';
+import { Mail, MailMessage } from '@intentjs/core/mail';
+import { log } from '@intentjs/core/logger';
 
 @Command('test:mail', { desc: 'Command to test the log' })
 export class TestMailConsoleCommand {

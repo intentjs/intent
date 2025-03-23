@@ -6,7 +6,7 @@ import {
 } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ConfigService } from '../../config/service.js';
-import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
+import { ExceptionHandler } from '../../exceptions/base-exception-handler.js';
 import {
   Actuator,
   IntentAppContainer,
@@ -36,7 +36,7 @@ const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
 export class IntentHttpServer {
   private kernel: Kernel;
-  private errorHandler: Type<IntentExceptionHandler>;
+  private errorHandler: Type<ExceptionHandler>;
   private container: IntentAppContainer;
 
   constructor(private readonly actuator: Actuator) {}
@@ -46,7 +46,7 @@ export class IntentHttpServer {
     return this;
   }
 
-  catchErrorsWith(handler: Type<IntentExceptionHandler>): this {
+  catchErrorsWith(handler: Type<ExceptionHandler>): this {
     this.errorHandler = handler;
     return this;
   }
