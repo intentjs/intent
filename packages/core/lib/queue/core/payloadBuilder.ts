@@ -1,4 +1,4 @@
-import ms from 'ms';
+import { ms } from 'humanize-ms';
 import { ulid } from 'ulid';
 import { QueueMetadata } from '../metadata.js';
 import { Message, JobOptions, InternalMessage } from '../strategy/index.js';
