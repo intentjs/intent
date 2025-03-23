@@ -18,10 +18,9 @@ import {
 } from './constants.js';
 import { RouteArgType } from './param-decorators.js';
 import { IntentGuard } from '../foundation/guards/base-guard.js';
-import { IntentMiddleware } from '../foundation/middlewares/middleware.js';
-import { IntentExceptionFilter } from '../../exceptions/base-exception-handler.js';
 import { Reply } from './reply.js';
 import { joinRoute } from '../helpers.js';
+import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
 
 export class RouteExplorer {
   globalGuards: Type<IntentGuard>[] = [];
@@ -33,7 +32,7 @@ export class RouteExplorer {
   ) {}
 
   async exploreFullRoutes(
-    errorHandler: IntentExceptionFilter,
+    exceptionHandler: IntentExceptionHandler,
   ): Promise<HttpRoute[]> {
     const routes = [];
     const providers = this.discoveryService.getProviders();
@@ -52,7 +51,7 @@ export class RouteExplorer {
         const route = await this.scanFullRoute(
           instance,
           methodName,
-          errorHandler,
+          exceptionHandler,
         );
         route && routes.push(route);
       }
@@ -110,7 +109,7 @@ export class RouteExplorer {
   async scanFullRoute(
     instance: any,
     key: string,
-    errorHandler: IntentExceptionFilter,
+    exceptionHandler: IntentExceptionHandler,
   ): Promise<HttpRoute> {
     const controllerKey = Reflect.getMetadata(
       CONTROLLER_KEY,
@@ -153,7 +152,7 @@ export class RouteExplorer {
     const handler = new HttpRouteHandler(
       composedGuards,
       instance[key].bind(instance),
-      errorHandler,
+      exceptionHandler,
     );
 
     const replyHandler = new Reply();

@@ -1,7 +1,7 @@
 import { join } from "path";
 import { INTENT_LOG_PREFIX } from "../lib/utils/log-helpers.js";
 import pc from "picocolors";
-import { copyFile, existsSync, remove } from "fs-extra";
+import fsExtra from "fs-extra";
 import * as p from "@clack/prompts";
 import { NEW_PROJECT_OPTIONS } from "../lib/configuration/new-project-config.js";
 import {
@@ -12,6 +12,8 @@ import { InjectConfigCodegen } from "../lib/codegen/inject-config.js";
 import { cwd } from "process";
 import { downloadRepository } from "../lib/new-project/actions/download-helper.js";
 import { downloadDependenciesUsingNpm } from "../lib/new-project/actions/download-depedencies.js";
+
+const { remove, copyFile, existsSync } = fsExtra;
 
 export class NewProjectCommand {
   constructor() {}

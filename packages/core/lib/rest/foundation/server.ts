@@ -6,8 +6,12 @@ import {
 } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ConfigService } from '../../config/service.js';
-import { IntentExceptionFilter } from '../../exceptions/index.js';
-import { IntentAppContainer, ModuleBuilder } from '../../foundation/index.js';
+import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
+import {
+  Actuator,
+  IntentAppContainer,
+  ModuleBuilder,
+} from '../../foundation/index.js';
 import { Type } from '../../interfaces/index.js';
 import {
   findProjectRoot,
@@ -25,7 +29,6 @@ import { MiddlewareComposer } from './middlewares/middleware-composer.js';
 import { HyperServer } from '../http-server/server.js';
 import { HttpExecutionContext } from '../http-server/contexts/http-execution-context.js';
 import { ExecutionContext } from '../http-server/contexts/execution-context.js';
-import { Response } from '../http-server/response.js';
 import { RouteExplorer } from '../http-server/route-explorer.js';
 import { RouteNotFoundException } from '../../exceptions/route-not-found-exception.js';
 
@@ -33,31 +36,25 @@ const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
 export class IntentHttpServer {
   private kernel: Kernel;
-  private errorHandler: Type<IntentExceptionFilter>;
+  private errorHandler: Type<IntentExceptionHandler>;
   private container: IntentAppContainer;
 
-  static init() {
-    return new IntentHttpServer();
-  }
+  constructor(private readonly actuator: Actuator) {}
 
-  useContainer(containerCls: Type<IntentAppContainer>): this {
-    this.container = new containerCls();
-    this.container.build();
-    return this;
-  }
-
-  useKernel(kernelCls: Type<Kernel>): this {
+  initKernel(kernelCls: Type<Kernel>): this {
     this.kernel = new kernelCls();
     return this;
   }
 
-  handleErrorsWith(filter: Type<IntentExceptionFilter>): this {
-    this.errorHandler = filter;
+  catchErrorsWith(handler: Type<IntentExceptionHandler>): this {
+    this.errorHandler = handler;
     return this;
   }
 
   async start() {
-    const module = ModuleBuilder.build(this.container, this.kernel);
+    const container = await this.getContainer();
+    const module = ModuleBuilder.build(container, this.kernel);
+
     const app = await NestFactory.createApplicationContext(module, {
       logger: ['error', 'warn'],
     });
@@ -66,6 +63,7 @@ export class IntentHttpServer {
 
     const appModule = app.select(module);
     const ds = app.get(DiscoveryService);
+
     const ms = app.get(MetadataScanner, { strict: false });
     const mr = appModule.get(ModuleRef, { strict: true });
 
@@ -182,6 +180,13 @@ export class IntentHttpServer {
         }),
       );
     }
+  }
+
+  async getContainer(): Promise<IntentAppContainer> {
+    const containerCls = await this.actuator.importContainer();
+    this.container = new containerCls();
+    this.container.build();
+    return this.container;
   }
 
   async configureErrorReporter(config: Record<string, any>): Promise<void> {

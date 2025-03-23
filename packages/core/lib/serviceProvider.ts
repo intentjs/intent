@@ -22,6 +22,7 @@ import {
   ConfigBuilder,
   ConfigService,
 } from './config/index.js';
+import { ReplConsole } from './repl/terminal.js';
 
 export const IntentProvidersFactory = (
   config: any[],
@@ -35,6 +36,7 @@ export const IntentProvidersFactory = (
       });
 
       this.bind(
+        ReplConsole,
         ConfigService,
         IntentExplorer,
         ListCommands,

@@ -1,3 +1,4 @@
+import { IntentApplicationContext } from '../interfaces/utils.js';
 import { ConsoleIO } from './consoleIO.js';
 
 export interface CommandMetaOptions {
@@ -6,7 +7,10 @@ export interface CommandMetaOptions {
 }
 
 export interface CommandObject extends ArgumentParserOutput {
-  target: (cli: ConsoleIO) => Promise<void | boolean>;
+  target: (
+    cli: ConsoleIO,
+    app?: IntentApplicationContext,
+  ) => Promise<void | boolean>;
   expression: string;
   meta: CommandMetaOptions;
 }

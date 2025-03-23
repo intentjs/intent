@@ -1,5 +1,5 @@
 import { Response } from '@intentjs/hyper-express';
-import { IntentExceptionFilter } from '../../exceptions/base-exception-handler.js';
+import { IntentExceptionHandler } from '../../exceptions/base-exception-handler.js';
 import { IntentGuard } from '../foundation/guards/base-guard.js';
 import { ExecutionContext } from './contexts/execution-context.js';
 import { Reply } from './reply.js';
@@ -8,7 +8,7 @@ export class HttpRouteHandler {
   constructor(
     protected readonly guards: IntentGuard[],
     protected readonly handler: Function,
-    protected readonly exceptionFilter: IntentExceptionFilter,
+    protected readonly exceptionHandler: IntentExceptionHandler,
   ) {}
 
   async handle(
@@ -37,7 +37,7 @@ export class HttpRouteHandler {
       const response = context.switchToHttp().getResponse();
       replyHandler.handle(request, response, responseFromHandler);
     } catch (e) {
-      const res = this.exceptionFilter.catch(context, e);
+      const res = this.exceptionHandler.catch(context, e);
       return res;
     }
   }
