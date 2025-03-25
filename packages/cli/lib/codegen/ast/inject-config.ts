@@ -1,5 +1,5 @@
 import { join } from "path";
-import { format, resolveConfig, resolveConfigFile } from "prettier";
+import { format, Options, resolveConfig, resolveConfigFile } from "prettier";
 import {
   Project,
   SourceFile,
@@ -7,6 +7,7 @@ import {
   ObjectLiteralExpression,
   Node,
 } from "ts-morph";
+import { pathExists } from "fs-extra/esm";
 
 export class InjectConfig {
   private project: Project;
@@ -146,13 +147,16 @@ export class InjectConfig {
     const updatedText = objects.getText().replace(/,\s*,/g, ",");
     objects.replaceWithText(updatedText);
 
-    const prettierConfig = await resolveConfig(this.projectRoot, {
-      config: join(this.projectRoot, ".prettierrc"),
-    });
+    let prettierConfig = null;
+    if (await pathExists(join(this.projectRoot, ".prettierrc"))) {
+      prettierConfig = await resolveConfig(this.projectRoot, {
+        config: join(this.projectRoot, ".prettierrc"),
+      });
+    }
 
     const formatted = await format(this.sourceFile.getFullText(), {
       parser: "typescript",
-      ...prettierConfig,
+      ...(prettierConfig || {}),
     });
 
     this.sourceFile.replaceWithText(formatted);
