@@ -23,6 +23,9 @@ import {
   ConfigService,
 } from './config/index.js';
 import { ReplConsole } from './repl/terminal.js';
+import { initViteDevServer } from './frontend/vite/server.js';
+import { ReactRenderer } from './frontend/render.js';
+import { createRspackCompiler } from './frontend/rspack/server.js';
 
 export const IntentProvidersFactory = (
   config: any[],
@@ -57,6 +60,10 @@ export const IntentProvidersFactory = (
         BuildProjectCommand,
         DevServerCommand,
       );
+
+      this.bindWithFactory('VITE', () => initViteDevServer());
+      this.bind(ReactRenderer);
+      // this.bindWithFactory('RSPACK', () => createRspackCompiler());
     }
 
     /**

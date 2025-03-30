@@ -100,6 +100,10 @@ class ExpressRequest {
         return this.url;
     }
 
+    set originalUrl(url) {
+        this.url = url;
+    }
+
     get fresh() {
         this._throw_unsupported('fresh');
     }
