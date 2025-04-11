@@ -173,7 +173,7 @@ export class PollQueueWorker extends BaseQueueWorker {
       this.emitEvent(new JobMaxRetriesExceeed(message, job));
       return;
     }
-    await Dispatch(message);
+    await Dispatch({ ...message, delay: message.netDelayInSeconds });
     this.emitEvent(new JobFailed(message, job));
   }
 

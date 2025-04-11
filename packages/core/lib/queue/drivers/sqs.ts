@@ -11,25 +11,15 @@ export class SqsQueueDriver implements PollQueueDriver {
 
   constructor(private options: Record<string, any>) {
     validateOptions(options, SqsQueueOptionsDto, { cls: SqsQueueDriver.name });
-    this.initializeModules().then(() => {
-      this.client = new this.AWS.SQS({
-        region: options.region,
-        apiVersion: options.apiVersion,
-        credentials: options.credentials || {
-          accessKeyId: options.accessKey,
-          secretAccessKey: options.secretKey,
-        },
-      });
-    });
+    this.initializeModules();
   }
 
-  init(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
+  async init(): Promise<void> {}
 
   async push(message: string, rawPayload: InternalMessage): Promise<void> {
+    await this.initializeModules();
     const params = {
-      DelaySeconds: rawPayload.delay,
+      DelaySeconds: rawPayload.netDelayInSeconds,
       MessageBody: message,
       QueueUrl: joinUrl(this.options.prefix, rawPayload.queue),
     };
@@ -39,6 +29,7 @@ export class SqsQueueDriver implements PollQueueDriver {
   }
 
   async pull(options: Record<string, any>): Promise<SqsJob[] | null> {
+    await this.initializeModules();
     const params = {
       MaxNumberOfMessages: 10,
       MessageAttributeNames: ['All'],
@@ -53,6 +44,7 @@ export class SqsQueueDriver implements PollQueueDriver {
   }
 
   async remove(job: SqsJob, options: Record<string, any>): Promise<void> {
+    await this.initializeModules();
     const params = {
       QueueUrl: joinUrl(this.options.prefix, options.queue),
       ReceiptHandle: job.data.ReceiptHandle,
@@ -64,6 +56,7 @@ export class SqsQueueDriver implements PollQueueDriver {
   }
 
   async purge(options: Record<string, any>): Promise<void> {
+    await this.initializeModules();
     const params = {
       QueueUrl: joinUrl(this.options.prefix, options.queue),
     };
@@ -74,6 +67,7 @@ export class SqsQueueDriver implements PollQueueDriver {
   }
 
   async count(options: Record<string, any>): Promise<number> {
+    await this.initializeModules();
     const params = {
       QueueUrl: joinUrl(this.options.prefix, options.queue),
       AttributeNames: ['ApproximateNumberOfMessages'],
@@ -84,6 +78,15 @@ export class SqsQueueDriver implements PollQueueDriver {
   }
 
   async initializeModules(): Promise<void> {
+    if (this.AWS && this.client) return Promise.resolve();
     this.AWS = await Package.load('@aws-sdk/client-sqs');
+    this.client = new this.AWS.SQS({
+      region: this.options.region,
+      apiVersion: this.options.apiVersion,
+      credentials: this.options.credentials || {
+        accessKeyId: this.options.accessKey,
+        secretAccessKey: this.options.secretKey,
+      },
+    });
   }
 }
