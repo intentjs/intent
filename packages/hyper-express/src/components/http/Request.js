@@ -858,6 +858,10 @@ class Request {
         return this._url;
     }
 
+    set url(url) {
+        this._url = url;
+    }
+
     /**
      * Returns path for incoming request.
      * @returns {String}
