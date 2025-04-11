@@ -28,11 +28,11 @@ class UploadedFile {
     }
 
     get extension() {
-        return this.filename;
+        return this._filename.split('.').pop();
     }
 
     async toBuffer() {
-        return fs.readFileSync(this.tempPath);
+        return fs.readFileSync(this._tempPath);
     }
 }
 

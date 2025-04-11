@@ -1,6 +1,6 @@
 {
     "name": "@intentjs/hyper-express",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "A fork of hyper-express to suit IntentJS requirements. High performance Node.js webserver with a simple-to-use API powered by uWebsockets.js under the hood.",
     "main": "index.js",
     "types": "./types/index.d.ts",

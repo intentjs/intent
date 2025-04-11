@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/core",
-  "version": "0.1.50",
+  "version": "0.1.53",
   "description": "Core module for Intent",
   "repository": {
     "type": "git",
@@ -131,7 +131,7 @@
     "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@intentjs/hyper-express": "^0.0.10",
+    "@intentjs/hyper-express": "^0.0.11",
     "@nestjs/common": "^11.0.12",
     "@nestjs/core": "^11.0.12",
     "@react-email/components": "^0.0.32",
