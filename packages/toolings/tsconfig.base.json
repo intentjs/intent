@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+      "jsx": "react-jsx",
+      "lib": ["ES2022", "ESNext", "DOM.Iterable", "DOM"],
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "target": "ES2022",
+      "declaration": true,
+      "removeComments": true,
+      "esModuleInterop": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowSyntheticDefaultImports": true,
+      "rewriteRelativeImportExtensions": true,
+      "noEmit": true,
+      "sourceMap": true,
+      "baseUrl": ".",
+      "incremental": true,
+      "skipLibCheck": true,
+      "strictNullChecks": false,
+      "noImplicitAny": false,
+      "strictBindCallApply": false,
+      "forceConsistentCasingInFileNames": false,
+      "noFallthroughCasesInSwitch": false,
+    }
+  }
+  

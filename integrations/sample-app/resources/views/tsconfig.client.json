@@ -1,0 +1,12 @@
+{
+    "extends": "@intentjs/tooling/tsconfig.client.json",
+    "compilerOptions": {
+      "outDir": "./dist",
+      "baseUrl": ".",
+      "rootDir": ".",
+      "moduleResolution": "bundler"
+    },
+    "include": ["resources"],
+    "exclude": ["node_modules", "dist"]
+  }
+  
