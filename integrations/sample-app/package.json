@@ -49,7 +49,11 @@
     "@aws-sdk/client-s3": "^3.689.0",
     "@aws-sdk/credential-providers": "^3.687.0",
     "@aws-sdk/s3-request-presigner": "^3.689.0",
+<<<<<<< HEAD
     "@intentjs/core": "workspace:*",
+=======
+    "@intentjs/core": "*",
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -66,8 +70,13 @@
     "winston": "^3.14.2"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@intentjs/cli": "workspace:*",
     "@intentjs/tooling": "workspace:*",
+=======
+    "@intentjs/cli": "*",
+    "@intentjs/tooling": "*",
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
     "@nestjs/testing": "^10.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@rspack/cli": "^1.2.8",
