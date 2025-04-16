@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "jsx": "react-jsx",
     "target": "ES2022",
@@ -24,4 +25,12 @@
   },
   "include": ["lib", "resources"],
   "exclude": ["node_modules", "tests", "dist", "**/*spec.ts"]
+=======
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
 }

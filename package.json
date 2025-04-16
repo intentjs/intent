@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "root",
   "private": true,
   "workspaces": [
@@ -29,5 +30,40 @@
     "husky": "^9.1.6",
     "lerna": "^8.1.8",
     "picomatch": "^4.0.2"
+=======
+  "name": "intent",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "dev": "lerna run dev --parallel",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-sonarjs": "^3.0.2",
+    "lerna": "^8.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@intentjs/core": "*",
+    "@intentjs/frontend": "*",
+    "@intentjs/hyper-express": "*",
+    "@intentjs/cli": "*"
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
   }
 }

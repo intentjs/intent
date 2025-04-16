@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
+<<<<<<< HEAD
       "jsx": "react-jsx",
+=======
+      "jsx": "react-jsx", 
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
       "module": "commonjs",
       "declaration": true,
       "removeComments": true,
@@ -18,6 +22,7 @@
       "noImplicitAny": false,
       "strictBindCallApply": false,
       "forceConsistentCasingInFileNames": false,
+<<<<<<< HEAD
       "noFallthroughCasesInSwitch": false
     },
     "include": ["app", "bin", "libs", "config", "resources"],
@@ -28,4 +33,19 @@
       "require": ["tsconfig-paths/register"]
     },
   }
+=======
+      "noFallthroughCasesInSwitch": false,
+      "paths": {
+        "@intentjs/*": ["packages/*/src"]
+      }
+    },
+    "include": ["packages/*/src/**/*"],
+    "exclude": ["node_modules", "dist"],
+    "ts-node": {
+      "swc": true,
+      "transpileOnly": true,
+      "require": ["tsconfig-paths/register"]
+    }
+}
+>>>>>>> fc196e7 (Initial commit: Full-stack framework setup)
   
