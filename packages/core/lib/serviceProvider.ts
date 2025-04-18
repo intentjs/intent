@@ -23,6 +23,7 @@ import {
   ConfigService,
 } from './config/index.js';
 import { ReplConsole } from './repl/terminal.js';
+import { ListScheduledTaskCommands } from './scheduler/console/list.js';
 
 export const IntentProvidersFactory = (
   config: any[],
@@ -56,6 +57,7 @@ export const IntentProvidersFactory = (
         LoggerService,
         BuildProjectCommand,
         DevServerCommand,
+        ListScheduledTaskCommands,
       );
     }
 

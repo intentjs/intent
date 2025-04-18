@@ -23,11 +23,11 @@ export class DbOperationsCommand {
     const statusList = [];
 
     for (const migration of completed) {
-      statusList.push({ migration: migration.name, status: pc.green('Y') });
+      statusList.push([migration.name, pc.green('Y')]);
     }
 
     for (const migration of pending) {
-      statusList.push({ migration: migration.file, status: pc.red('N') });
+      statusList.push([migration.file, pc.red('N')]);
     }
 
     _cli.table(['Migration', 'Status'], statusList);

@@ -7,6 +7,10 @@ import { GenericFunction } from './interfaces/index.js';
 import { JOB_NAME, JOB_OPTIONS } from './queue/constants.js';
 import { QueueMetadata } from './queue/metadata.js';
 import { Injectable } from './foundation/decorators.js';
+import { TASK_SCHEDULE, TASK_SCHEDULE_OPTIONS } from './scheduler/constants.js';
+import { SchedulerRegistry } from './scheduler/metadata.js';
+import { ScheduleOptions } from './scheduler/options/interface.js';
+import { ulid } from 'ulid';
 
 @Injectable()
 export class IntentExplorer {
@@ -34,8 +38,45 @@ export class IntentExplorer {
           this.lookupJobs(instance, key);
           this.lookupEventListeners(instance, key);
           this.lookupConsoleCommands(instance, key);
+          this.lookupSchedules(instance, key);
         },
       );
+    });
+  }
+
+  lookupSchedules(instance: Record<string, GenericFunction>, key: string) {
+    const methodRef = instance[key];
+    const hasSchedule = Reflect.hasMetadata(TASK_SCHEDULE, instance, key);
+    const isClassScheduleTask = Reflect.hasMetadata(
+      TASK_SCHEDULE,
+      instance.constructor,
+    );
+
+    if (!hasSchedule && !isClassScheduleTask) return;
+
+    if (isClassScheduleTask && key != 'handle') return;
+
+    const command =
+      Reflect.getMetadata(TASK_SCHEDULE, instance, key) ||
+      Reflect.getMetadata(TASK_SCHEDULE, instance.constructor);
+
+    const options: ScheduleOptions =
+      Reflect.getMetadata(TASK_SCHEDULE_OPTIONS, instance, key) ||
+      Reflect.getMetadata(TASK_SCHEDULE_OPTIONS, instance.constructor);
+
+    /**
+     * Check if the schedule is class based,
+     * if yes, then fill the name of the schedule with the name of the class, if not already filled.
+     * if no, then assign a ulid() to it.
+     */
+    const name = options.name
+      ? options.name
+      : isClassScheduleTask
+        ? `${instance.constructor.name}#handle`
+        : ulid();
+    SchedulerRegistry.addSchedule(command, methodRef.bind(instance), {
+      ...options,
+      name,
     });
   }
 

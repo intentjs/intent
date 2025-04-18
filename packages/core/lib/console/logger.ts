@@ -54,26 +54,14 @@ export class ConsoleLogger {
    * @param options
    * @returns void
    */
-  static table(headers: string[], rows: Record<string, any>[]): void {
+  static table(headers: string[], rows: Array<Array<string>>): void {
     const formattedHeaders = [];
     for (const header of headers) {
       formattedHeaders.push(pc.cyan(pc.bold(header)));
     }
 
-    const pRows: string[][] = [];
-
-    for (const header of headers) {
-      for (const [index, row] of rows.entries()) {
-        if (!pRows[index]) {
-          pRows[index] = [] as string[];
-        }
-
-        pRows[index].push(row[Str.camel(header)]);
-      }
-    }
-
     const p = new Table({ head: formattedHeaders });
-    p.push(...pRows);
+    p.push(...rows);
 
     console.log(p.toString());
   }

@@ -85,6 +85,10 @@
     "./storage": {
       "types": "./dist/lib/storage/index.d.ts",
       "default": "./dist/lib/storage/index.js"
+    },
+    "./schedule": {
+      "types": "./dist/lib/scheduler/index.d.ts",
+      "default": "./dist/lib/scheduler/index.js"
     }
   },
   "scripts": {
@@ -140,6 +144,7 @@
     "class-validator": "^0.14.1",
     "cli-table3": "^0.6.3",
     "cors": "^2.8.5",
+    "cron": "^4.1.4",
     "dotenv": "^16.4.7",
     "enquirer": "^2.4.1",
     "eta": "^3.5.0",
