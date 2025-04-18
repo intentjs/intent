@@ -135,7 +135,7 @@ export class IntentHttpServer {
     config: ConfigService<unknown>,
     extraInfo: [string, string, string][] = [],
   ) {
-    console.clear();
+    // console.clear();
     console.log();
     const port = config.get('app.port');
     const hostname = config.get('app.hostname');

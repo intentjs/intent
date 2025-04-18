@@ -145,7 +145,7 @@ export class ConsoleIO {
    * @param options
    * @returns void
    */
-  table(header: string[], rows: Record<string, any>[]) {
+  table(header: string[], rows: Array<Array<string>>) {
     ConsoleLogger.table(header, rows);
   }
 
