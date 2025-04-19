@@ -19,3 +19,8 @@ export type ScheduleHandler =
   | { type: HandlerType.FUNCTION; value: any }
   | { type: HandlerType.SHELL; value: any }
   | null;
+
+export type PingOptions = {
+  url: string;
+  ifCb: undefined | ((...args: any[]) => Promise<boolean> | boolean);
+};
