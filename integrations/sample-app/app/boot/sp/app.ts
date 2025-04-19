@@ -42,25 +42,48 @@ export class AppServiceProvider extends ServiceProvider {
     /**
      * Schedule Intent Command to run daily.
      */
-    Schedule.command('send:email').daily();
+    Schedule.command('send:email')
+      // .days([Schedule.MONDAY, Schedule.THURSDAY])
+      .hourly()
+      .timezone('America/Chicago')
+      .between('8:00', '17:00')
+      .run();
 
     /**
      * Simple callback, with lifecycle methods `before` and `after`.
      */
-    Schedule.call(() => console.log('inside the schedule method'))
+    Schedule.call(() => {
+      console.log('inside the schedule method');
+    })
       .purpose('sample scheduler')
       .before(() => console.log('this will run before the cron'))
-      .after(() => console.log('this will run after the cron'))
-      .everyFiveSeconds();
+      .after((output: any) =>
+        console.log('this will run after the cron', output),
+      )
+      .onSuccess((result) =>
+        console.log('this will run on success the cron', result),
+      )
+      .onFailure((error) =>
+        console.log('this will run on failure the cron', error),
+      )
+      // .pingBefore('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
+      .thenPing('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
+      .weekends()
+      .everyTwoSeconds()
+      .when(() => true)
+
+      .run();
 
     /**
      * Running a job every day at 5AM.
      */
-    Schedule.job({
-      job: 'process_abandoned_cart',
-      data: { from: '2024-04-16', to: '2024-04-17' },
-    })
-      .purpose('cron dispatching job every day at 5AM')
-      .at('5 AM');
+    // Schedule.job({
+    //   job: 'process_abandoned_cart',
+    //   data: { from: '2024-04-16', to: '2024-04-17' },
+    // })
+    //   .purpose('cron dispatching job every day at 5AM')
+    //   .everyFiveSeconds()
+    //   .weekends()
+    //   .run();
   }
 }

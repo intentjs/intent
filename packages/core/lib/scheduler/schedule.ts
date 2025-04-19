@@ -1,16 +1,25 @@
-import { CronJob, validateCronExpression } from 'cron';
+import { CronJob } from 'cron';
 import { Dispatch, Message } from '../queue/index.js';
 import { SchedulerRegistry } from './metadata.js';
 import { ulid } from 'ulid';
 import {
   HandlerType,
+  PingOptions,
   ScheduleHandler,
   ScheduleOptions,
 } from './options/interface.js';
 import { CommandRunner } from '../console/runner.js';
-import { ScheduleRun } from './schedule-run.js';
+import { ScheduleFrequency } from './frequency.js';
 
 export class Schedule {
+  static SUNDAY = '0';
+  static MONDAY = '1';
+  static TUESDAY = '2';
+  static WEDNESDAY = '3';
+  static THURSDAY = '4';
+  static FRIDAY = '5';
+  static SATURDAY = '6';
+
   private scheduleName: ScheduleOptions['name'];
   private purposeText: ScheduleOptions['purpose'];
   private handler: ScheduleHandler;
@@ -19,8 +28,19 @@ export class Schedule {
   private cronExpression: string;
   private beforeFunc: any;
   private afterFunc: any;
-  private onErrorFunc: (e: Error) => void | Promise<void>;
   private autoStart: boolean;
+  private whenFunc: (...args: any[]) => Promise<boolean> | boolean;
+  private skipFunc: (...args: any[]) => Promise<boolean> | boolean;
+  private onSuccessFunc: (...args: any[]) => Promise<void> | void;
+  private onFailureFunc: (...args: any[]) => Promise<void> | void;
+  private frequency: ScheduleFrequency;
+  private pingBeforeOptions: PingOptions;
+  private pingThenOptions: PingOptions;
+  private pingOnSuccessOptions: PingOptions;
+  private pingOnFailureOptions: PingOptions;
+  private sendOutputToUrlOptions: { url: string };
+  private sendOutputToFileOptions: { file: string };
+  private emailOutputToOptions: string[];
 
   constructor(handler: ScheduleHandler) {
     this.purposeText = '';
@@ -30,6 +50,14 @@ export class Schedule {
     this.handler = handler;
     console.log(this.handler);
     this.autoStart = true;
+    this.frequency = new ScheduleFrequency();
+    this.pingBeforeOptions = { url: undefined, ifCb: undefined };
+    this.pingThenOptions = { url: undefined, ifCb: undefined };
+    this.pingOnSuccessOptions = { url: undefined, ifCb: undefined };
+    this.pingOnFailureOptions = { url: undefined, ifCb: undefined };
+    this.sendOutputToFileOptions = { file: undefined };
+    this.sendOutputToUrlOptions = { url: undefined };
+    this.emailOutputToOptions = [];
   }
 
   static command(command: string): Schedule {
@@ -71,12 +99,6 @@ export class Schedule {
     return this;
   }
 
-  cron(expression: string): void {
-    validateCronExpression(expression);
-    this.cronExpression = expression;
-    this.makeCronJob();
-  }
-
   noAutoStart(): this {
     this.autoStart = false;
     return this;
@@ -86,185 +108,395 @@ export class Schedule {
     return this;
   }
 
-  at(time: string): void {
-    this.cron(ScheduleRun.dailyAt(time));
+  cron(expression: string): this {
+    this.frequency.cron(expression);
+    return this;
   }
 
-  everySecond(): void {
-    this.cron(ScheduleRun.everySecond);
+  at(time: string): this {
+    this.frequency.dailyAt(time);
+    return this;
   }
 
-  everyTwoSeconds(): void {
-    this.cron(ScheduleRun.everyTwoSeconds);
+  everySecond(): this {
+    this.frequency.everySecond();
+    return this;
   }
 
-  everyFiveSeconds(): void {
-    this.cron(ScheduleRun.everyFiveSeconds);
+  everyTwoSeconds(): this {
+    this.frequency.everyTwoSeconds();
+    return this;
   }
 
-  everyTenSeconds() {
-    this.cron(ScheduleRun.everyTenSeconds);
+  everyFiveSeconds(): this {
+    this.frequency.everyFiveSeconds();
+    return this;
   }
 
-  everyFifteenSeconds() {
-    this.cron(ScheduleRun.everyFifteenSeconds);
+  everyTenSeconds(): this {
+    this.frequency.everyTenSeconds();
+    return this;
   }
 
-  everyTwentySeconds() {
-    this.cron(ScheduleRun.everyTwentySeconds);
+  everyFifteenSeconds(): this {
+    this.frequency.everyFifteenSeconds();
+    return this;
   }
 
-  everyThirtySeconds() {
-    this.cron(ScheduleRun.everyThirtySeconds);
+  everyTwentySeconds(): this {
+    this.frequency.everyTwentySeconds();
+    return this;
   }
 
-  everyMinute() {
-    this.cron(ScheduleRun.everyMinute);
+  everyThirtySeconds(): this {
+    this.frequency.everyThirtySeconds();
+    return this;
   }
 
-  everyTwoMinutes() {
-    this.cron(ScheduleRun.everyTwoMinutes);
+  everyMinute(): this {
+    this.frequency.everyMinute();
+    return this;
   }
 
-  everyThreeMinutes() {
-    this.cron(ScheduleRun.everyThreeMinutes);
+  everyTwoMinutes(): this {
+    this.frequency.everyTwoMinutes();
+    return this;
   }
 
-  everyFourMinutes() {
-    this.cron(ScheduleRun.everyFourMinutes);
+  everyThreeMinutes(): this {
+    this.frequency.everyThreeMinutes();
+    return this;
   }
 
-  everyFiveMinutes() {
-    this.cron(ScheduleRun.everyFourMinutes);
+  everyFourMinutes(): this {
+    this.frequency.everyFourMinutes();
+    return this;
   }
 
-  everyTenMinutes() {
-    this.cron(ScheduleRun.everyTenMinutes);
+  everyFiveMinutes(): this {
+    this.frequency.everyFiveMinutes();
+    return this;
   }
 
-  everyFifteenMinutes() {
-    this.cron(ScheduleRun.everyFifteenMinutes);
+  everyTenMinutes(): this {
+    this.frequency.everyTenMinutes();
+    return this;
   }
 
-  everyThirtyMinutes() {
-    this.cron(ScheduleRun.everyThirtyMinutes);
+  everyFifteenMinutes(): this {
+    this.frequency.everyFifteenMinutes();
+    return this;
   }
 
-  hourly() {
-    this.cron(ScheduleRun.hourly);
+  everyThirtyMinutes(): this {
+    this.frequency.everyThirtyMinutes();
+    return this;
   }
 
-  hourlyAt(min: number) {
-    this.cron(ScheduleRun.hourlyAt(min));
+  hourly(): this {
+    this.frequency.hourly();
+    return this;
   }
 
-  everyOddHour(mins: number = 0) {
-    this.cron(ScheduleRun.everyOddHour(mins));
+  hourlyAt(min: number): this {
+    this.frequency.hourlyAt(min);
+    return this;
   }
 
-  everyTwoHours(mins: number = 0) {
-    this.cron(ScheduleRun.everyTwoHours(mins));
+  everyOddHour(mins: number = 0): this {
+    this.frequency.everyOddHour(mins);
+    return this;
   }
 
-  everyThreeHours(mins: number = 0) {
-    this.cron(ScheduleRun.everyThreeHours(mins));
+  everyTwoHours(mins: number = 0): this {
+    this.frequency.everyTwoHours(mins);
+    return this;
   }
 
-  everyFourHours(mins: number = 0) {
-    this.cron(ScheduleRun.everyFourHours(mins));
+  everyThreeHours(mins: number = 0): this {
+    this.frequency.everyThreeHours(mins);
+    return this;
   }
 
-  everySixHours(mins: number = 0) {
-    this.cron(ScheduleRun.everySixHours(mins));
+  everyFourHours(mins: number = 0): this {
+    this.frequency.everyFourHours(mins);
+    return this;
   }
 
-  daily() {
-    this.cron(ScheduleRun.daily);
+  everySixHours(mins: number = 0): this {
+    this.frequency.everySixHours(mins);
+    return this;
   }
 
-  dailyAt(time: string) {
-    this.cron(ScheduleRun.dailyAt(time));
+  daily(): this {
+    this.frequency.daily();
+    return this;
   }
 
-  twiceDaily(hour1: number, hour2: number) {
-    this.cron(ScheduleRun.twiceDaily(hour1, hour2));
+  dailyAt(time: string): this {
+    this.frequency.dailyAt(time);
+    return this;
   }
 
-  twiceDailyAt(hour1: number, hour2: number, mins: number) {
-    this.cron(ScheduleRun.twiceDailyAt(hour1, hour2, mins));
+  twiceDaily(firstTime: string, secondTime: string): this {
+    this.frequency.twiceDaily(firstTime, secondTime);
+    return this;
   }
 
-  weekly() {
-    this.cron(ScheduleRun.weekly);
+  twiceDailyAt(firstTime: string, secondTime: string): this {
+    this.frequency.twiceDailyAt(firstTime, secondTime);
+    return this;
   }
 
-  weeklyOn(day: number, time: string) {
-    this.cron(ScheduleRun.weeklyOn(day, time));
+  weekly(): this {
+    this.frequency.weekly();
+    return this;
   }
 
-  monthly() {
-    this.cron(ScheduleRun.monthly);
+  weeklyOn(day: number, time: string): this {
+    this.frequency.weeklyOn(day, time);
+    return this;
   }
 
-  monthlyOn(day: number, time: string) {
-    this.cron(ScheduleRun.monthlyOn(day, time));
+  monthly(): this {
+    this.frequency.monthly();
+    return this;
   }
 
-  twiceMonthly(firstDay: number, secondDay: number, time: string) {
-    this.cron(ScheduleRun.twiceMonthly(firstDay, secondDay, time));
+  monthlyOn(day: number, time: string): this {
+    this.frequency.monthlyOn(day, time);
+    return this;
   }
 
-  lastDayOfMonth(time: string) {
-    this.cron(ScheduleRun.lastDayOfMonth(time));
+  twiceMonthly(firstDay: number, secondDay: number, time: string): this {
+    this.frequency.twiceMonthly(firstDay, secondDay, time);
+    return this;
   }
 
-  quarterly() {
-    this.cron(ScheduleRun.quarterly);
+  lastDayOfMonth(time: string): this {
+    this.frequency.lastDayOfMonth(time);
+    return this;
   }
 
-  quarterlyOn(day: number, time: string) {
-    this.cron(ScheduleRun.quarterlyOn(day, time));
+  quarterly(time: string): this {
+    this.frequency.quarterly(time);
+    return this;
   }
 
-  yearly() {
-    this.cron(ScheduleRun.yearly);
+  quarterlyOn(day: number, time: string): this {
+    this.frequency.quarterlyOn(day, time);
+    return this;
   }
 
-  yearlyOn(month: number, day: number, time: string) {
-    this.cron(ScheduleRun.yearlyOn(month, day, time));
+  yearly(): this {
+    this.frequency.yearly();
+    return this;
+  }
+
+  yearlyOn(month: number, day: number, time: string): this {
+    this.frequency.yearlyOn(month, day, time);
+    return this;
+  }
+
+  weekdays(): this {
+    this.frequency.weekdays();
+    return this;
+  }
+
+  weekends(): this {
+    this.frequency.weekends();
+    return this;
+  }
+
+  sundays(): this {
+    this.frequency.sundays();
+    return this;
+  }
+
+  mondays(): this {
+    this.frequency.mondays();
+    return this;
+  }
+
+  tuesdays(): this {
+    this.frequency.tuesdays();
+    return this;
+  }
+
+  wednesdays(): this {
+    this.frequency.wednesdays();
+    return this;
+  }
+
+  thursdays(): this {
+    this.frequency.thursdays();
+    return this;
+  }
+
+  fridays(): this {
+    this.frequency.fridays();
+    return this;
+  }
+
+  saturdays(): this {
+    this.frequency.saturdays();
+    return this;
+  }
+
+  between(startTime: string, endTime: string): this {
+    this.frequency.between(startTime, endTime);
+    return this;
+  }
+
+  days(days: string[]): this {
+    this.frequency.days(days);
+    return this;
+  }
+
+  run() {
+    this.makeCronJob();
   }
 
   private makeCronJob() {
     this.scheduleName = this.scheduleName || `schedule_${ulid()}`;
-    const onTick = async () => {
-      try {
-        console.log('running on tick ===> ');
-        const beforeResult = this.beforeFunc && (await this.beforeFunc());
-        console.log('before result ===> ', beforeResult);
-        const { type, value } = this.handler;
-        if (type === HandlerType.COMMAND) {
-          await CommandRunner.run(value);
-        } else if (type === HandlerType.FUNCTION) {
-          await value();
-        } else if (type === HandlerType.JOB) {
-          await Dispatch(value);
-        }
-
-        console.log(this.handler);
-        const afterResult = this.afterFunc && (await this.afterFunc());
-        console.log('after result ===> ', beforeResult);
-      } catch (e) {
-        await this.onErrorFunc(e as Error);
-      }
-    };
+    this.cronExpression = this.frequency.build();
+    console.log('cron expression ===> ', this.cronExpression);
     this.cronJob = CronJob.from({
       cronTime: this.cronExpression,
-      onTick: onTick.bind(this),
+      onTick: this.composeHandler.bind(this),
       start: this.autoStart,
       timeZone: this.tz,
     });
 
     SchedulerRegistry.register(this.scheduleName, this);
+  }
+
+  async composeHandler() {
+    try {
+      const startedAt = this.formatDate(new Date());
+      const startedAtEpoch = performance.now();
+
+      if (this.whenFunc) {
+        const shouldRun = await this.whenFunc();
+        if (!shouldRun) return;
+      }
+
+      if (this.skipFunc) {
+        const shouldSkip = await this.skipFunc();
+        if (shouldSkip) return;
+      }
+
+      const beforeResult = await this.processBeforeEvents({ startedAt });
+
+      const { type, value } = this.handler;
+      let result = null;
+      if (type === HandlerType.COMMAND) {
+        result = await CommandRunner.run(value);
+      } else if (type === HandlerType.FUNCTION) {
+        result = await value(beforeResult);
+      } else if (type === HandlerType.JOB) {
+        result = await Dispatch(value);
+      }
+      await this.processAfterEvents(result, {
+        startedAtEpoch: startedAtEpoch,
+        startedAt,
+      });
+    } catch (e) {
+      await this.processFailureEvents(e as Error);
+    }
+  }
+
+  async processBeforeEvents(options: { startedAt: string }): Promise<any> {
+    const beforeResult = this.beforeFunc && (await this.beforeFunc());
+    if (!this.pingBeforeOptions.url) return beforeResult;
+
+    const shouldPing = this.pingBeforeOptions.ifCb
+      ? await this.pingBeforeOptions.ifCb()
+      : true;
+
+    if (!shouldPing) return beforeResult;
+
+    const payload = {
+      event: 'before',
+      scheduleName: this.scheduleName,
+      cronExpression: this.cronExpression,
+      purpose: this.purposeText,
+      timezone: this.tz,
+      startedAt: options.startedAt,
+    };
+    await fetch(this.pingBeforeOptions.url, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async processAfterEvents(
+    result: any,
+    options: { startedAtEpoch: number; startedAt: string },
+  ) {
+    const afterResult = this.afterFunc && (await this.afterFunc(result));
+    this.onSuccessFunc && (await this.onSuccessFunc(result));
+
+    if (!this.pingThenOptions.url && !this.pingOnSuccessOptions.url) {
+      return afterResult;
+    }
+
+    const shouldPingThen = this.pingThenOptions.ifCb
+      ? await this.pingThenOptions.ifCb()
+      : true;
+
+    const totalTimeInMs = performance.now() - options.startedAtEpoch;
+    const payload = {
+      event: 'after',
+      scheduleName: this.scheduleName,
+      cronExpression: this.cronExpression,
+      totalTimeInMs,
+      startedAt: options.startedAt,
+    };
+
+    if (shouldPingThen) {
+      await fetch(this.pingThenOptions.url, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+    }
+
+    if (!this.pingOnSuccessOptions.url) return afterResult;
+
+    const shouldPingSuccess = this.pingOnSuccessOptions.ifCb
+      ? await this.pingOnSuccessOptions.ifCb()
+      : true;
+
+    if (!shouldPingSuccess) return afterResult;
+
+    await fetch(this.pingOnSuccessOptions.url, {
+      method: 'POST',
+      body: JSON.stringify({ ...payload, event: 'success' }),
+    });
+  }
+
+  async processFailureEvents(error: Error): Promise<void> {
+    const failureResult =
+      this.onFailureFunc && (await this.onFailureFunc(error));
+
+    if (!this.pingOnFailureOptions.url) return;
+
+    const shouldPingFailure = this.pingOnFailureOptions.ifCb
+      ? await this.pingOnFailureOptions.ifCb()
+      : true;
+
+    if (!shouldPingFailure) return;
+
+    const payload = {
+      scheduleName: this.scheduleName,
+      cronExpression: this.cronExpression,
+      event: 'failure',
+    };
+
+    await fetch(this.pingOnFailureOptions.url, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   }
 
   /**
@@ -303,8 +535,110 @@ export class Schedule {
     return this;
   }
 
-  onError(fun: (e: Error) => void): this {
-    this.onErrorFunc = fun;
+  onFailure(fun: (e: Error) => void): this {
+    this.onFailureFunc = fun;
     return this;
+  }
+
+  onSuccess(fun: (...args: any[]) => void): this {
+    this.onSuccessFunc = fun;
+    return this;
+  }
+
+  pingBefore(url: string): this {
+    this.pingBeforeOptions = { url, ifCb: undefined };
+    return this;
+  }
+
+  pingBeforeIf(
+    cb: (...args: any[]) => Promise<boolean> | boolean,
+    url: string,
+  ): this {
+    this.pingBeforeOptions.ifCb = cb;
+    this.pingBeforeOptions.url = url;
+    return this;
+  }
+
+  thenPing(url: string): this {
+    this.pingThenOptions = { url, ifCb: undefined };
+    return this;
+  }
+
+  thenPingIf(
+    cb: (...args: any[]) => Promise<boolean> | boolean,
+    url: string,
+  ): this {
+    this.pingThenOptions.ifCb = cb;
+    this.pingThenOptions.url = url;
+    return this;
+  }
+
+  onSuccessPing(url: string): this {
+    this.pingOnSuccessOptions = { url, ifCb: undefined };
+    return this;
+  }
+
+  pingOnSuccessIf(
+    cb: (...args: any[]) => Promise<boolean> | boolean,
+    url: string,
+  ): this {
+    this.pingOnSuccessOptions.ifCb = cb;
+    this.pingOnSuccessOptions.url = url;
+    return this;
+  }
+
+  pingOnFailure(url: string): this {
+    this.pingOnFailureOptions = { url, ifCb: undefined };
+    return this;
+  }
+
+  pingOnFailureIf(
+    cb: (...args: any[]) => Promise<boolean> | boolean,
+    url: string,
+  ): this {
+    this.pingOnFailureOptions.ifCb = cb;
+    this.pingOnFailureOptions.url = url;
+    return this;
+  }
+
+  sendOutputToUrl(url: string): this {
+    this.sendOutputToUrlOptions.url = url;
+    return this;
+  }
+
+  sendOutputToFile(file: string): this {
+    this.sendOutputToFileOptions = { file };
+    return this;
+  }
+
+  emailOutputTo(...emails: string[]): this {
+    this.emailOutputToOptions.push(...emails);
+    return this;
+  }
+
+  emailOutputOnFailure(...emails: string[]): this {
+    this.emailOutputToOptions.push(...emails);
+    return this;
+  }
+
+  when(cb: (...args: any[]) => Promise<boolean> | boolean): this {
+    this.whenFunc = cb;
+    return this;
+  }
+
+  skip(cb: (...args: any[]) => Promise<boolean> | boolean): this {
+    this.skipFunc = cb;
+    return this;
+  }
+
+  formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: this.tz ? this.tz : 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
   }
 }
