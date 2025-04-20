@@ -10,6 +10,12 @@ import {
 } from './options/interface.js';
 import { CommandRunner } from '../console/runner.js';
 import { ScheduleFrequency } from './frequency.js';
+import fs from 'fs-extra';
+import execa from 'execa';
+import { MailMessage } from '../mailer/message.js';
+import { Mail } from '../mailer/mail.js';
+
+const { appendFileSync, writeFileSync } = fs;
 
 export class Schedule {
   static SUNDAY = '0';
@@ -38,9 +44,8 @@ export class Schedule {
   private pingThenOptions: PingOptions;
   private pingOnSuccessOptions: PingOptions;
   private pingOnFailureOptions: PingOptions;
-  private sendOutputToUrlOptions: { url: string };
-  private sendOutputToFileOptions: { file: string };
-  private emailOutputToOptions: string[];
+  private outputFileOptions: ScheduleOptions['outputFile'];
+  private emailOutputToOptions: { email: string; onFailureOnly?: boolean }[];
 
   constructor(handler: ScheduleHandler) {
     this.purposeText = '';
@@ -48,15 +53,13 @@ export class Schedule {
     this.cronJob = null;
     this.cronExpression = '';
     this.handler = handler;
-    console.log(this.handler);
     this.autoStart = true;
     this.frequency = new ScheduleFrequency();
     this.pingBeforeOptions = { url: undefined, ifCb: undefined };
     this.pingThenOptions = { url: undefined, ifCb: undefined };
     this.pingOnSuccessOptions = { url: undefined, ifCb: undefined };
     this.pingOnFailureOptions = { url: undefined, ifCb: undefined };
-    this.sendOutputToFileOptions = { file: undefined };
-    this.sendOutputToUrlOptions = { url: undefined };
+    this.outputFileOptions = { file: undefined };
     this.emailOutputToOptions = [];
   }
 
@@ -372,10 +375,11 @@ export class Schedule {
   }
 
   async composeHandler() {
-    try {
-      const startedAt = this.formatDate(new Date());
-      const startedAtEpoch = performance.now();
+    let output = null;
+    const startedAt = this.formatDate(new Date());
+    const startedAtEpoch = performance.now();
 
+    try {
       if (this.whenFunc) {
         const shouldRun = await this.whenFunc();
         if (!shouldRun) return;
@@ -389,21 +393,44 @@ export class Schedule {
       const beforeResult = await this.processBeforeEvents({ startedAt });
 
       const { type, value } = this.handler;
-      let result = null;
+      console.log('type ===> ', type);
+      console.log('value ===> ', value);
       if (type === HandlerType.COMMAND) {
-        result = await CommandRunner.run(value);
+        console.log('executing command ===> ', value);
+        output = await CommandRunner.run(value);
       } else if (type === HandlerType.FUNCTION) {
-        result = await value(beforeResult);
+        output = await value(beforeResult);
       } else if (type === HandlerType.JOB) {
-        result = await Dispatch(value);
+        output = await Dispatch(value);
+      } else if (type === HandlerType.SHELL) {
+        console.log('executing shell command ===> ', value);
+        const command = value.split(' ');
+        const { stdout, stderr, exitCode } = await execa(
+          command[0],
+          command.slice(1),
+          { stdio: 'pipe' },
+        );
+        if (exitCode !== 0) throw new Error(stderr);
+        output = stdout;
       }
-      await this.processAfterEvents(result, {
+
+      await this.sendEmail(output);
+
+      await this.processAfterEvents(output, {
         startedAtEpoch: startedAtEpoch,
         startedAt,
       });
     } catch (e) {
-      await this.processFailureEvents(e as Error);
+      console.error('error ===> ', e);
+      await this.sendEmail(output, e as Error);
+      await this.processFailureEvents(e as Error, output);
+      return;
     }
+
+    await this.processSuccessEvents(output, {
+      startedAtEpoch: startedAtEpoch,
+      startedAt,
+    });
   }
 
   async processBeforeEvents(options: { startedAt: string }): Promise<any> {
@@ -434,50 +461,69 @@ export class Schedule {
     result: any,
     options: { startedAtEpoch: number; startedAt: string },
   ) {
+    this.writeOutputToFile(result);
     const afterResult = this.afterFunc && (await this.afterFunc(result));
-    this.onSuccessFunc && (await this.onSuccessFunc(result));
 
-    if (!this.pingThenOptions.url && !this.pingOnSuccessOptions.url) {
-      return afterResult;
-    }
+    if (!this.pingThenOptions.url) return afterResult;
 
     const shouldPingThen = this.pingThenOptions.ifCb
       ? await this.pingThenOptions.ifCb()
       : true;
 
-    const totalTimeInMs = performance.now() - options.startedAtEpoch;
+    if (!shouldPingThen) return;
+
     const payload = {
       event: 'after',
       scheduleName: this.scheduleName,
       cronExpression: this.cronExpression,
-      totalTimeInMs,
       startedAt: options.startedAt,
     };
 
-    if (shouldPingThen) {
+    try {
       await fetch(this.pingThenOptions.url, {
         method: 'POST',
         body: JSON.stringify(payload),
       });
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    if (!this.pingOnSuccessOptions.url) return afterResult;
+  async processSuccessEvents(
+    output: any,
+    options: { startedAtEpoch: number; startedAt: string },
+  ): Promise<void> {
+    this.onSuccessFunc && (await this.onSuccessFunc(output));
+
+    if (!this.pingOnSuccessOptions.url) return;
 
     const shouldPingSuccess = this.pingOnSuccessOptions.ifCb
       ? await this.pingOnSuccessOptions.ifCb()
       : true;
 
-    if (!shouldPingSuccess) return afterResult;
+    if (!shouldPingSuccess) return;
 
-    await fetch(this.pingOnSuccessOptions.url, {
-      method: 'POST',
-      body: JSON.stringify({ ...payload, event: 'success' }),
-    });
+    const payload = {
+      totalTimeInMs: performance.now() - options.startedAtEpoch,
+      event: 'success',
+      scheduleName: this.scheduleName,
+      cronExpression: this.cronExpression,
+      startedAt: this.formatDate(new Date()),
+    };
+
+    try {
+      await fetch(this.pingOnSuccessOptions.url, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  async processFailureEvents(error: Error): Promise<void> {
-    const failureResult =
-      this.onFailureFunc && (await this.onFailureFunc(error));
+  async processFailureEvents(error: Error, result: any): Promise<void> {
+    this.onFailureFunc && (await this.onFailureFunc(error));
+    this.writeOutputToFile(result, error);
 
     if (!this.pingOnFailureOptions.url) return;
 
@@ -493,12 +539,66 @@ export class Schedule {
       event: 'failure',
     };
 
-    await fetch(this.pingOnFailureOptions.url, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
+    try {
+      await fetch(this.pingOnFailureOptions.url, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
+  writeOutputToFile(result: any, error?: Error): void {
+    if (!this.outputFileOptions.file) {
+      return;
+    }
+
+    const content = {
+      event: error ? 'failure' : 'success',
+      date: this.formatDate(new Date()),
+      error: error?.message,
+      stack: error?.stack,
+      result,
+    };
+    if (this.outputFileOptions.append) {
+      appendFileSync(
+        this.outputFileOptions.file,
+        JSON.stringify(content) + '\n',
+      );
+      return;
+    }
+
+    writeFileSync(this.outputFileOptions.file, JSON.stringify(content) + '\n');
+  }
+
+  async sendEmail(output: string, error?: Error): Promise<void> {
+    if (!this.emailOutputToOptions.length) return;
+
+    const subject = `Output from scheduled task: ${this.scheduleName}`;
+    const content = {
+      name: this.scheduleName,
+      schedule: this.cronExpression,
+      purpose: this.purposeText,
+      timezone: this.tz,
+      startedAt: this.formatDate(new Date()),
+      result: output,
+      error: error?.message,
+      stack: error?.stack,
+      status: error ? 'failure' : 'success',
+    };
+
+    const mail = MailMessage.init()
+      .preview(subject)
+      .subject(subject)
+      .raw(JSON.stringify(content));
+
+    const emails = error
+      ? this.emailOutputToOptions.filter(o => o.onFailureOnly).map(o => o.email)
+      : this.emailOutputToOptions.map(o => o.email);
+
+    emails.length && (await Mail.init().to(emails).send(mail));
+  }
   /**
    * Getter methods
    */
@@ -578,6 +678,11 @@ export class Schedule {
     return this;
   }
 
+  pingOnSuccess(url: string): this {
+    this.pingOnSuccessOptions = { url, ifCb: undefined };
+    return this;
+  }
+
   pingOnSuccessIf(
     cb: (...args: any[]) => Promise<boolean> | boolean,
     url: string,
@@ -601,23 +706,27 @@ export class Schedule {
     return this;
   }
 
-  sendOutputToUrl(url: string): this {
-    this.sendOutputToUrlOptions.url = url;
+  sendOutputToFile(file: string, append: boolean = false): this {
+    this.outputFileOptions = { file, append };
     return this;
   }
 
-  sendOutputToFile(file: string): this {
-    this.sendOutputToFileOptions = { file };
+  appendOutputToFile(file: string): this {
+    this.outputFileOptions = { file, append: true };
     return this;
   }
 
   emailOutputTo(...emails: string[]): this {
-    this.emailOutputToOptions.push(...emails);
+    this.emailOutputToOptions.push(
+      ...emails.map(email => ({ email, onFailureOnly: false })),
+    );
     return this;
   }
 
   emailOutputOnFailure(...emails: string[]): this {
-    this.emailOutputToOptions.push(...emails);
+    this.emailOutputToOptions.push(
+      ...emails.map(email => ({ email, onFailureOnly: true })),
+    );
     return this;
   }
 
