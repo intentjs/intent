@@ -98,5 +98,10 @@ export default configNamespace(
       profilesSampleRate: 1.0,
       integrateNodeProfile: true,
     },
+
+    schedules: {
+      runInAnotherThread: true,
+      timezone: 'Asia/Kolkata',
+    },
   }),
 );

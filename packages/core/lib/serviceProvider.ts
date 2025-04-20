@@ -24,7 +24,8 @@ import {
 } from './config/index.js';
 import { ReplConsole } from './repl/terminal.js';
 import { ListScheduledTaskCommands } from './scheduler/console/list.js';
-
+import { ScheduleWorkerCommand } from './scheduler/console/work.js';
+import { ModuleRef } from '@nestjs/core';
 export const IntentProvidersFactory = (
   config: any[],
 ): Type<ServiceProvider> => {
@@ -58,6 +59,7 @@ export const IntentProvidersFactory = (
         BuildProjectCommand,
         DevServerCommand,
         ListScheduledTaskCommands,
+        ScheduleWorkerCommand,
       );
     }
 
@@ -65,5 +67,17 @@ export const IntentProvidersFactory = (
      * Add your application boot logic here.
      */
     boot() {}
+
+    /**
+     * Add your application shutdown logic here.
+     */
+    shutdown() {}
+
+    /**
+     * Register any schedules here.
+     */
+    schedules(ref: ModuleRef): Promise<void> {
+      return Promise.resolve();
+    }
   };
 };

@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
+import {
+  IntentApplicationContext,
+  ModuleRef,
+  ServiceProvider,
+} from '@intentjs/core';
 import { OrderPlacedListener } from '#events/listeners/sample-listener';
 import { QueueJobs } from '#jobs/job';
 import { UserDbRepository } from '#repositories/userDbRepository';
@@ -38,71 +42,15 @@ export class AppServiceProvider extends ServiceProvider {
   /**
    * Bootstrap any application service here.
    */
-  boot(app: IntentApplicationContext) {
-    /**
-     * Schedule Intent Command to run daily.
-     */
+  boot(app: IntentApplicationContext) {}
 
-    Schedule.exec('ls -la')
-      .everyTwoSeconds()
-      .appendOutputToFile('output.txt')
-      .emailOutputTo('vinayak@tryhanalabs.com')
-      .run();
+  /**
+   * Shutdown any application service here.
+   */
+  shutdown(app: IntentApplicationContext) {}
 
-    // Schedule.command('send:email')
-    //   // .days([Schedule.MONDAY, Schedule.THURSDAY])
-    //   .hourly()
-    //   .timezone('America/Chicago')
-    //   .between('8:00', '17:00')
-    //   .run();
-
-    /**
-     * Simple callback, with lifecycle methods `before` and `after`.
-     */
-    // Schedule.call(() => {
-    //   console.log('inside the schedule method');
-    //   return 'hello';
-    // })
-    //   .purpose('sample scheduler')
-    //   .before(() => console.log('this will run before the cron'))
-    //   .after((output: any) =>
-    //     console.log('this will run after the cron', output),
-    //   )
-    //   .onSuccess((result) =>
-    //     console.log('this will run on success the cron', result),
-    //   )
-    //   .onFailure((error) =>
-    //     console.log('this will run on failure the cron', error),
-    //   )
-    //   // .pingBefore('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
-    //   .thenPing('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
-    //   .weekends()
-    //   .everyTwoSeconds()
-    //   // .pingOnSuccess('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
-    //   .when(() => true)
-    //   .appendOutputToFile('output.txt')
-    //   .run();
-
-    /**
-     * Running a job every day at 5AM.
-     */
-    // Schedule.job({
-    //   job: 'process_abandoned_cart',
-    //   data: { from: '2024-04-16', to: '2024-04-17' },
-    // })
-    //   .purpose('cron dispatching job every day at 5AM')
-    //   .everyFiveSeconds()
-    //   .weekends()
-    //   .run();
-
-    // Schedule.command('emails:send')
-    //   .daily()
-    //   .onSuccess((result) => {
-    //     console.log('emails:send on success', result);
-    //   })
-    //   .onFailure((error: Error) => {
-    //     console.log('emails:send on failure', error);
-    //   })
-    //   .run();
-  }
+  /**
+   * Register any schedules here.
+   */
+  async schedules(ref: ModuleRef): Promise<void> {}
 }
