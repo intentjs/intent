@@ -42,37 +42,46 @@ export class AppServiceProvider extends ServiceProvider {
     /**
      * Schedule Intent Command to run daily.
      */
-    Schedule.command('send:email')
-      // .days([Schedule.MONDAY, Schedule.THURSDAY])
-      .hourly()
-      .timezone('America/Chicago')
-      .between('8:00', '17:00')
+
+    Schedule.exec('ls -la')
+      .everyTwoSeconds()
+      .appendOutputToFile('output.txt')
+      .emailOutputTo('vinayak@tryhanalabs.com')
       .run();
+
+    // Schedule.command('send:email')
+    //   // .days([Schedule.MONDAY, Schedule.THURSDAY])
+    //   .hourly()
+    //   .timezone('America/Chicago')
+    //   .between('8:00', '17:00')
+    //   .run();
 
     /**
      * Simple callback, with lifecycle methods `before` and `after`.
      */
-    Schedule.call(() => {
-      console.log('inside the schedule method');
-    })
-      .purpose('sample scheduler')
-      .before(() => console.log('this will run before the cron'))
-      .after((output: any) =>
-        console.log('this will run after the cron', output),
-      )
-      .onSuccess((result) =>
-        console.log('this will run on success the cron', result),
-      )
-      .onFailure((error) =>
-        console.log('this will run on failure the cron', error),
-      )
-      // .pingBefore('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
-      .thenPing('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
-      .weekends()
-      .everyTwoSeconds()
-      .when(() => true)
-
-      .run();
+    // Schedule.call(() => {
+    //   console.log('inside the schedule method');
+    //   return 'hello';
+    // })
+    //   .purpose('sample scheduler')
+    //   .before(() => console.log('this will run before the cron'))
+    //   .after((output: any) =>
+    //     console.log('this will run after the cron', output),
+    //   )
+    //   .onSuccess((result) =>
+    //     console.log('this will run on success the cron', result),
+    //   )
+    //   .onFailure((error) =>
+    //     console.log('this will run on failure the cron', error),
+    //   )
+    //   // .pingBefore('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
+    //   .thenPing('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
+    //   .weekends()
+    //   .everyTwoSeconds()
+    //   // .pingOnSuccess('https://webhook.site/79dcb789-869b-459d-9ba9-638aae449328')
+    //   .when(() => true)
+    //   .appendOutputToFile('output.txt')
+    //   .run();
 
     /**
      * Running a job every day at 5AM.
@@ -84,6 +93,16 @@ export class AppServiceProvider extends ServiceProvider {
     //   .purpose('cron dispatching job every day at 5AM')
     //   .everyFiveSeconds()
     //   .weekends()
+    //   .run();
+
+    // Schedule.command('emails:send')
+    //   .daily()
+    //   .onSuccess((result) => {
+    //     console.log('emails:send on success', result);
+    //   })
+    //   .onFailure((error: Error) => {
+    //     console.log('emails:send on failure', error);
+    //   })
     //   .run();
   }
 }

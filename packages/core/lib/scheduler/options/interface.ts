@@ -4,6 +4,7 @@ export type ScheduleOptions = {
   name?: string;
   timezone?: string;
   purpose?: string;
+  outputFile?: { file: string; append?: boolean };
 };
 
 export enum HandlerType {
