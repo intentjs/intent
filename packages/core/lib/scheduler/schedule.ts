@@ -363,7 +363,6 @@ export class Schedule {
   private makeCronJob() {
     this.scheduleName = this.scheduleName || `schedule_${ulid()}`;
     this.cronExpression = this.frequency.build();
-    console.log('cron expression ===> ', this.cronExpression);
     this.cronJob = CronJob.from({
       cronTime: this.cronExpression,
       onTick: this.composeHandler.bind(this),
@@ -393,17 +392,13 @@ export class Schedule {
       const beforeResult = await this.processBeforeEvents({ startedAt });
 
       const { type, value } = this.handler;
-      console.log('type ===> ', type);
-      console.log('value ===> ', value);
       if (type === HandlerType.COMMAND) {
-        console.log('executing command ===> ', value);
         output = await CommandRunner.run(value);
       } else if (type === HandlerType.FUNCTION) {
         output = await value(beforeResult);
       } else if (type === HandlerType.JOB) {
         output = await Dispatch(value);
       } else if (type === HandlerType.SHELL) {
-        console.log('executing shell command ===> ', value);
         const command = value.split(' ');
         const { stdout, stderr, exitCode } = await execa(
           command[0],
