@@ -14,6 +14,7 @@ import fs from 'fs-extra';
 import execa from 'execa';
 import { MailMessage } from '../mailer/message.js';
 import { Mail } from '../mailer/mail.js';
+import { ConfigService } from '../config/service.js';
 
 const { appendFileSync, writeFileSync } = fs;
 
@@ -34,7 +35,7 @@ export class Schedule {
   private cronExpression: string;
   private beforeFunc: any;
   private afterFunc: any;
-  private autoStart: boolean;
+  private autoStart: boolean | undefined;
   private whenFunc: (...args: any[]) => Promise<boolean> | boolean;
   private skipFunc: (...args: any[]) => Promise<boolean> | boolean;
   private onSuccessFunc: (...args: any[]) => Promise<void> | void;
@@ -53,7 +54,6 @@ export class Schedule {
     this.cronJob = null;
     this.cronExpression = '';
     this.handler = handler;
-    this.autoStart = true;
     this.frequency = new ScheduleFrequency();
     this.pingBeforeOptions = { url: undefined, ifCb: undefined };
     this.pingThenOptions = { url: undefined, ifCb: undefined };
@@ -99,11 +99,6 @@ export class Schedule {
 
   timezone(tz: ScheduleOptions['timezone']): this {
     this.tz = tz;
-    return this;
-  }
-
-  noAutoStart(): this {
-    this.autoStart = false;
     return this;
   }
 
@@ -363,11 +358,16 @@ export class Schedule {
   private makeCronJob() {
     this.scheduleName = this.scheduleName || `schedule_${ulid()}`;
     this.cronExpression = this.frequency.build();
+    const autoStart =
+      ConfigService.get('app.schedules.runInAnotherThread') || true;
+    const timezone =
+      this.tz ?? (ConfigService.get('app.schedules.timezone') as string);
+
     this.cronJob = CronJob.from({
       cronTime: this.cronExpression,
       onTick: this.composeHandler.bind(this),
-      start: this.autoStart,
-      timeZone: this.tz,
+      start: autoStart,
+      timeZone: timezone,
     });
 
     SchedulerRegistry.register(this.scheduleName, this);
@@ -614,6 +614,10 @@ export class Schedule {
    */
   stop() {
     this.cronJob.stop();
+  }
+
+  start() {
+    this.cronJob.start();
   }
 
   lastExecution(): Date {

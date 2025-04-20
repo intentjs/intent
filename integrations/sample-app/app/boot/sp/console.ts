@@ -1,36 +1,37 @@
-import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
+import { IntentApplicationContext } from '@intentjs/core';
 import { TestCacheConsoleCommand } from '#console/cache';
 import { GreetingCommand } from '#console/greeting';
 import { TestLogConsoleCommand } from '#console/log';
 import { TestMailConsoleCommand } from '#console/mailer';
 import { TestQueueConsoleCommand } from '#console/queue';
 import { TestStorageConsoleCommand } from '#console/storage';
-import { Dispatch } from '@intentjs/core/queue';
+import { ModuleRef, ServiceProvider } from '@intentjs/core';
+import { Schedule } from '@intentjs/core/schedule';
 
 export class ConsoleServiceProvider extends ServiceProvider {
-  /**
-   * Register any application services here.
-   */
   register() {
-    this.bind(GreetingCommand, TestCacheConsoleCommand);
-    this.bind(TestStorageConsoleCommand);
-    this.bind(TestLogConsoleCommand);
-    this.bind(TestQueueConsoleCommand);
-    this.bind(TestMailConsoleCommand);
+    this.bind(
+      TestCacheConsoleCommand,
+      GreetingCommand,
+      TestLogConsoleCommand,
+      TestQueueConsoleCommand,
+      TestMailConsoleCommand,
+      TestStorageConsoleCommand,
+    );
   }
 
   /**
-   * Bootstrap any application service here.
-   *
+   * Bootstrap any application services here.
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  boot(app: IntentApplicationContext) {
-    let i = 0;
-    setInterval(async () => {
-      await Dispatch({
-        job: 'redis_job',
-        data: { count: i++ },
-      });
-    }, 1000);
-  }
+  boot(app: IntentApplicationContext) {}
+
+  /**
+   * Shutdown any application services here.
+   */
+  shutdown(app: IntentApplicationContext) {}
+
+  /**
+   * Register any schedules here.
+   */
+  async schedules(ref: ModuleRef): Promise<void> {}
 }

@@ -25,3 +25,7 @@ export type PingOptions = {
   url: string;
   ifCb: undefined | ((...args: any[]) => Promise<boolean> | boolean);
 };
+
+export type SchedulerConfig = {
+  autoStart?: boolean;
+};

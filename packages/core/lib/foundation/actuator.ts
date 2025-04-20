@@ -1,5 +1,5 @@
 import { IntentHttpServer } from '../rest/foundation/server.js';
-import { IntentProcess } from './intent-process.js';
+import { IntentConsoleProcess } from './intent-process.js';
 
 type ContainerImporterType = () => any;
 
@@ -22,8 +22,8 @@ export class Actuator {
    * Get the intent process
    * @returns Get the intent process
    */
-  cli(): IntentProcess {
-    return new IntentProcess(this);
+  cli(): IntentConsoleProcess {
+    return new IntentConsoleProcess(this);
   }
 
   http(): IntentHttpServer {
