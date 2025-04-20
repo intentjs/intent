@@ -359,14 +359,15 @@ export class Schedule {
     this.scheduleName = this.scheduleName || `schedule_${ulid()}`;
     this.cronExpression = this.frequency.build();
     const autoStart =
-      ConfigService.get('app.schedules.runInAnotherThread') || true;
+      ConfigService.get('app.schedules.runInAnotherThread') || false;
+
     const timezone =
       this.tz ?? (ConfigService.get('app.schedules.timezone') as string);
 
     this.cronJob = CronJob.from({
       cronTime: this.cronExpression,
       onTick: this.composeHandler.bind(this),
-      start: autoStart,
+      start: !autoStart,
       timeZone: timezone,
     });
 
