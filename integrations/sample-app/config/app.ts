@@ -100,7 +100,7 @@ export default configNamespace(
     },
 
     schedules: {
-      runInAnotherThread: true,
+      runInAnotherThread: false,
       timezone: 'Asia/Kolkata',
     },
   }),
