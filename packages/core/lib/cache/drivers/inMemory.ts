@@ -11,7 +11,7 @@ export class InMemoryDriver implements CacheDriver {
 
   async get<T>(key: string): Promise<T> {
     await this.initialiseModules();
-    const cacheKey = `${this.options.prefix}:::${key}`;
+    const cacheKey = this.storeKey(key);
     return this.client.get(cacheKey);
   }
 
@@ -21,7 +21,7 @@ export class InMemoryDriver implements CacheDriver {
     ttlInSec?: number | undefined,
   ): Promise<boolean> {
     await this.initialiseModules();
-    const cacheKey = `${this.options.prefix}:::${key}`;
+    const cacheKey = this.storeKey(key);
 
     if (ttlInSec) {
       return this.client.set(cacheKey, value, ttlInSec);
@@ -32,7 +32,7 @@ export class InMemoryDriver implements CacheDriver {
 
   async has(key: string): Promise<boolean> {
     await this.initialiseModules();
-    const cacheKey = `${this.options.prefix}:::${key}`;
+    const cacheKey = this.storeKey(key);
     return this.client.has(cacheKey);
   }
 
@@ -70,12 +70,16 @@ export class InMemoryDriver implements CacheDriver {
   async forget(key: string): Promise<boolean> {
     await this.initialiseModules();
     try {
-      const cacheKey = `${this.options.prefix}:::${key}`;
+      const cacheKey = this.storeKey(key);
       await this.client.del(cacheKey);
       return true;
     } catch {
       return false;
     }
+  }
+
+  private storeKey(key: string): string {
+    return `${this.options.prefix}:::${key}`;
   }
 
   getClient<T>(): T {
