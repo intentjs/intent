@@ -18,7 +18,6 @@ export class SchedulerRegistry {
 
     options?.name && schedule.name(options.name);
     schedule.cron(cronExpression);
-    console.log(this.schedules);
   }
 
   static register(name: string, schedule: Schedule): void {
