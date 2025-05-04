@@ -11,7 +11,7 @@ export class DiceDbDriver implements CacheDriver {
 
   async get(key: string): Promise<any> {
     await this.initializeModules();
-    const value = await this.client.get(`${this.options.prefix}:::${key}`);
+    const value = await this.client.get(this.storeKey(key));
     if (!value) return null;
     try {
       return JSON.parse(value);
@@ -27,7 +27,7 @@ export class DiceDbDriver implements CacheDriver {
   ): Promise<boolean> {
     await this.initializeModules();
     try {
-      const redisKey = `${this.options.prefix}:::${key}`;
+      const redisKey = this.storeKey(key);
       ttlInSec
         ? await this.client.set(redisKey, JSON.stringify(value), 'EX', ttlInSec)
         : await this.client.set(redisKey, JSON.stringify(value));
@@ -39,7 +39,7 @@ export class DiceDbDriver implements CacheDriver {
 
   async has(key: string): Promise<boolean> {
     await this.initializeModules();
-    const num = await this.client.exists(`${this.options.prefix}:::${key}`);
+    const num = await this.client.exists(this.storeKey(key));
     return !!num;
   }
 
