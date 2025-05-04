@@ -11,8 +11,13 @@ export class InMemoryDriver implements CacheDriver {
 
   async get<T>(key: string): Promise<T> {
     await this.initialiseModules();
-    const cacheKey = this.storeKey(key);
-    return this.client.get(cacheKey);
+    const value = await this.client.get(this.storeKey(key));
+    if (!value) return null;
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      return value;
+    }
   }
 
   async set(

@@ -11,7 +11,6 @@ export class Inquirer {
     const answers = await prompt([
       { name: 'question', message: question, type: 'input' },
     ]);
-    console.log(answers);
     return answers['question'];
   }
 

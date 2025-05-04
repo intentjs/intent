@@ -41,8 +41,6 @@ export class MailgunProvider implements BaseProvider {
       })),
     });
 
-    console.log(report);
-
     return;
   }
 

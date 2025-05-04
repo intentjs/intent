@@ -99,9 +99,6 @@ export class RouteExplorer {
 
     if (!pathMethod) return;
 
-    console.log(instance.constructor);
-    console.log(controllerKey, methodPath, pathMethod, key);
-
     const fullHttpPath = joinRoute(controllerKey, methodPath);
     return { method: pathMethod, path: fullHttpPath };
   }
