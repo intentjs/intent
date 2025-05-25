@@ -16,10 +16,6 @@
  *  * Register hook to process TypeScript files using ts-node
  */
 import '@intentjs/ts-node/esm';
-// import { register } from 'node:module';
-// import { pathToFileURL } from 'node:url';
-
-// register('ts-node/esm', pathToFileURL('./'), {});
 
 /**
  * Import console commands entrypoint

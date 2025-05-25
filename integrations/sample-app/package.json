@@ -68,7 +68,7 @@
   "devDependencies": {
     "@intentjs/cli": "*",
     "@intentjs/tooling": "*",
-    "@intentjs/ts-node": "^0.0.1",
+    "@intentjs/ts-node": "*",
     "@nestjs/testing": "^10.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@rspack/cli": "^1.2.8",
