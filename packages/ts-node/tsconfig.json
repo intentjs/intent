@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strict": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false,
+    "types": ["node", "jest"]
+  },
+}
