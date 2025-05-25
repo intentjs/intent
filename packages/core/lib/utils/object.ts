@@ -149,9 +149,7 @@ export class Obj {
 
   static hash(obj: Record<string, any>): string {
     const sortedObj = this.sort(obj);
-    console.log(sortedObj);
     const jsonString = JSON.stringify(sortedObj);
-    console.log(jsonString);
     return '';
   }
 

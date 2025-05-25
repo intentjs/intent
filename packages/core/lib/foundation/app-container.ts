@@ -1,6 +1,8 @@
 import { Provider } from '@nestjs/common';
 import { IntentApplicationContext, Type } from '../interfaces/index.js';
 import { ImportType, ServiceProvider } from './service-provider.js';
+import { ModuleRef } from '@nestjs/core';
+import { SchedulerRegistry } from '../scheduler/metadata.js';
 
 export abstract class IntentAppContainer {
   static serviceProviders: ServiceProvider[] = [];
@@ -33,7 +35,14 @@ export abstract class IntentAppContainer {
 
   async boot(app: IntentApplicationContext): Promise<void> {
     for (const serviceProvider of IntentAppContainer.serviceProviders) {
-      serviceProvider.boot(app);
+      await serviceProvider.boot(app);
+      await serviceProvider.schedules(app.get(ModuleRef));
+    }
+  }
+
+  async shutdown(app: IntentApplicationContext): Promise<void> {
+    for (const serviceProvider of IntentAppContainer.serviceProviders) {
+      await serviceProvider.shutdown(app);
     }
   }
 

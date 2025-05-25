@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/core",
-  "version": "0.1.48",
+  "version": "0.1.60",
   "description": "Core module for Intent",
   "repository": {
     "type": "git",
@@ -89,6 +89,10 @@
     "./frontend": {
       "types": "./dist/lib/frontend/index.d.ts",
       "default": "./dist/lib/frontend/index.js"
+    },
+    "./schedule": {
+      "types": "./dist/lib/scheduler/index.d.ts",
+      "default": "./dist/lib/scheduler/index.js"
     }
   },
   "scripts": {
@@ -141,7 +145,7 @@
     "webpack-hot-middleware": "^2.26.1"
   },
   "dependencies": {
-    "@intentjs/hyper-express": "^0.0.8",
+    "@intentjs/hyper-express": "^0.0.11",
     "@nestjs/common": "^11.0.12",
     "@nestjs/core": "^11.0.12",
     "@react-email/components": "^0.0.32",
@@ -150,6 +154,7 @@
     "class-validator": "^0.14.1",
     "cli-table3": "^0.6.3",
     "cors": "^2.8.5",
+    "cron": "^4.1.4",
     "dotenv": "^16.4.7",
     "enquirer": "^2.4.1",
     "eta": "^3.5.0",

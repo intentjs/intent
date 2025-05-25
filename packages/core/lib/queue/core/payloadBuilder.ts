@@ -9,17 +9,18 @@ type Complete<T> = {
     : T[P] | undefined;
 };
 
-const calculateDelay = (delay: number | string | Date): number => {
+const calculateDelay = (delay: number | string | Date): [number, number] => {
   const now = Date.now();
   if (delay instanceof Date) {
     const time = delay.getTime();
-    return now > time ? now : time;
+    const netDelayInSeconds = (time - now) / 1000;
+    return now > time ? [now, 0] : [time, netDelayInSeconds];
   }
 
   const delayInMs = typeof delay === 'string' ? ms(delay) : delay * 1000;
   const calculatedDelay = now + delayInMs;
-  if (calculatedDelay < now) return now;
-  return calculatedDelay;
+  if (calculatedDelay < now) return [now, 0];
+  return [calculatedDelay, (calculatedDelay - now) / 1000];
 };
 
 export class PayloadBuilder {
@@ -37,7 +38,9 @@ export class PayloadBuilder {
       ...message,
     } as Complete<InternalMessage>;
 
-    payload.delay = calculateDelay(payload.delay || 0);
+    const [delay, netDelayInSeconds] = calculateDelay(payload.delay || 0);
+    payload.delay = delay;
+    payload.netDelayInSeconds = netDelayInSeconds;
     payload.connection = payload.connection || defaultOptions.connection;
 
     if (!payload.queue) {

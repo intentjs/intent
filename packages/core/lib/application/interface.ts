@@ -18,4 +18,9 @@ export interface AppConfig {
     validationErrorSerializer?: GenericClass;
   };
   sentry?: SentryConfig;
+
+  schedules?: {
+    runInAnotherThread?: boolean;
+    timezone?: string;
+  };
 }

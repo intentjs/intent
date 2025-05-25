@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/intentjs/new-app-starter",
   "imports": {
+    "#bin/*": "./bin/*.js",
     "#http/*": "./app/http/*.js",
     "#models/*": "./app/models/*.js",
     "#services/*": "./app/services/*.js",
@@ -69,6 +70,7 @@
   "devDependencies": {
     "@intentjs/cli": "*",
     "@intentjs/tooling": "*",
+    "@intentjs/ts-node": "*",
     "@nestjs/testing": "^10.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@rspack/cli": "^1.3.0",
@@ -96,7 +98,6 @@
     "swc-loader": "^0.2.6",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.8.1",
     "typescript": "^5.8.2",

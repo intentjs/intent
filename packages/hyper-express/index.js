@@ -10,6 +10,7 @@ const LiveFile = require('./src/components/plugins/LiveFile.js');
 const MultipartField = require('./src/components/plugins/MultipartField.js');
 const SSEventStream = require('./src/components/plugins/SSEventStream.js');
 const Websocket = require('./src/components/ws/Websocket.js');
+const UploadedFile = require('./src/shared/uploaded-file.js');
 
 // Disable the uWebsockets.js version header if not specified to be kept
 if (!process.env['KEEP_UWS_HEADER']) {
@@ -28,6 +29,9 @@ module.exports = {
     MultipartField,
     SSEventStream,
     Websocket,
+    UploadedFile,
     compressors: uWebsockets,
-    express(...args) { return new Server(...args); },
+    express(...args) {
+        return new Server(...args);
+    },
 };

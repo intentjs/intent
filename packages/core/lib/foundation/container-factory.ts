@@ -2,12 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import type { IntentApplicationContext, Type } from '../interfaces/index.js';
 import { ModuleBuilder } from './module-builder.js';
 import { IntentAppContainer } from './app-container.js';
+import { ServiceProvider } from './service-provider.js';
 
 export class ContainerFactory {
   static async createStandalone(
     containerCls: Type<IntentAppContainer>,
+    extraServiceProviders: Type<ServiceProvider>[] = [],
   ): Promise<IntentApplicationContext> {
     const container = new containerCls();
+
+    if (extraServiceProviders.length > 0) {
+      container.add(...extraServiceProviders);
+    }
 
     container.build();
 
@@ -24,9 +30,9 @@ export class ContainerFactory {
     });
 
     /**
-     * Run the `boot` method of the main application container
+     * Run the `boot` & `schedules` method of the main application container
      */
-    container.boot(app);
+    await container.boot(app);
 
     return app;
   }

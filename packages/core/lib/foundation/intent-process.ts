@@ -5,7 +5,7 @@ import { Actuator } from './actuator.js';
 import { ContainerFactory } from './container-factory.js';
 import yargs from 'yargs-parser';
 
-export class IntentProcess {
+export class IntentConsoleProcess {
   constructor(private readonly actuator: Actuator) {}
 
   async handle(args: string[]): Promise<void> {

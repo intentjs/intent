@@ -29,12 +29,10 @@ export class S3Storage implements StorageDriver {
   }
 
   getStream(filePath: string): ReadStream {
-    console.log('file path ===> ', filePath);
     throw new Error('Method not implemented.');
   }
 
   listDir(path: string): Promise<Record<string, any>> {
-    console.log(path);
     throw new Error('Method not implemented.');
   }
 
@@ -293,7 +291,6 @@ export class S3Storage implements StorageDriver {
     params?: Record<string, any>,
   ): Promise<string> {
     this.initialiseModules();
-    console.log(path, ttlInMins, params);
     throw new Error('Method not implemented.');
   }
 

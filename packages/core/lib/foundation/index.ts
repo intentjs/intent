@@ -5,3 +5,4 @@ export * from './container-factory.js';
 export * from './decorators.js';
 export * from './actuator.js';
 export * from './intent-process.js';
+export { ModuleRef } from '@nestjs/core';

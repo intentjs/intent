@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IntentApplicationContext, ServiceProvider } from '@intentjs/core';
+import {
+  IntentApplicationContext,
+  ModuleRef,
+  ServiceProvider,
+} from '@intentjs/core';
 import { OrderPlacedListener } from '#events/listeners/sample-listener';
 import { QueueJobs } from '#jobs/job';
 import { UserDbRepository } from '#repositories/userDbRepository';
 import { UserService } from '#services/index';
 import { AuthService } from '#services/auth';
+import { ScheduleServiceTest } from '#services/schedule';
+import { Schedule } from '@intentjs/core/schedule';
 
 export class AppServiceProvider extends ServiceProvider {
   /**
@@ -29,10 +35,22 @@ export class AppServiceProvider extends ServiceProvider {
     this.bind(QueueJobs);
 
     this.bind(OrderPlacedListener);
+
+    this.bind(ScheduleServiceTest);
   }
 
   /**
    * Bootstrap any application service here.
    */
   boot(app: IntentApplicationContext) {}
+
+  /**
+   * Shutdown any application service here.
+   */
+  shutdown(app: IntentApplicationContext) {}
+
+  /**
+   * Register any schedules here.
+   */
+  async schedules(ref: ModuleRef): Promise<void> {}
 }

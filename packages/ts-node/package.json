@@ -1,0 +1,41 @@
+{
+  "name": "@intentjs/ts-node",
+  "version": "0.0.2",
+  "description": "A custom ts-node flavour for IntentJS.",
+  "type": "module",
+  "keywords": [
+    "intentjs",
+    "ts-node"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next"
+  },
+  "exports": {
+    "./esm": "./dist/esm.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intentjs/intent.git"
+  },
+  "author": "Vinayak Sarawagi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/intentjs/intent/issues"
+  },
+  "homepage": "https://github.com/intentjs/intent#readme",
+  "dependencies": {
+    "ts-loader": "^9.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "ts-node": "^10.9.2"
+  }
+}

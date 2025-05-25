@@ -1,5 +1,3 @@
-import { readFileSync } from 'fs-extra';
-
 export class UploadedFile {
     _filename: string;
     _size: number;

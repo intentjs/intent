@@ -17,4 +17,5 @@ export interface InternalMessage extends Message {
   attemptCount: number;
   id: string;
   delay?: number;
+  netDelayInSeconds?: number;
 }

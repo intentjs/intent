@@ -5,7 +5,7 @@ import { knexSnakeCaseMappers } from 'objection';
 export default configNamespace(
   'db',
   (): DatabaseOptions => ({
-    isGlobal: true,
+    isGlobal: false,
     default: 'pg',
     connections: {
       pg: {

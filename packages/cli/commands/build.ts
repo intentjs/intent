@@ -1,4 +1,5 @@
 import { ConfigurationLoader } from "../lib/configuration/configuration-loader.js";
+import { IntentCliFileTransformer } from "../lib/configuration/intent-cli.js";
 import { INTENT_CONFIG_FILE_NAME } from "../lib/constants.js";
 import { AssetsManager } from "../lib/dev-server/assets/assets-manager.js";
 import { defaultSwcOptionsFactory } from "../lib/dev-server/swc/default-options.js";
@@ -37,6 +38,9 @@ export class BuildCommand {
 
     const assetsManager = new AssetsManager();
     await assetsManager.handle(TS_CONFIG, INTENT_CONFIG);
+
+    const intentCliFileTransformer = new IntentCliFileTransformer();
+    await intentCliFileTransformer.load(TS_CONFIG);
 
     const SWC_OPTIONS = defaultSwcOptionsFactory(TS_CONFIG, INTENT_CONFIG);
     await this.swcFileTransformer.handle(TS_CONFIG, INTENT_CONFIG, SWC_OPTIONS);

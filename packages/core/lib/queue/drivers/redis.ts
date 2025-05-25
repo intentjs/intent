@@ -70,11 +70,13 @@ export class RedisQueueDriver implements PollQueueDriver {
   }
 
   async purge(options: Record<string, any>): Promise<void> {
+    await this.initializeModules();
     await this.client.del(this.getQueue(options.queue));
     await this.client.del(this.getDelayedQueue(options.queue));
   }
 
   async count(options: Record<string, any>): Promise<number> {
+    await this.initializeModules();
     return await this.client.llen(this.getQueue(options.queue));
   }
 
@@ -97,6 +99,7 @@ export class RedisQueueDriver implements PollQueueDriver {
   }
 
   async scheduledTask(options: Record<string, any>): Promise<void> {
+    await this.initializeModules();
     await (this.client as any).findDelayedJob(
       this.getDelayedQueue(options.queue),
       this.getQueue(options.queue),

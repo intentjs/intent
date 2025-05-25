@@ -25,7 +25,10 @@ import {
 import { ReplConsole } from './repl/terminal.js';
 import { initViteDevServer } from './frontend/vite/server.js';
 import { ReactRenderer } from './frontend/render.js';
-import { createRspackCompiler } from './frontend/rspack/server.js';
+
+import { ListScheduledTaskCommands } from './scheduler/console/list.js';
+import { ScheduleWorkerCommand } from './scheduler/console/work.js';
+import { ModuleRef } from '@nestjs/core';
 
 export const IntentProvidersFactory = (
   config: any[],
@@ -59,6 +62,8 @@ export const IntentProvidersFactory = (
         LoggerService,
         BuildProjectCommand,
         DevServerCommand,
+        ListScheduledTaskCommands,
+        ScheduleWorkerCommand,
       );
 
       this.bindWithFactory('VITE', () => initViteDevServer());
@@ -70,5 +75,17 @@ export const IntentProvidersFactory = (
      * Add your application boot logic here.
      */
     boot() {}
+
+    /**
+     * Add your application shutdown logic here.
+     */
+    shutdown() {}
+
+    /**
+     * Register any schedules here.
+     */
+    schedules(ref: ModuleRef): Promise<void> {
+      return Promise.resolve();
+    }
   };
 };
