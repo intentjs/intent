@@ -20,4 +20,4 @@ import '@intentjs/ts-node/esm';
 /**
  * Import console commands entrypoint
  */
-await import('./bin/console.js');
+await import('#bin/console');
