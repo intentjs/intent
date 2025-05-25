@@ -61,8 +61,9 @@ export class SwcFileTransformer {
               : codeFilePath;
             writeFileSync(osSpecificFilePath, code);
 
-            options.sourceMaps &&
+            if (options.sourceMaps) {
               this.writeSourceMap(isWindows, distFilePath, map);
+            }
 
             resolve(1);
           })

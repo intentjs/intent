@@ -12,6 +12,7 @@ import { INTENT_CONFIG_FILE_NAME } from "../lib/configuration/constant.js";
 import fsExtra from "fs-extra";
 import { DevServer } from "../lib/dev-server/dev-server.js";
 import { AssetsManager } from "../lib/dev-server/assets/assets-manager.js";
+import { IntentCliFileTransformer } from "../lib/configuration/intent-cli.js";
 
 const { mkdirSync } = fsExtra;
 export class StartServerCommand {
@@ -44,6 +45,9 @@ export class StartServerCommand {
       TS_CONFIG,
       { watch, debug, typeCheck: !isTruthy(disableTypeCheck) }
     );
+
+    const intentCliFileTransformer = new IntentCliFileTransformer();
+    await intentCliFileTransformer.load(TS_CONFIG);
 
     const assetsManager = new AssetsManager();
     const assetsOnUpdateHook = await assetsManager.handle(

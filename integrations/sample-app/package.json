@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/intentjs/new-app-starter",
   "imports": {
+    "#bin/*": "./bin/*.js",
     "#http/*": "./app/http/*.js",
     "#models/*": "./app/models/*.js",
     "#services/*": "./app/services/*.js",
