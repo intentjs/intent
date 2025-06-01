@@ -7,18 +7,23 @@ import { ParsedCommandLine } from "typescript";
 import { Output } from "@swc/core";
 import { transformFile } from "@swc/core";
 import { IntentConfiguration } from "../../configuration/interface.js";
+import { TsConfigLoader } from "../typescript/tsconfig-loader.js";
 
 const { mkdirSync, writeFileSync } = fs;
 
 export class SwcFileTransformer {
+  protected readonly tsConfigLoader = new TsConfigLoader();
+
   async handle(
-    TS_CONFIG: ParsedCommandLine,
+    tsConfigPath: string,
     INTENT_CONFIG: IntentConfiguration,
     options: ReturnType<typeof defaultSwcOptionsFactory>
   ): Promise<() => Promise<void>> {
+    const TS_CONFIG = this.tsConfigLoader.load(tsConfigPath);
     await this.transformFiles(TS_CONFIG, options, INTENT_CONFIG);
 
     const onUpdate = () => {
+      const TS_CONFIG = this.tsConfigLoader.load(tsConfigPath);
       return this.transformFiles(TS_CONFIG, options, INTENT_CONFIG);
     };
 
@@ -34,7 +39,6 @@ export class SwcFileTransformer {
     const { fileNames = [] } = TS_CONFIG;
     const isWindows = process.platform === "win32";
     const fileTransformationPromises = [];
-
     for (const filePath of fileNames) {
       const fileTransformerPromise = (resolve: Function) =>
         transformFile(filePath, { ...options, filename: filePath })

@@ -60,7 +60,7 @@ export class StartServerCommand {
     const onSuccessHook = this.createOnSuccessHook(INTENT_CONFIG);
 
     const swcOnUpdateHook = await this.swcFileTransformer.handle(
-      TS_CONFIG,
+      tsConfigPath,
       INTENT_CONFIG,
       SWC_OPTIONS
     );
