@@ -43,6 +43,10 @@ export class BuildCommand {
     await intentCliFileTransformer.load(TS_CONFIG);
 
     const SWC_OPTIONS = defaultSwcOptionsFactory(TS_CONFIG, INTENT_CONFIG);
-    await this.swcFileTransformer.handle(TS_CONFIG, INTENT_CONFIG, SWC_OPTIONS);
+    await this.swcFileTransformer.handle(
+      tsConfigPath,
+      INTENT_CONFIG,
+      SWC_OPTIONS
+    );
   }
 }
