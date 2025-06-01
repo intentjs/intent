@@ -19,7 +19,7 @@ export default function Index() {
             </div>
             <div className="text-center font-code flex flex-col items-start justify-start w-full text-white">
               <p>
-                1. Get started by editing{' '}
+                1. Get started by editing22{' '}
                 <code className="bg-black/[.05] text-[#9AD422] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
                   views/pages/home.tsx
                 </code>

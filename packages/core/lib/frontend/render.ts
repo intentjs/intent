@@ -21,13 +21,10 @@ export class ReactRenderer {
 
     template = await this.vite.transformIndexHtml(url, template);
 
-    console.log(template);
-
     const { render } = await this.vite.ssrLoadModule(
       resolve(process.cwd(), 'dist', 'resources', 'views', 'entry-server.js'),
     );
 
-    console.log(render);
     const htmlParts = template.split('<!--ssr-outlet-->');
     const htmlStart = htmlParts[0];
     const htmlEnd = htmlParts[1];
@@ -69,9 +66,6 @@ export class ReactRenderer {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Transfer-Encoding', 'chunked');
     res.write(htmlStart);
-
-    console.log(AppComponent);
-    console.log(renderToString(React.createElement(AppComponent, props)));
 
     const { pipe, abort } = renderToPipeableStream(
       React.createElement(AppComponent, props),

@@ -14,7 +14,7 @@ export class ViteDevMiddleware extends HttpMiddleware {
   }
 
   async use(req: Request, res: Response, next: MiddlewareNext): Promise<void> {
-    console.log('vite dev middleware');
+    console.log('vite dev middleware222');
 
     this.vite.middlewares(
       req as unknown as IncomingMessage,

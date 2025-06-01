@@ -104,7 +104,7 @@ export class IntentHttpServer {
 
     const vite = app.get('VITE');
     server.any('*', (req, res, next) => {
-      console.log('vite dev middleware');
+      console.log('vite dev middleware111');
       vite.middlewares(
         req as unknown as IncomingMessage,
         res as unknown as ServerResponse,
