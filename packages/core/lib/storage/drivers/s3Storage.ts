@@ -28,8 +28,25 @@ export class S3Storage implements StorageDriver {
     this.initialiseModules();
   }
 
-  getStream(filePath: string): ReadStream {
-    throw new Error('Method not implemented.');
+  getAsStream(filePath: string): ReadStream {
+    this.initialiseModules();
+
+    try {
+      const command = new this.AWS.GetObjectCommand({
+        Bucket: this.config.bucket,
+        Key: this.getPath(filePath),
+      });
+
+      const response = this.client.send(command);
+      return response.Body as ReadStream;
+    } catch (error) {
+      if (this.shouldThrowError()) {
+        throw new CannotPerformFileOpException(
+          `Cannot get stream for file ${filePath}: ${error['message']}`,
+        );
+      }
+      return null;
+    }
   }
 
   listDir(path: string): Promise<Record<string, any>> {

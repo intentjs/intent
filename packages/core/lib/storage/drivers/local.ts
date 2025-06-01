@@ -122,7 +122,7 @@ export class Local implements StorageDriver {
     return false;
   }
 
-  getStream(filePath: string): ReadStream {
+  getAsStream(filePath: string): ReadStream {
     return createReadStream(join(this.config.basePath || '', filePath));
   }
 
