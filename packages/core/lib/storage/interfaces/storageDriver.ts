@@ -1,3 +1,4 @@
+import { ReadStream } from 'fs-extra';
 import {
   StorageDriver$GetFileResponse,
   StorageDriver$FileMetadataResponse,
@@ -135,6 +136,11 @@ export interface StorageDriver {
    * Read file as JSON
    */
   getAsJson(path: string, throwError: boolean): Promise<Record<string, any>>;
+
+  /**
+   * Read file as stream
+   */
+  getAsStream(path: string): ReadStream;
 
   temporaryUrl(
     path: string,
