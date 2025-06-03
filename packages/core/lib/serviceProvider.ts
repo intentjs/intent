@@ -23,9 +23,13 @@ import {
   ConfigService,
 } from './config/index.js';
 import { ReplConsole } from './repl/terminal.js';
+import { initViteDevServer } from './frontend/vite/server.js';
+import { ReactRenderer } from './frontend/render.js';
+
 import { ListScheduledTaskCommands } from './scheduler/console/list.js';
 import { ScheduleWorkerCommand } from './scheduler/console/work.js';
 import { ModuleRef } from '@nestjs/core';
+
 export const IntentProvidersFactory = (
   config: any[],
 ): Type<ServiceProvider> => {
@@ -61,6 +65,10 @@ export const IntentProvidersFactory = (
         ListScheduledTaskCommands,
         ScheduleWorkerCommand,
       );
+
+      this.bindWithFactory('VITE', () => initViteDevServer());
+      this.bind(ReactRenderer);
+      // this.bindWithFactory('RSPACK', () => createRspackCompiler());
     }
 
     /**

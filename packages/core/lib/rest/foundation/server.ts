@@ -30,6 +30,10 @@ import { HttpExecutionContext } from '../http-server/contexts/http-execution-con
 import { ExecutionContext } from '../http-server/contexts/execution-context.js';
 import { RouteExplorer } from '../http-server/route-explorer.js';
 import { RouteNotFoundException } from '../../exceptions/route-not-found-exception.js';
+import { ViteDevMiddleware } from '../../frontend/vite/dev-middleware.js';
+import { ServerResponse } from 'http';
+import { IncomingMessage } from 'http';
+import { ViteDevServer } from 'vite';
 
 const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
 
@@ -75,11 +79,10 @@ export class IntentHttpServer {
     const middlewareConfigurator = new MiddlewareConfigurator();
     this.kernel.routeMiddlewares(middlewareConfigurator);
 
-    const composer = new MiddlewareComposer(
-      mr,
-      middlewareConfigurator,
-      this.kernel.middlewares(),
-    );
+    const composer = new MiddlewareComposer(mr, middlewareConfigurator, [
+      ...this.kernel.middlewares(),
+      // ViteDevMiddleware,
+    ]);
 
     const globalMiddlewares = await composer.globalMiddlewares();
     const routeMiddlewares = await composer.getRouteMiddlewares();
@@ -99,6 +102,15 @@ export class IntentHttpServer {
       .useRouteMiddlewares(routeMiddlewares)
       .build(routes, serverOptions);
 
+    const vite = app.get('VITE');
+    server.any('*', (req, res, next) => {
+      console.log('vite dev middleware111');
+      vite.middlewares(
+        req as unknown as IncomingMessage,
+        res as unknown as ServerResponse,
+        next,
+      );
+    });
     await this.container.boot(app);
     await this.kernel.boot(server);
 
@@ -125,7 +137,7 @@ export class IntentHttpServer {
     await server.listen(port, hostname || '0.0.0.0');
 
     for (const signal of signals) {
-      process.on(signal, () => this.shutdown(server, signal));
+      process.on(signal, () => this.shutdown(server, signal, vite));
     }
 
     this.printToConsole(config, [['➜', 'routes scanned', routes.length + '']]);
@@ -135,7 +147,7 @@ export class IntentHttpServer {
     config: ConfigService<unknown>,
     extraInfo: [string, string, string][] = [],
   ) {
-    console.clear();
+    // console.clear();
     console.log();
     const port = config.get('app.port');
     const hostname = config.get('app.hostname');
@@ -165,15 +177,22 @@ export class IntentHttpServer {
     console.log(`  ${pc.white('Listening on')}: ${pc.cyan(url.toString())}`);
   }
 
-  async shutdown(server: Server, signal: string): Promise<void> {
+  async shutdown(
+    server: Server,
+    signal: string,
+    vite: ViteDevServer,
+  ): Promise<void> {
     console.log(`\nReceived ${signal}, starting graceful shutdown...`);
 
-    if (server) {
-      await new Promise(res =>
+    if (server || vite) {
+      await new Promise(async res => {
+        if (vite) {
+          await vite.close();
+        }
         server.close(() => {
           res(1);
-        }),
-      );
+        });
+      });
     }
   }
 

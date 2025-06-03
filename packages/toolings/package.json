@@ -8,7 +8,8 @@
     "tsconfig"
   ],
   "files": [
-    "tsconfig.app.json"
+    "tsconfig.app.json",
+    "tsconfig.client.json"
   ],
   "scripts": {
     "test": "node tests/index.js",
@@ -16,7 +17,8 @@
     "publish:next": "npm publish --access public --tag next"
   },
   "exports": {
-    "./tsconfig.app.json": "./tsconfig.app.json"
+    "./tsconfig.app.json": "./tsconfig.app.json",
+    "./tsconfig.client.json": "./tsconfig.client.json"
   },
   "repository": {
     "type": "git",
