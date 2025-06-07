@@ -1,6 +1,6 @@
 {
   "name": "@intentjs/ts-node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A custom ts-node flavour for IntentJS.",
   "type": "module",
   "keywords": [
@@ -32,10 +32,10 @@
   },
   "homepage": "https://github.com/intentjs/intent#readme",
   "dependencies": {
-    "ts-loader": "^9.5.2"
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
-    "ts-node": "^10.9.2"
+    "@types/node": "^22.15.21"
   }
 }
